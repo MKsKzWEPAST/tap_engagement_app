@@ -19,6 +19,8 @@ import 'package:polygonid_flutter_sdk_example/src/presentation/ui/sign/sign_bloc
 import 'package:polygonid_flutter_sdk_example/src/presentation/ui/splash/splash_bloc.dart';
 import 'package:polygonid_flutter_sdk_example/utils/qr_code_parser_utils.dart';
 
+import '../ui/combined_authclaim/combined_bloc.dart';
+
 final getIt = GetIt.instance;
 
 /// Dependency Injection initializer
@@ -30,6 +32,7 @@ Future<void> init() async {
   registerClaimDetailDependencies();
   registerClaimsDependencies();
   registerAuthDependencies();
+  registerCombinedDependencies();
   registerMappers();
   registerSignDependencies();
   registerIdentityDependencies();
@@ -99,7 +102,19 @@ void registerClaimDetailDependencies() {
 
 ///
 void registerAuthDependencies() {
-  getIt.registerFactory(() => AuthBloc(getIt(), getIt()));
+  getIt.registerFactory(() => AuthBloc(
+        getIt(),
+        getIt(),
+      ));
+}
+
+///
+void registerCombinedDependencies() {
+  getIt.registerFactory(() => CombinedBloc(
+        getIt(),
+        getIt(),
+        getIt(),
+      ));
 }
 
 ///

@@ -285,6 +285,7 @@ class _HomeScreenState extends State<HomeScreen> {
       children: [
         _buildSignMessageFeatureCard(),
         _buildAuthenticateFeatureCard(),
+        _buildCombinedFeatureCard(),
         _buildCheckIdentityValidityFeatureCard(),
         _buildBackupIdentityFeatureCard(),
         _buildRestoreIdentityFeatureCard(),
@@ -326,6 +327,27 @@ class _HomeScreenState extends State<HomeScreen> {
           description: CustomStrings.authenticateDescription,
           onTap: () {
             Navigator.pushNamed(context, Routes.authPath);
+          },
+          enabled: enabled,
+          disabledReason: CustomStrings.homeFeatureCardDisabledReason,
+        );
+      },
+    );
+  }
+
+  ///
+  Widget _buildCombinedFeatureCard() {
+    return BlocBuilder(
+      bloc: _bloc,
+      builder: (BuildContext context, HomeState state) {
+        bool enabled = (state is! LoadingDataHomeState) &&
+            (state.identifier != null && state.identifier!.isNotEmpty);
+        return FeatureCard(
+          methodName: "auth() / getCredential()",
+          title: "Combined Test",
+          description: "Combined QR for auth and Claims",
+          onTap: () {
+            Navigator.pushNamed(context, Routes.combinedPath);
           },
           enabled: enabled,
           disabledReason: CustomStrings.homeFeatureCardDisabledReason,

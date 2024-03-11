@@ -11,6 +11,8 @@ import 'package:polygonid_flutter_sdk_example/src/presentation/ui/restore_identi
 import 'package:polygonid_flutter_sdk_example/src/presentation/ui/sign/widgets/sign.dart';
 import 'package:polygonid_flutter_sdk_example/src/presentation/ui/splash/widgets/splash.dart';
 
+import '../ui/combined_authclaim/widgets/combined.dart';
+
 class Routes {
   static const String initialPath = "/";
   static const String splashPath = "/splash";
@@ -19,6 +21,7 @@ class Routes {
   static const String claimsPath = "/claims";
   static const String qrCodeScannerPath = "/qrcode_scanner";
   static const String authPath = "/auth";
+  static const String combinedPath = "/combined";
   static const String claimDetailPath = "/claim_detail";
   static const String signMessagePath = "/sign_message";
   static const String checkIdentityValidityPath = "/check_identity_validity";
@@ -33,6 +36,7 @@ class Routes {
       homePath: _homeRoute(),
       qrCodeScannerPath: _qrCodeScannerRoute(),
       authPath: _authRoute(),
+      combinedPath: _combinedRoute(),
       claimsPath: _claimsRoute(),
       claimDetailPath: _claimDetailPath(),
       signMessagePath: _signMessageRoute(),
@@ -65,6 +69,10 @@ class Routes {
   ///
   static WidgetBuilder _authRoute() {
     return (BuildContext context) => AuthScreen();
+  }
+
+  static WidgetBuilder _combinedRoute() {
+    return (BuildContext context) => CombinedScreen();
   }
 
   ///

@@ -114,6 +114,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         return;
       }
 
+      //http request => credential
+
     } catch (error) {
       emit(AuthState.error(error.toString()));
     }
