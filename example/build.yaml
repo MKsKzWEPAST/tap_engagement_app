@@ -1,6 +1,7 @@
 targets:
   $default:
     sources:
+      - integration_test/**
       - test/**
       - lib/**
       - web/**
@@ -11,6 +12,8 @@ targets:
       mockito:mockBuilder:
         generate_for:
           - test/**/*.dart
+          - integration_test/**.dart
+          - integration_test/**/*.dart
       json_serializable:json_serializable:
         generate_for:
           - lib/**/*.dart

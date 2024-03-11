@@ -5,6 +5,7 @@ import 'dart:math';
 import 'package:polygonid_flutter_sdk/common/domain/domain_constants.dart';
 import 'package:polygonid_flutter_sdk/common/domain/domain_logger.dart';
 import 'package:polygonid_flutter_sdk/common/domain/entities/env_entity.dart';
+import 'package:polygonid_flutter_sdk/iden3comm/domain/entities/authorization/request/auth_body_request.dart';
 import 'package:polygonid_flutter_sdk/iden3comm/domain/entities/common/iden3_message_entity.dart';
 import 'package:polygonid_flutter_sdk/sdk/polygon_id_sdk.dart';
 import 'package:polygonid_flutter_sdk_example/src/data/secure_storage.dart';
@@ -108,8 +109,23 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       );
 
       emit(const AuthState.authenticated());
+      AuthBodyRequest? body = castToAuthBody(iden3message.body);
+      if (body == null) {
+        return;
+      }
+
     } catch (error) {
       emit(AuthState.error(error.toString()));
     }
+  }
+}
+
+AuthBodyRequest? castToAuthBody(dynamic body) {
+  try {
+    return body as AuthBodyRequest;
+  } catch (e) {
+    // Handle the case where casting fails gracefully
+    print("Casting to AuthBodyRequest failed: $e");
+    return null; // or throw an exception, depending on your use case
   }
 }

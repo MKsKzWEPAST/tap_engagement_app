@@ -19,6 +19,7 @@ import 'package:polygonid_flutter_sdk_example/utils/custom_strings.dart';
 import 'package:polygonid_flutter_sdk_example/utils/nonce_utils.dart';
 import 'package:polygonid_flutter_sdk_example/utils/qr_code_parser_utils.dart';
 import 'package:polygonid_flutter_sdk_example/utils/secure_storage_keys.dart';
+import 'package:polygonid_flutter_sdk_example/src/presentation/ui/auth/auth_bloc.dart';
 
 class ClaimsBloc extends Bloc<ClaimsEvent, ClaimsState> {
   final ClaimModelMapper _mapper;
@@ -64,6 +65,8 @@ class ClaimsBloc extends Bloc<ClaimsEvent, ClaimsState> {
     emit(const ClaimsState.loading());
 
     Iden3MessageEntity iden3message = event.iden3message;
+    logger().i(iden3message.messageType);
+    logger().i(iden3message.body);
     if (event.iden3message.messageType != Iden3MessageType.credentialOffer) {
       emit(const ClaimsState.error("Read message is not of type offer"));
       return;
