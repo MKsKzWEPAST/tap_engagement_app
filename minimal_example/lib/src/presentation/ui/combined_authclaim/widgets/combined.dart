@@ -51,6 +51,7 @@ class _CombinedScreenState extends State<CombinedScreen> {
   PreferredSizeWidget _buildAppBar() {
     return AppBar(
       elevation: 0.0,
+      title: const Text("Auth and Claims combined"),
       backgroundColor: CustomColors.background,
     );
   }
@@ -63,24 +64,20 @@ class _CombinedScreenState extends State<CombinedScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            SingleChildScrollView(
-              child: Column(
-                children: [
-                  const SizedBox(height: 10),
-                  _buildDescription(),
-                  const SizedBox(height: 10),
-                  _buildProgress(),
-                  const SizedBox(height: 10),
-                  _buildAuthenticationSuccessSection(),
-                  const SizedBox(height: 10),
-                  _buildErrorSection(),
-                  const SizedBox(height: 10),
-                  _buildRadioButtons(),
-                  const SizedBox(height: 10),
-                  const SizedBox(height: 6),
-                  _buildTitle(),
-                ],
-              ),
+            Column(
+              children: [
+                const SizedBox(height: 10),
+                _buildProgress(),
+                const SizedBox(height: 10),
+                _buildAuthenticationSuccessSection(),
+                const SizedBox(height: 10),
+                _buildErrorSection(),
+                const SizedBox(height: 10),
+                _buildRadioButtons(),
+                const SizedBox(height: 10),
+                const SizedBox(height: 6),
+                _buildTitle(),
+              ],
             ),
             Expanded(
                 child: SingleChildScrollView(
@@ -287,12 +284,11 @@ class _CombinedScreenState extends State<CombinedScreen> {
           ],
         ),
         const SizedBox(height: 5),
+
         ///
       ]),
     );
   }
-
-
 
   ///
   Widget _buildRemoveAllClaimsButton() {
