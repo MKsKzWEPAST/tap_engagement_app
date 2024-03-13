@@ -65,7 +65,6 @@ class CombinedBloc extends Bloc<CombinedEvent, CombinedState> {
     emit(const CombinedState.navigateToQrCodeScanner());
   }
 
-  /// TODO combine with below one
   Future<void> _handleScanQrCodeResponse(
       ScanQrCodeResponse event, Emitter<CombinedState> emit) async {
     String? qrCodeResponse = event.response;
@@ -78,27 +77,42 @@ class CombinedBloc extends Bloc<CombinedEvent, CombinedState> {
       final Iden3MessageEntity iden3message =
           await _qrcodeParserUtils.getIden3MessageFromQrCode(qrCodeResponse);
 
-      // TODO
-      // IF CLAIM {
-      emit(CombinedState.qrCodeScanned(iden3message));
-      // }
+      logger().i("[debugging-combined] Message content: [start] Id: ${iden3message.id}, Typ: ${iden3message.typ} "
+          "Type: ${iden3message.type}, Message Type: ${iden3message.messageType.toString()} "
+          "Thid: ${iden3message.thid}, Body: ${iden3message.body} "
+          "From: ${iden3message.from}, To: ${iden3message.to ?? ''} [end]");
 
-      // IF AUTH {...
-      emit(CombinedState.loaded(iden3message));
+      switch (iden3message.messageType) {
+        case Iden3MessageType.credentialOffer:
+          logger().i("[debugging-combined] -- Claims: Checkpoint 1--");
+          emit(CombinedState.qrCodeScanned(iden3message));
+          break;
 
-      String? privateKey =
+        case Iden3MessageType.authRequest:
+          logger().i("[debugging-combined] -- Auth: Checkpoint 1--");
+
+          emit(CombinedState.loaded(iden3message));
+
+          String? privateKey =
           await SecureStorage.read(key: SecureStorageKeys.privateKey);
 
-      if (privateKey == null) {
-        emit(const CombinedState.error("no private key found"));
-        return;
-      }
+          if (privateKey == null) {
+            emit(const CombinedState.error("no private key found"));
+            return;
+          }
 
-      await _authenticate(
-        iden3message: iden3message,
-        privateKey: privateKey,
-        emit: emit,
-      );
+          await _authenticate(
+            iden3message: iden3message,
+            privateKey: privateKey,
+            emit: emit,
+          );
+
+          // TODO check if callback-url contains credential offer
+          break;
+
+        default:
+          emit(const CombinedState.error("Iden3MessageType not (not auth.req nor cred.offer"));
+      }
     } catch (error) {
       emit(const CombinedState.error("Scanned code is not valid"));
     }
@@ -111,6 +125,8 @@ class CombinedBloc extends Bloc<CombinedEvent, CombinedState> {
     required Emitter<CombinedState> emit,
   }) async {
     emit(const CombinedState.loading());
+    logger().i("[debugging-combined] -- Auth: Checkpoint 2--");
+
 
     EnvEntity envEntity = await _polygonIdSdk.getEnv();
 
@@ -118,12 +134,16 @@ class CombinedBloc extends Bloc<CombinedEvent, CombinedState> {
         privateKey: privateKey,
         blockchain: envEntity.blockchain,
         network: envEntity.network);
+    logger().i("[debugging-combined] -- Auth: Checkpoint 3--");
 
     try {
       final BigInt nonce = selectedProfile == SelectedProfile.public
           ? GENESIS_PROFILE_NONCE
           : await NonceUtils(getIt()).getPrivateProfileNonce(
               did: did, privateKey: privateKey, from: iden3message.from);
+
+      logger().i("[debugging-combined] -- Auth: Checkpoint 4--");
+
       await _polygonIdSdk.iden3comm.authenticate(
         message: iden3message,
         genesisDid: did,
@@ -131,26 +151,15 @@ class CombinedBloc extends Bloc<CombinedEvent, CombinedState> {
         profileNonce: nonce,
       );
 
-      emit(const CombinedState.authenticated());
-      AuthBodyRequest? body = castToAuthBody(iden3message.body);
+      logger().i("[debugging-combined] -- Auth: Checkpoint 5--");
 
-      if (body == null) {
-        return;
-      }
+      emit(const CombinedState.authenticated());
 
       //http request => credential
     } catch (error) {
-      emit(CombinedState.error(error.toString()));
-    }
-  }
+      logger().e("[debugging-combined] Auth: Error - ${error.toString()}");
 
-  AuthBodyRequest? castToAuthBody(dynamic body) {
-    try {
-      return body as AuthBodyRequest;
-    } catch (e) {
-      // Handle the case where casting fails gracefully
-      print("Casting to AuthBodyRequest failed: $e");
-      return null; // or throw an exception, depending on your use case
+      emit(CombinedState.error(error.toString()));
     }
   }
 
@@ -168,12 +177,16 @@ class CombinedBloc extends Bloc<CombinedEvent, CombinedState> {
       return;
     }
 
+    logger().i("[debugging-combined] --Checkpoint 4--");
+
     EnvEntity env = await _polygonIdSdk.getEnv();
 
     String didIdentifier = await _polygonIdSdk.identity.getDidIdentifier(
         privateKey: privateKey,
         blockchain: env.blockchain,
         network: env.network);
+
+    logger().i("[debugging-combined] --Checkpoint 5--");
 
     emit(const CombinedState.loading());
 
@@ -185,11 +198,15 @@ class CombinedBloc extends Bloc<CombinedEvent, CombinedState> {
       return;
     }
 
+    logger().i("[debugging-combined] --Checkpoint 6--");
+
     BigInt nonce = await NonceUtils(_polygonIdSdk).lookupNonce(
             did: didIdentifier,
             privateKey: privateKey,
             from: iden3message.from) ??
         GENESIS_PROFILE_NONCE;
+
+    logger().i("[debugging-combined] --Checkpoint 7--");
 
     try {
       List<ClaimEntity> claimList =
@@ -200,10 +217,13 @@ class CombinedBloc extends Bloc<CombinedEvent, CombinedState> {
         privateKey: privateKey,
       );
 
+      logger().i("[debugging-combined] --Checkpoint 8--");
+
       if (claimList.isNotEmpty) {
         add(const GetClaimsEvent());
       }
     } catch (exception) {
+      logger().e("[debugging-combined] Checkpoint: error - ${exception.toString()}");
       emit(const CombinedState.error(CustomStrings.iden3messageGenericError));
     }
   }

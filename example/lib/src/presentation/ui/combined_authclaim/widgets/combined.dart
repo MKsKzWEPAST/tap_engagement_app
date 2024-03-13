@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:polygonid_flutter_sdk/common/domain/domain_logger.dart';
 import 'package:polygonid_flutter_sdk/iden3comm/domain/entities/common/iden3_message_entity.dart';
 import 'package:polygonid_flutter_sdk_example/src/presentation/dependency_injection/dependencies_provider.dart';
 import 'package:polygonid_flutter_sdk_example/src/presentation/navigations/routes.dart';
@@ -122,7 +123,7 @@ class _CombinedScreenState extends State<CombinedScreen> {
       child: Text(
         "Auth and Claims combined:",
         textAlign: TextAlign.center,
-        style: CustomTextStyles.descriptionTextStyle,
+        style: CustomTextStyles.titleTextStyle,
       ),
     );
   }
@@ -136,6 +137,7 @@ class _CombinedScreenState extends State<CombinedScreen> {
           _handleNavigateToQrCodeScannerCombinedState();
         }
         if (state is QrCodeScannedCombinedState) {
+          logger().i("[debugging-combined] --Checkpoint 2--");
           _handleQrCodeScanned(state.iden3message);
         }
         if (state is NavigateToClaimDetailCombinedState) {
@@ -431,6 +433,7 @@ class _CombinedScreenState extends State<CombinedScreen> {
 
   ///
   void _handleQrCodeScanned(Iden3MessageEntity iden3message) {
+    logger().i("[debugging-combined] --Checkpoint 3--");
     widget._bloc
         .add(CombinedEvent.fetchAndSaveClaims(iden3message: iden3message));
   }
