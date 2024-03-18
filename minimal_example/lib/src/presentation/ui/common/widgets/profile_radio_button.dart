@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:polygonid_flutter_sdk_example/utils/custom_colors.dart';
-import 'package:polygonid_flutter_sdk_example/utils/custom_strings.dart';
+import 'package:minimal_example/utils/custom_colors.dart';
+import 'package:minimal_example/utils/custom_strings.dart';
 
 enum SelectedProfile { public, private }
 

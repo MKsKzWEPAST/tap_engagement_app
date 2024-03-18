@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:polygonid_flutter_sdk/sdk/polygon_id_sdk.dart';
-import 'package:polygonid_flutter_sdk_example/src/presentation/dependency_injection/dependencies_provider.dart'
+import 'package:minimal_example/src/presentation/dependency_injection/dependencies_provider.dart'
     as di;
-import 'package:polygonid_flutter_sdk_example/src/presentation/app.dart';
+
+import 'package:minimal_example/src/presentation/app.dart';
+
 
 Future<void> main() async {
   //Dependency Injection initialization
@@ -12,6 +14,10 @@ Future<void> main() async {
 
   // App UI locked in portrait mode
   await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+
+  if (true) { // todo: replace later with "wallet initialized with did and bio set-up"
+
+  }
 
   runApp(const App());
 }

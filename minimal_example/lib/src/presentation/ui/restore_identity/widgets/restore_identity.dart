@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:polygonid_flutter_sdk_example/src/presentation/dependency_injection/dependencies_provider.dart';
-import 'package:polygonid_flutter_sdk_example/src/presentation/ui/restore_identity/bloc/restore_identity_bloc.dart';
-import 'package:polygonid_flutter_sdk_example/src/presentation/ui/restore_identity/bloc/restore_identity_event.dart';
-import 'package:polygonid_flutter_sdk_example/src/presentation/ui/restore_identity/bloc/restore_identity_state.dart';
-import 'package:polygonid_flutter_sdk_example/utils/custom_button_style.dart';
-import 'package:polygonid_flutter_sdk_example/utils/custom_colors.dart';
-import 'package:polygonid_flutter_sdk_example/utils/custom_strings.dart';
-import 'package:polygonid_flutter_sdk_example/utils/custom_text_styles.dart';
+import 'package:minimal_example/src/presentation/dependency_injection/dependencies_provider.dart';
+import 'package:minimal_example/src/presentation/ui/restore_identity/bloc/restore_identity_bloc.dart';
+import 'package:minimal_example/src/presentation/ui/restore_identity/bloc/restore_identity_event.dart';
+import 'package:minimal_example/src/presentation/ui/restore_identity/bloc/restore_identity_state.dart';
+import 'package:minimal_example/utils/custom_button_style.dart';
+import 'package:minimal_example/utils/custom_colors.dart';
+import 'package:minimal_example/utils/custom_strings.dart';
+import 'package:minimal_example/utils/custom_text_styles.dart';
 
 class RestoreIdentityScreen extends StatefulWidget {
   const RestoreIdentityScreen({Key? key}) : super(key: key);

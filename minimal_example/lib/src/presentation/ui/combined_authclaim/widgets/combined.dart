@@ -1,22 +1,27 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:local_auth/local_auth.dart';
 import 'package:polygonid_flutter_sdk/common/domain/domain_logger.dart';
 import 'package:polygonid_flutter_sdk/iden3comm/domain/entities/common/iden3_message_entity.dart';
-import 'package:polygonid_flutter_sdk_example/src/presentation/dependency_injection/dependencies_provider.dart';
-import 'package:polygonid_flutter_sdk_example/src/presentation/navigations/routes.dart';
-import 'package:polygonid_flutter_sdk_example/src/presentation/ui/common/widgets/button_next_action.dart';
-import 'package:polygonid_flutter_sdk_example/src/presentation/ui/common/widgets/profile_radio_button.dart';
-import 'package:polygonid_flutter_sdk_example/utils/custom_button_style.dart';
-import 'package:polygonid_flutter_sdk_example/utils/custom_colors.dart';
-import 'package:polygonid_flutter_sdk_example/utils/custom_strings.dart';
-import 'package:polygonid_flutter_sdk_example/utils/custom_text_styles.dart';
-import 'package:polygonid_flutter_sdk_example/utils/custom_widgets_keys.dart';
+import 'package:secure_application/secure_application_provider.dart';
 
-import '../../claims/models/claim_model.dart';
-import '../../claims/widgets/claim_card.dart';
-import '../combined_bloc.dart';
-import '../combined_event.dart';
-import '../combined_state.dart';
+
+import 'package:minimal_example/utils/custom_button_style.dart';
+import 'package:minimal_example/utils/custom_colors.dart';
+import 'package:minimal_example/utils/custom_strings.dart';
+import 'package:minimal_example/utils/custom_text_styles.dart';
+import 'package:minimal_example/utils/custom_widgets_keys.dart';
+import 'package:minimal_example/src/presentation/dependency_injection/dependencies_provider.dart';
+import 'package:minimal_example/src/presentation/navigations/routes.dart';
+import 'package:minimal_example/src/presentation/ui/claims/models/claim_model.dart';
+import 'package:minimal_example/src/presentation/ui/claims/widgets/claim_card.dart';
+import 'package:minimal_example/src/presentation/ui/common/widgets/profile_radio_button.dart';
+import 'package:minimal_example/src/presentation/ui/combined_authclaim/combined_bloc.dart';
+import 'package:minimal_example/src/presentation/ui/combined_authclaim/combined_event.dart';
+import 'package:minimal_example/src/presentation/ui/combined_authclaim/combined_state.dart';
 
 class CombinedScreen extends StatefulWidget {
   final CombinedBloc _bloc;
@@ -33,8 +38,12 @@ class _CombinedScreenState extends State<CombinedScreen> {
   @override
   void initState() {
     super.initState();
+
     WidgetsBinding.instance.addPostFrameCallback((_) {
       widget._bloc.add(const CombinedEvent.getClaims());
+      if (!SecureApplicationProvider.of(context)!.authenticated) {
+        SecureApplicationProvider.of(context)!.lock();
+      }
     });
   }
 

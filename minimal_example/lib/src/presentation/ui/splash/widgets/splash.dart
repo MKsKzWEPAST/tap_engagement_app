@@ -3,15 +3,16 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:polygonid_flutter_sdk_example/src/presentation/dependency_injection/dependencies_provider.dart';
-import 'package:polygonid_flutter_sdk_example/src/presentation/navigations/routes.dart';
-import 'package:polygonid_flutter_sdk_example/src/presentation/ui/splash/splash_bloc.dart';
-import 'package:polygonid_flutter_sdk_example/src/presentation/ui/splash/splash_event.dart';
-import 'package:polygonid_flutter_sdk_example/src/presentation/ui/splash/splash_state.dart';
-import 'package:polygonid_flutter_sdk_example/utils/custom_button_style.dart';
-import 'package:polygonid_flutter_sdk_example/utils/custom_colors.dart';
-import 'package:polygonid_flutter_sdk_example/utils/custom_text_styles.dart';
-import 'package:polygonid_flutter_sdk_example/utils/image_resources.dart';
+import 'package:minimal_example/src/presentation/dependency_injection/dependencies_provider.dart';
+import 'package:minimal_example/src/presentation/navigations/routes.dart';
+import 'package:minimal_example/src/presentation/ui/splash/splash_bloc.dart';
+import 'package:minimal_example/src/presentation/ui/splash/splash_event.dart';
+import 'package:minimal_example/src/presentation/ui/splash/splash_state.dart';
+import 'package:minimal_example/utils/custom_button_style.dart';
+import 'package:minimal_example/utils/custom_colors.dart';
+import 'package:minimal_example/utils/custom_text_styles.dart';
+import 'package:minimal_example/utils/image_resources.dart';
+import 'package:secure_application/secure_application_provider.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key}) : super(key: key);

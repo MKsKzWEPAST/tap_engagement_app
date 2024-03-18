@@ -1,6 +1,6 @@
-import 'package:polygonid_flutter_sdk_example/src/presentation/ui/claims/models/claim_detail_model.dart';
-import 'package:polygonid_flutter_sdk_example/src/presentation/ui/claims/models/claim_model_state.dart';
-import 'package:polygonid_flutter_sdk_example/src/presentation/ui/claims/models/claim_model_type.dart';
+
+import 'claim_detail_model.dart';
+import 'claim_model_state.dart';
 
 class ClaimModel {
   final String? expiration;

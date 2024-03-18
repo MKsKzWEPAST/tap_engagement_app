@@ -6,10 +6,12 @@ class CustomStrings {
 
   // HOME
   static const String homeDescription =
-      "Generate a new identity or if saved retrieved via PolygonID SDK";
+      "Welcome to your TixWallet.";
+  static const String loading = "Loading...";
   static const String homeIdentifierSectionPrefix =
       "identity.getDidIdentifier()\nIdentifier:";
-  static const String homeIdentifierSectionPlaceHolder = "Not yet created";
+  static const String homeHasWallet = "Please login below:";
+  static const String homeNoWallet = "Please come-back with a TAP offer from your event app or recover your account if you have one.";
   static const String homeButtonCTA = "Create identity\nidentity.addIdentity()";
   static const String homeButtonRemoveIdentityCTA =
       "Remove identity\nidentity.removeIdentity() ";

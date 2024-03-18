@@ -1,5 +1,6 @@
 import 'package:polygonid_flutter_sdk/common/mappers/mapper.dart';
-import 'package:polygonid_flutter_sdk_example/src/presentation/ui/claims/models/proof_type.dart';
+
+import '../models/proof_type.dart';
 
 class ProofModelTypeMapper implements Mapper<String, ProofType> {
   @override

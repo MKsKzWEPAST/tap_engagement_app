@@ -1,19 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:polygonid_flutter_sdk_example/src/presentation/dependency_injection/dependencies_provider.dart';
-import 'package:polygonid_flutter_sdk_example/src/presentation/navigations/routes.dart';
-import 'package:polygonid_flutter_sdk_example/src/presentation/ui/common/widgets/button_next_action.dart';
-import 'package:polygonid_flutter_sdk_example/src/presentation/ui/common/widgets/feature_card.dart';
-import 'package:polygonid_flutter_sdk_example/src/presentation/ui/home/home_bloc.dart';
-import 'package:polygonid_flutter_sdk_example/src/presentation/ui/home/home_event.dart';
-import 'package:polygonid_flutter_sdk_example/src/presentation/ui/home/home_state.dart';
-import 'package:polygonid_flutter_sdk_example/utils/custom_button_style.dart';
-import 'package:polygonid_flutter_sdk_example/utils/custom_colors.dart';
-import 'package:polygonid_flutter_sdk_example/utils/custom_strings.dart';
-import 'package:polygonid_flutter_sdk_example/utils/custom_text_styles.dart';
-import 'package:polygonid_flutter_sdk_example/utils/custom_widgets_keys.dart';
-import 'package:polygonid_flutter_sdk_example/utils/image_resources.dart';
+import 'package:local_auth/local_auth.dart';
+import 'package:minimal_example/src/presentation/dependency_injection/dependencies_provider.dart';
+import 'package:minimal_example/src/presentation/navigations/routes.dart';
+import 'package:minimal_example/src/presentation/ui/common/widgets/button_next_action.dart';
+import 'package:minimal_example/src/presentation/ui/common/widgets/feature_card.dart';
+import 'package:minimal_example/src/presentation/ui/home/home_bloc.dart';
+import 'package:minimal_example/src/presentation/ui/home/home_event.dart';
+import 'package:minimal_example/src/presentation/ui/home/home_state.dart';
+import 'package:minimal_example/utils/custom_button_style.dart';
+import 'package:minimal_example/utils/custom_colors.dart';
+import 'package:minimal_example/utils/custom_strings.dart';
+import 'package:minimal_example/utils/custom_text_styles.dart';
+import 'package:minimal_example/utils/custom_widgets_keys.dart';
+import 'package:minimal_example/utils/image_resources.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -23,7 +25,9 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  final LocalAuthentication auth = LocalAuthentication();
   late final HomeBloc _bloc;
+
   @override
   void initState() {
     super.initState();
@@ -38,7 +42,8 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       backgroundColor: CustomColors.background,
       body: SafeArea(
-        child: SizedBox(
+        child: Container(
+          alignment: Alignment.center,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
@@ -49,27 +54,15 @@ class _HomeScreenState extends State<HomeScreen> {
                     children: [
                       const SizedBox(height: 50),
                       _buildLogo(),
-                      const SizedBox(height: 13),
+                      const SizedBox(height: 50),
                       _buildDescription(),
-                      const SizedBox(height: 24),
+                      const SizedBox(height: 20),
                       _buildProgress(),
-                      const SizedBox(height: 24),
-                      _buildIdentifierSection(),
-                      const SizedBox(height: 24),
+                      _buildWalletSection(),
+                      const SizedBox(height: 20),
                       _buildErrorSection(),
-                      const SizedBox(height: 24),
-                      _buildFeaturesSection(),
-                      const SizedBox(height: 48),
                     ],
                   ),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(bottom: 16),
-                child: Stack(
-                  children: [
-                    _buildIdentityActionButton(),
-                  ],
                 ),
               ),
             ],
@@ -177,47 +170,59 @@ class _HomeScreenState extends State<HomeScreen> {
       bloc: _bloc,
       builder: (BuildContext context, HomeState state) {
         if (state is! LoadingDataHomeState) return const SizedBox.shrink();
-        return const SizedBox(
-          height: 48,
-          width: 48,
-          child: CircularProgressIndicator(
-            backgroundColor: CustomColors.primaryButton,
-          ),
-        );
+        return SizedBox(
+            height: 48,
+            width: 48,
+            child: Column(children: [
+              Text(
+                CustomStrings.loading,
+                textAlign: TextAlign.center,
+                style: CustomTextStyles.descriptionTextStyle
+                    .copyWith(fontSize: 20),
+              ),
+              const CircularProgressIndicator(
+                backgroundColor: CustomColors.primaryButton,
+              ),
+            ]));
       },
     );
   }
 
   ///
-  Widget _buildIdentifierSection() {
+  Widget _buildWalletSection() {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 24),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Text(
-            CustomStrings.homeIdentifierSectionPrefix,
-            textAlign: TextAlign.center,
-            style: CustomTextStyles.descriptionTextStyle.copyWith(fontSize: 20),
-          ),
-          BlocBuilder(
-            bloc: _bloc,
-            builder: (BuildContext context, HomeState state) {
-              return Text(
-                state.identifier ??
-                    CustomStrings.homeIdentifierSectionPlaceHolder,
+      child: BlocBuilder(
+        bloc: _bloc,
+        builder: (BuildContext context, HomeState state) {
+          return Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Text(
+                state.identifier != null
+                    ? CustomStrings.homeHasWallet
+                    : CustomStrings.homeNoWallet,
                 key: const Key('identifier'),
                 style: CustomTextStyles.descriptionTextStyle
                     .copyWith(fontSize: 20, fontWeight: FontWeight.w700),
-              );
-            },
-            buildWhen: (_, currentState) =>
-                currentState is LoadedIdentifierHomeState,
-          ),
-        ],
+              ),
+              const SizedBox(height: 20),
+              _buildEnterButton(),
+            ],
+          );
+        },
+        buildWhen: (_, currentState) =>
+            currentState is LoadedIdentifierHomeState,
       ),
     );
+  }
+
+  ///
+  Widget _buildEnterButton() {
+    return ElevatedButton(
+        onPressed: () => Navigator.pushNamed(context, Routes.combinedPath),
+        child: const Text("Enter!"));
   }
 
   ///
@@ -271,7 +276,6 @@ class _HomeScreenState extends State<HomeScreen> {
       },
     );
   }
-
 
   ///
   Widget _buildBackupIdentityFeatureCard() {

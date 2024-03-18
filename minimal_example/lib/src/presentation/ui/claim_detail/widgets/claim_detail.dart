@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:polygonid_flutter_sdk_example/src/presentation/dependency_injection/dependencies_provider.dart';
-import 'package:polygonid_flutter_sdk_example/src/presentation/ui/claim_detail/bloc/claim_detail_bloc.dart';
-import 'package:polygonid_flutter_sdk_example/src/presentation/ui/claim_detail/bloc/claim_detail_event.dart';
-import 'package:polygonid_flutter_sdk_example/src/presentation/ui/claim_detail/bloc/claim_detail_state.dart';
-import 'package:polygonid_flutter_sdk_example/src/presentation/ui/claims/models/claim_detail_model.dart';
-import 'package:polygonid_flutter_sdk_example/src/presentation/ui/claims/models/claim_model.dart';
-import 'package:polygonid_flutter_sdk_example/utils/custom_button_style.dart';
-import 'package:polygonid_flutter_sdk_example/utils/custom_colors.dart';
-import 'package:polygonid_flutter_sdk_example/utils/custom_strings.dart';
-import 'package:polygonid_flutter_sdk_example/utils/custom_text_styles.dart';
+
+import 'package:minimal_example/utils/custom_button_style.dart';
+import 'package:minimal_example/utils/custom_colors.dart';
+import 'package:minimal_example/utils/custom_strings.dart';
+import 'package:minimal_example/utils/custom_text_styles.dart';
+import 'package:minimal_example/src/presentation/dependency_injection/dependencies_provider.dart';
+import 'package:minimal_example/src/presentation/ui/claims/models/claim_detail_model.dart';
+import 'package:minimal_example/src/presentation/ui/claims/models/claim_model.dart';
+import 'package:minimal_example/src/presentation/ui/claim_detail/bloc/claim_detail_bloc.dart';
+import 'package:minimal_example/src/presentation/ui/claim_detail/bloc/claim_detail_event.dart';
+import 'package:minimal_example/src/presentation/ui/claim_detail/bloc/claim_detail_state.dart';
 
 class ClaimDetailScreen extends StatefulWidget {
   final ClaimModel claimModel;
@@ -37,6 +38,7 @@ class _ClaimDetailScreenState extends State<ClaimDetailScreen> {
   PreferredSizeWidget _buildAppBar() {
     return AppBar(
       elevation: 0.0,
+      title: _buildTitle(),
       backgroundColor: CustomColors.background,
     );
   }
@@ -46,27 +48,28 @@ class _ClaimDetailScreenState extends State<ClaimDetailScreen> {
     return SafeArea(
       child: SizedBox(
         width: MediaQuery.of(context).size.width,
-        child: Column(
-          children: [
-            Expanded(
-              child: SingleChildScrollView(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const SizedBox(height: 24),
-                    _buildTitle(),
-                    const SizedBox(height: 6),
-                    _buildDetails(),
-                    const SizedBox(height: 40),
-                  ],
+        child: Padding(
+          padding: EdgeInsets.all(16),
+          child: Column(
+            children: [
+              Expanded(
+                child: SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const SizedBox(height: 24),
+                      _buildDetails(),
+                      const SizedBox(height: 40),
+                    ],
+                  ),
                 ),
               ),
-            ),
-            const SizedBox(height: 24),
-            _buildRefreshCredentialButton(),
-            _buildRemoveClaimButton(),
-            _buildBlocListener(),
-          ],
+              const SizedBox(height: 24),
+              _buildRefreshCredentialButton(),
+              _buildRemoveClaimButton(),
+              _buildBlocListener(),
+            ],
+          ),
         ),
       ),
     );
@@ -76,7 +79,8 @@ class _ClaimDetailScreenState extends State<ClaimDetailScreen> {
   Widget _buildTitle() {
     return Text(
       widget.claimModel.name,
-      style: CustomTextStyles.descriptionTextStyle.copyWith(fontSize: 20),
+      style: CustomTextStyles.descriptionTextStyle
+          .copyWith(fontSize: 24, fontWeight: FontWeight.bold),
     );
   }
 
@@ -99,6 +103,7 @@ class _ClaimDetailScreenState extends State<ClaimDetailScreen> {
         children: [
           Text(
             detail.name,
+            style: const TextStyle(fontWeight: FontWeight.bold),
           ),
           Text(
             detail.value,

@@ -3,10 +3,10 @@ import 'dart:async';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:polygonid_flutter_sdk/common/domain/entities/env_entity.dart';
 import 'package:polygonid_flutter_sdk/sdk/polygon_id_sdk.dart';
-import 'package:polygonid_flutter_sdk_example/src/data/secure_storage.dart';
-import 'package:polygonid_flutter_sdk_example/src/presentation/ui/restore_identity/bloc/restore_identity_event.dart';
-import 'package:polygonid_flutter_sdk_example/src/presentation/ui/restore_identity/bloc/restore_identity_state.dart';
-import 'package:polygonid_flutter_sdk_example/utils/secure_storage_keys.dart';
+import 'package:minimal_example/src/data/secure_storage.dart';
+import 'package:minimal_example/src/presentation/ui/restore_identity/bloc/restore_identity_event.dart';
+import 'package:minimal_example/src/presentation/ui/restore_identity/bloc/restore_identity_state.dart';
+import 'package:minimal_example/utils/secure_storage_keys.dart';
 
 class RestoreIdentityBloc
     extends Bloc<RestoreIdentityEvent, RestoreIdentityState> {

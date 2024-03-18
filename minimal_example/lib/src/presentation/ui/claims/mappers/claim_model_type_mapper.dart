@@ -1,5 +1,6 @@
 import 'package:polygonid_flutter_sdk/common/mappers/mapper.dart';
-import 'package:polygonid_flutter_sdk_example/src/presentation/ui/claims/models/claim_model_type.dart';
+
+import 'package:minimal_example/src/presentation/ui/claims/models/claim_model_type.dart';
 
 class ClaimModelTypeMapper implements Mapper<String, ClaimModelType> {
   @override

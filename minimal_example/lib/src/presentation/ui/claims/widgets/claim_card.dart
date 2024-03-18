@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:polygonid_flutter_sdk_example/src/presentation/ui/claims/models/claim_model.dart';
-import 'package:polygonid_flutter_sdk_example/utils/custom_colors.dart';
-import 'package:polygonid_flutter_sdk_example/utils/custom_dimensions.dart';
-import 'package:polygonid_flutter_sdk_example/utils/custom_strings.dart';
-import 'package:polygonid_flutter_sdk_example/utils/custom_text_styles.dart';
-import 'package:polygonid_flutter_sdk_example/utils/image_resources.dart';
+
+import 'package:minimal_example/utils/custom_colors.dart';
+import 'package:minimal_example/utils/custom_dimensions.dart';
+import 'package:minimal_example/utils/custom_strings.dart';
+import 'package:minimal_example/utils/custom_text_styles.dart';
+import 'package:minimal_example/utils/image_resources.dart';
+import 'package:minimal_example/src/presentation/ui/claims/models/claim_model.dart';
 
 class ClaimCard extends StatelessWidget {
   final ClaimModel claimModel;

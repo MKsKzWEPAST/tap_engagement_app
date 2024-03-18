@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:polygonid_flutter_sdk_example/utils/custom_colors.dart';
+import 'custom_colors.dart';
 
 class CustomTextStyles {
   CustomTextStyles._();
