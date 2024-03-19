@@ -170,10 +170,7 @@ class _HomeScreenState extends State<HomeScreen> {
       bloc: _bloc,
       builder: (BuildContext context, HomeState state) {
         if (state is! LoadingDataHomeState) return const SizedBox.shrink();
-        return SizedBox(
-            height: 48,
-            width: 48,
-            child: Column(children: [
+        return Column(children: [
               Text(
                 CustomStrings.loading,
                 textAlign: TextAlign.center,
@@ -183,7 +180,7 @@ class _HomeScreenState extends State<HomeScreen> {
               const CircularProgressIndicator(
                 backgroundColor: CustomColors.primaryButton,
               ),
-            ]));
+            ]);
       },
     );
   }
@@ -195,21 +192,34 @@ class _HomeScreenState extends State<HomeScreen> {
       child: BlocBuilder(
         bloc: _bloc,
         builder: (BuildContext context, HomeState state) {
-          return Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Text(
-                state.identifier != null
-                    ? CustomStrings.homeHasWallet
-                    : CustomStrings.homeNoWallet,
-                key: const Key('identifier'),
-                style: CustomTextStyles.descriptionTextStyle
-                    .copyWith(fontSize: 20, fontWeight: FontWeight.w700),
-              ),
-              const SizedBox(height: 20),
-              _buildEnterButton(),
-            ],
+          return Align(
+            alignment: Alignment.center,
+            child: BlocBuilder(
+              bloc: _bloc,
+              builder: (BuildContext context, HomeState state) {
+                bool loaded =
+                    state.identifier == null || state.identifier!.isEmpty;
+
+                return state.identifier != null ? Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    state.identifier!.isNotEmpty
+                        ? Text(
+                      CustomStrings.homeHasWallet,
+                      style: CustomTextStyles.descriptionTextStyle
+                          .copyWith(fontSize: 20, fontWeight: FontWeight.w700),
+                    ) : Text(
+                      CustomStrings.homeNoWallet,
+                      style: CustomTextStyles.descriptionTextStyle
+                          .copyWith(fontSize: 15),
+                    ),
+                    const SizedBox(height: 20),
+                    _buildEnterButton(),
+                  ],
+                ): Container();
+              },
+            ),
           );
         },
         buildWhen: (_, currentState) =>
@@ -222,7 +232,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget _buildEnterButton() {
     return ElevatedButton(
         onPressed: () => Navigator.pushNamed(context, Routes.combinedPath),
-        child: const Text("Enter!"));
+        child: const Text("Login!"));
   }
 
   ///

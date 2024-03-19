@@ -8,7 +8,6 @@ import 'package:polygonid_flutter_sdk/common/domain/domain_logger.dart';
 import 'package:polygonid_flutter_sdk/iden3comm/domain/entities/common/iden3_message_entity.dart';
 import 'package:secure_application/secure_application_provider.dart';
 
-
 import 'package:minimal_example/utils/custom_button_style.dart';
 import 'package:minimal_example/utils/custom_colors.dart';
 import 'package:minimal_example/utils/custom_strings.dart';
@@ -51,8 +50,30 @@ class _CombinedScreenState extends State<CombinedScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: CustomColors.background,
+      endDrawer: _buildDrawer(),
       appBar: _buildAppBar(),
       body: _buildBody(),
+    );
+  }
+
+  ///
+  Widget _buildDrawer() {
+    return Drawer(
+      child: ListView(
+        padding: EdgeInsets.zero,
+        children: [
+          DrawerHeader(
+            decoration:
+                const BoxDecoration(color: Color.fromARGB(255, 129, 70, 227)),
+            child: Text('Settings',
+                style: CustomTextStyles.titleTextStyle
+                    .copyWith(color: Colors.white)),
+          ),
+          _buildRadioButtons(),
+          const SizedBox(height: 20),
+          _buildRemoveAllClaimsButton(),
+        ],
+      ),
     );
   }
 
@@ -60,8 +81,14 @@ class _CombinedScreenState extends State<CombinedScreen> {
   PreferredSizeWidget _buildAppBar() {
     return AppBar(
       elevation: 0.0,
-      title: const Text("Auth and Claims combined"),
+      title: const Text(
+        "Tix Wallet",
+        textAlign: TextAlign.center,
+        style: CustomTextStyles.titleTextStyle,
+      ),
       backgroundColor: CustomColors.background,
+      automaticallyImplyLeading: false,
+      centerTitle: true,
     );
   }
 
@@ -81,8 +108,6 @@ class _CombinedScreenState extends State<CombinedScreen> {
                 _buildAuthenticationSuccessSection(),
                 const SizedBox(height: 10),
                 _buildErrorSection(),
-                const SizedBox(height: 10),
-                _buildRadioButtons(),
                 const SizedBox(height: 10),
                 const SizedBox(height: 6),
                 _buildTitle(),
@@ -110,18 +135,6 @@ class _CombinedScreenState extends State<CombinedScreen> {
             ),
           ],
         ),
-      ),
-    );
-  }
-
-  ///
-  Widget _buildDescription() {
-    return const Padding(
-      padding: EdgeInsets.symmetric(horizontal: 24),
-      child: Text(
-        "Auth and Claims combined",
-        textAlign: TextAlign.center,
-        style: CustomTextStyles.titleTextStyle,
       ),
     );
   }
@@ -270,32 +283,17 @@ class _CombinedScreenState extends State<CombinedScreen> {
   Widget _buildBottomBar() {
     return Padding(
       padding: const EdgeInsets.only(bottom: 16),
-      child: Column(children: [
-        const SizedBox(height: 5),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            _buildRemoveAllClaimsButton(),
-            Align(
-              alignment: Alignment.center,
-              child: ElevatedButton(
-                key: CustomWidgetsKeys.authScreenButtonConnect,
-                onPressed: () {
-                  widget._bloc.add(const CombinedEvent.clickScanQrCode());
-                },
-                style: CustomButtonStyle.primaryButtonStyle,
-                child: const Text(
-                  "Scan QR",
-                  style: CustomTextStyles.primaryButtonTextStyle,
-                ),
-              ),
-            ),
-          ],
+      child: ElevatedButton(
+        key: CustomWidgetsKeys.authScreenButtonConnect,
+        onPressed: () {
+          widget._bloc.add(const CombinedEvent.clickScanQrCode());
+        },
+        style: CustomButtonStyle.primaryButtonStyle,
+        child: const Text(
+          "Scan QR",
+          style: CustomTextStyles.primaryButtonTextStyle,
         ),
-        const SizedBox(height: 5),
-
-        ///
-      ]),
+      ),
     );
   }
 

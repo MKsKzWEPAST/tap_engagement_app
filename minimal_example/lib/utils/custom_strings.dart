@@ -27,10 +27,10 @@ class CustomStrings {
   static const String authSuccess = "Authenticated successfully";
 
   // CLAIMS
-  static const String claimsTitle = "Claims:";
+  static const String claimsTitle = "Your credentials:";
   static const String claimsDescription =
       "Connect with a service to add claims about your identity";
-  static const String claimsListNoResult = "empty claims list";
+  static const String claimsListNoResult = "No credentials yet.";
   static const String claimNameCountryOfResidence = "Country of residence";
   static const String claimNameDateOfBirth = "Date of birth";
   static const String claimNamePolygonDaoMember = "Polygon DAO membership";
