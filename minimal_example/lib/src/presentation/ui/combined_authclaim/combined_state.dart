@@ -24,6 +24,7 @@ class CombinedState with _$CombinedState {
   const factory CombinedState.profileSelected(SelectedProfile profile) =
   ProfileSelectedCombinedState;
 
+  //qrcode
   const factory CombinedState.navigateToQrCodeScanner() =
   NavigateToQrCodeScannerCombinedState;
 

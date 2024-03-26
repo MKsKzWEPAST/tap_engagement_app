@@ -1,4 +1,8 @@
+import 'dart:async';
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -10,12 +14,17 @@ import 'package:minimal_example/src/presentation/ui/common/widgets/feature_card.
 import 'package:minimal_example/src/presentation/ui/home/home_bloc.dart';
 import 'package:minimal_example/src/presentation/ui/home/home_event.dart';
 import 'package:minimal_example/src/presentation/ui/home/home_state.dart';
+import 'package:minimal_example/src/presentation/ui/init/tap_init.dart';
 import 'package:minimal_example/utils/custom_button_style.dart';
 import 'package:minimal_example/utils/custom_colors.dart';
 import 'package:minimal_example/utils/custom_strings.dart';
 import 'package:minimal_example/utils/custom_text_styles.dart';
 import 'package:minimal_example/utils/custom_widgets_keys.dart';
 import 'package:minimal_example/utils/image_resources.dart';
+import 'package:uni_links/uni_links.dart';
+import 'package:http/http.dart' as http;
+
+bool _initialUriIsHandled = false;
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -27,6 +36,9 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   final LocalAuthentication auth = LocalAuthentication();
   late final HomeBloc _bloc;
+  TapInitData _tapInfo = TapInitData(nonce: "", timestamp: "", signature: "", email: "");
+  bool tapSetup = false;
+  late StreamSubscription _sub;
 
   @override
   void initState() {
@@ -35,6 +47,108 @@ class _HomeScreenState extends State<HomeScreen> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _initGetIdentifier();
     });
+    _handleIncomingLinks();
+    _handleInitialUri();
+
+  }
+
+  @override
+  void dispose() {
+    _sub?.cancel();
+    super.dispose();
+  }
+  Future<void> fetchData(String email, String nonce, String timestamp, String signature) async {
+    final url = Uri.parse('https://unbiased-newt-mint.ngrok-free.app/api/tap');
+    final response =
+    await http.get(url,headers: {'Content-Type': 'application/json', "email": email});
+    if (response.statusCode == 200) {
+
+      final jsonData = json.decode(response.body);
+      final String t = jsonData['timestamp'] ?? "";
+      final String n = jsonData['nonce'] ?? "";
+      final s = jsonData['signature'] ?? "";
+
+      if (t == "" || n == "" || s == "") return;
+
+      // TODO ALSO PERFORM TIXNGO CHECK OF DATA!
+      print("Get is done");
+      final signUrl = Uri.parse('https://unbiased-newt-mint.ngrok-free.app/api/verify');
+
+      final body =
+      jsonEncode({'signature': s, 'nonce': n, 'timestamp': t.toString()});
+
+      // Send POST request
+      final postRes = await http
+          .post(signUrl, body: body, headers: {'Content-Type': 'application/json'});
+
+      // Check if the request was successful
+      if (postRes.statusCode == 200) {
+        setState(() {
+          tapSetup = true;
+          nonce = n;
+          timestamp = t;
+          signature = s;
+        });
+      }
+    } else {
+      print('Failed to fetch data. Status code: ${response.statusCode}');
+    }
+  }
+
+
+  void _handleIncomingLinks() {
+      _sub = uriLinkStream.listen((Uri? uri) {
+        if (!mounted || tapSetup) return;
+        if (uri != null) {
+          String nonce = uri.queryParameters['nonce'] ?? "";
+          String email = uri.queryParameters['email'] ?? "";
+          String timestamp = uri.queryParameters['timestamp'] ?? "";
+          String signature = uri.queryParameters['signature'] ?? "";
+          //Get.to(()=> RegisterScreen());
+          setState(() {
+            tapSetup = true;
+            _tapInfo.nonce = nonce;
+            _tapInfo.signature =signature;
+            _tapInfo.email = email;
+            _tapInfo.timestamp = timestamp;
+          });
+        }
+      }, onError: (Object err) {
+        if (!mounted) return;
+        print('got err: $err');
+      });
+    }
+
+  Future<void> _handleInitialUri() async {
+    if (!_initialUriIsHandled && !tapSetup) {
+      _initialUriIsHandled = true;
+      try {
+        final uri = await getInitialUri();
+        if (uri != null) {
+          String nonce = uri.queryParameters['nonce'] ?? "";
+          String email = uri.queryParameters['email'] ?? "";
+          String timestamp = uri.queryParameters['timestamp'] ?? "";
+          String signature = uri.queryParameters['signature'] ?? "";
+
+
+          //Get.to(()=> RegisterScreen());
+          setState(() {
+            tapSetup = true;
+            _tapInfo.nonce = nonce;
+            _tapInfo.signature =signature;
+            _tapInfo.email = email;
+            _tapInfo.timestamp = timestamp;
+          });
+        }
+
+        if (!mounted) return;
+      } on PlatformException {
+        print('falied to get initial uri');
+      } on FormatException catch (err) {
+        if (!mounted) return;
+        print('malformed initial uri');
+      }
+    }
   }
 
   @override
@@ -74,7 +188,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   ///
   void _initGetIdentifier() {
-    _bloc.add(const GetIdentifierHomeEvent());
+    _bloc.add(const CreateIdentityHomeEvent());
   }
 
   ///
@@ -197,10 +311,8 @@ class _HomeScreenState extends State<HomeScreen> {
             child: BlocBuilder(
               bloc: _bloc,
               builder: (BuildContext context, HomeState state) {
-                bool loaded =
-                    state.identifier == null || state.identifier!.isEmpty;
 
-                return state.identifier != null ? Column(
+                return state.identifier != null && tapSetup ? Column(
                   mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
@@ -210,14 +322,24 @@ class _HomeScreenState extends State<HomeScreen> {
                       style: CustomTextStyles.descriptionTextStyle
                           .copyWith(fontSize: 20, fontWeight: FontWeight.w700),
                     ) : Text(
-                      CustomStrings.homeNoWallet,
+                      CustomStrings.homeNoWallet+_tapInfo.nonce,
                       style: CustomTextStyles.descriptionTextStyle
                           .copyWith(fontSize: 15),
                     ),
                     const SizedBox(height: 20),
                     _buildEnterButton(),
                   ],
-                ): Container();
+                ): Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                   Text(
+                      CustomStrings.homeNoWallet,
+                      style: CustomTextStyles.descriptionTextStyle
+                          .copyWith(fontSize: 15),
+                    ),
+                  ],
+                );
               },
             ),
           );
@@ -227,6 +349,8 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
     );
   }
+
+
 
   ///
   Widget _buildEnterButton() {

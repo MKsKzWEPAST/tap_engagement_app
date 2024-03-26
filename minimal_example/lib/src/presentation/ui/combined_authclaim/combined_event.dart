@@ -19,12 +19,16 @@ part 'combined_event.freezed.dart';
 
 @freezed
 class CombinedEvent with _$CombinedEvent {
+
   // prev auth
   const factory CombinedEvent.profileSelected(SelectedProfile profile) =
   ProfileSelectedEvent;
   const factory CombinedEvent.clickScanQrCode() = ClickScanQrCodeEvent;
   const factory CombinedEvent.onScanQrCodeResponse(String? response) =
   ScanQrCodeResponse;
+
+  // no QR code flow
+  const factory CombinedEvent.clickTapButton() = ClickTapButtonEvent;
 
   // prev claims
   const factory CombinedEvent.fetchAndSaveClaims(

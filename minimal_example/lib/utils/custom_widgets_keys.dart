@@ -14,6 +14,7 @@ class CustomWidgetsKeys {
   static const Key authScreenButtonNextAction =
       Key("authScreenButtonNextAction");
   static const Key authScreenButtonConnect = Key("authScreenButtonConnect");
+  static const Key authScreenButtonConnect2 = Key("authScreenButtonConnect2");
 
   /// SIGN SCREEN
   static const Key signScreenButtonSignMessage =

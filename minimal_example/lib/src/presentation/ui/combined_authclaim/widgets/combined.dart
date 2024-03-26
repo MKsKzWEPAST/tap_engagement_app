@@ -126,10 +126,11 @@ class _CombinedScreenState extends State<CombinedScreen> {
             )),
             Padding(
               padding: const EdgeInsets.only(bottom: 16),
-              child: Stack(
+              child: Column(
                 children: [
                   _buildBlocListener(),
                   _buildBottomBar(),
+                  _buildBottomBar2(),
                 ],
               ),
             ),
@@ -279,7 +280,26 @@ class _CombinedScreenState extends State<CombinedScreen> {
     );
   }
 
-  ///
+
+
+
+  Widget _buildBottomBar2() {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 16),
+      child: ElevatedButton(
+        key: CustomWidgetsKeys.authScreenButtonConnect2,
+        onPressed: () {
+          widget._bloc.add(const CombinedEvent.clickTapButton());
+        },
+        style: CustomButtonStyle.primaryButtonStyle,
+        child: const Text(
+          "Tap for TAP",
+          style: CustomTextStyles.primaryButtonTextStyle,
+        ),
+      ),
+    );
+  }
+
   Widget _buildBottomBar() {
     return Padding(
       padding: const EdgeInsets.only(bottom: 16),

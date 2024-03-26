@@ -5,7 +5,8 @@ import 'package:minimal_example/src/presentation/dependency_injection/dependenci
     as di;
 
 import 'package:minimal_example/src/presentation/app.dart';
-
+import 'package:uni_links/uni_links.dart';
+import 'dart:async';
 
 Future<void> main() async {
   //Dependency Injection initialization
@@ -20,4 +21,7 @@ Future<void> main() async {
   }
 
   runApp(const App());
+
+
 }
+

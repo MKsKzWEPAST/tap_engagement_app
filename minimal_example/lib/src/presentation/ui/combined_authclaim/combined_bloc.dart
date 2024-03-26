@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:bloc/bloc.dart';
 import 'package:polygonid_flutter_sdk/common/domain/domain_constants.dart';
 import 'package:polygonid_flutter_sdk/common/domain/domain_logger.dart';
@@ -21,6 +23,7 @@ import '../claims/models/claim_model.dart';
 import '../common/widgets/profile_radio_button.dart';
 import 'combined_event.dart';
 import 'combined_state.dart';
+import 'package:http/http.dart' as http;
 
 class CombinedBloc extends Bloc<CombinedEvent, CombinedState> {
   final ClaimModelMapper _mapper;
@@ -36,6 +39,7 @@ class CombinedBloc extends Bloc<CombinedEvent, CombinedState> {
     this._qrcodeParserUtils,
   ) : super(const CombinedState.initial()) {
     on<ClickScanQrCodeEvent>(_handleClickScanQrCode);
+    on<ClickTapButtonEvent>(_handleClickTapButton);
     on<ScanQrCodeResponse>(_handleScanQrCodeResponse);
     on<ProfileSelectedEvent>(_handleProfileSelected);
     on<FetchAndSaveClaimsEvent>(_fetchAndSaveClaims);
@@ -65,17 +69,61 @@ class CombinedBloc extends Bloc<CombinedEvent, CombinedState> {
     emit(const CombinedState.navigateToQrCodeScanner());
   }
 
-  Future<void> _handleScanQrCodeResponse(
-      ScanQrCodeResponse event, Emitter<CombinedState> emit) async {
-    String? qrCodeResponse = event.response;
-    if (qrCodeResponse == null || qrCodeResponse.isEmpty) {
-      emit(const CombinedState.error("no qr code scanned"));
+  ///
+  void _handleClickTapButton(
+      ClickTapButtonEvent event, Emitter<CombinedState> emit) async {
+
+    String? privateKey =
+    await SecureStorage.read(key: SecureStorageKeys.privateKey);
+
+    if (privateKey == null) {
+      emit(const CombinedState.error("no private key found"));
       return;
     }
 
+    EnvEntity envEntity = await _polygonIdSdk.getEnv();
+
+    String did = await _polygonIdSdk.identity.getDidIdentifier(
+        privateKey: privateKey,
+        blockchain: envEntity.blockchain,
+        network: envEntity.network);
+
+
+
+
+    final url = Uri.parse('https://unbiased-newt-mint.ngrok-free.app/issueTAP?token=455333&did='+did);
+    final response = await http.get(url);
+    if (response.statusCode == 200) {
+      final String credential = response.body;
+      if (credential == "") {
+        emit(const CombinedState.error("error while trying to get the credential: credential is empty"));
+        return;
+      }
+
+      final Iden3MessageEntity iden3message =
+      await _qrcodeParserUtils.getIden3MessageFromQrCode(credential);
+      emit(CombinedState.qrCodeScanned(iden3message));
+
+      return;
+    }
+    emit(const CombinedState.error("error while trying to get the credential"));
+
+  }
+
+  Future<void> _handleTapFetcherResponse(
+      FetchCredentialOfferEvent event, Emitter<CombinedState> emit) async {
+    String? fetchResponse = event.response;
+    if (fetchResponse == null || fetchResponse.isEmpty) {
+      emit(const CombinedState.error("no credential offer fetched"));
+      return;
+    }
+    _handleIden3Message(fetchResponse, emit);
+  }
+
+  void _handleIden3Message(String response, Emitter<CombinedState> emit) async {
     try {
       final Iden3MessageEntity iden3message =
-          await _qrcodeParserUtils.getIden3MessageFromQrCode(qrCodeResponse);
+      await _qrcodeParserUtils.getIden3MessageFromQrCode(response);
 
       logger().i("[debugging-combined] Message content: [start] Id: ${iden3message.id}, Typ: ${iden3message.typ} "
           "Type: ${iden3message.type}, Message Type: ${iden3message.messageType.toString()} "
@@ -116,6 +164,16 @@ class CombinedBloc extends Bloc<CombinedEvent, CombinedState> {
     } catch (error) {
       emit(const CombinedState.error("Scanned code is not valid"));
     }
+  }
+
+  Future<void> _handleScanQrCodeResponse(
+      ScanQrCodeResponse event, Emitter<CombinedState> emit) async {
+    String? qrCodeResponse = event.response;
+    if (qrCodeResponse == null || qrCodeResponse.isEmpty) {
+      emit(const CombinedState.error("no qr code scanned"));
+      return;
+    }
+    _handleIden3Message(qrCodeResponse,emit);
   }
 
   ///

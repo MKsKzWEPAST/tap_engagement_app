@@ -67,6 +67,7 @@ class Routes {
         child: CombinedScreen(),
         lockedBuilder: (context, secureNotifier) {
           Future.sync(() async {
+            secureNotifier?.authSuccess(unlock: true);
             await BiometricAuthService()
                 .localAuthentication
                 .stopAuthentication();
