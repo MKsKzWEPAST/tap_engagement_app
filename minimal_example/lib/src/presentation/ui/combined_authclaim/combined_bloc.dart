@@ -11,6 +11,7 @@ import 'package:polygonid_flutter_sdk/iden3comm/domain/entities/authorization/re
 import 'package:polygonid_flutter_sdk/iden3comm/domain/entities/common/iden3_message_entity.dart';
 import 'package:polygonid_flutter_sdk/iden3comm/domain/entities/credential/request/offer_iden3_message_entity.dart';
 import 'package:polygonid_flutter_sdk/sdk/polygon_id_sdk.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../../utils/custom_strings.dart';
 import '../../../../utils/nonce_utils.dart';
@@ -53,8 +54,8 @@ class CombinedBloc extends Bloc<CombinedEvent, CombinedState> {
     on<OnClaimDetailRemoveResponse>(_handleRemoveClaimResponse);
   }
 
-  void _handleProfileSelected(
-      ProfileSelectedEvent event, Emitter<CombinedState> emit) {
+  Future<void> _handleProfileSelected(
+      ProfileSelectedEvent event, Emitter<CombinedState> emit) async {
     selectedProfile = event.profile;
     emit(CombinedState.profileSelected(event.profile));
   }
@@ -64,18 +65,17 @@ class CombinedBloc extends Bloc<CombinedEvent, CombinedState> {
       _polygonIdSdk.proof.proofGenerationStepsStream();
 
   ///
-  void _handleClickScanQrCode(
-      ClickScanQrCodeEvent event, Emitter<CombinedState> emit) {
+  Future<void> _handleClickScanQrCode(
+      ClickScanQrCodeEvent event, Emitter<CombinedState> emit) async {
     emit(const CombinedState.navigateToQrCodeScanner());
   }
 
   ///
-  void _handleClickTapButton(
+  Future<void> _handleClickTapButton(
       ClickTapButtonEvent event, Emitter<CombinedState> emit) async {
 
     String? privateKey =
     await SecureStorage.read(key: SecureStorageKeys.privateKey);
-
     if (privateKey == null) {
       emit(const CombinedState.error("no private key found"));
       return;
@@ -88,11 +88,14 @@ class CombinedBloc extends Bloc<CombinedEvent, CombinedState> {
         blockchain: envEntity.blockchain,
         network: envEntity.network);
 
-
-
+    final prefs = await SharedPreferences.getInstance();
+    final email = prefs.getString("email") ?? "";
+    if (email == "") {
+      emit(const CombinedState.error("error while trying to get the credential: your wallet isn't setup with a proper email address"));
+    }
 
     final url = Uri.parse('https://unbiased-newt-mint.ngrok-free.app/issueTAP?token=455333&did='+did);
-    final response = await http.get(url);
+    final response = await http.get(url,headers: {'Content-Type': 'application/json',"email": email});
     if (response.statusCode == 200) {
       final String credential = response.body;
       if (credential == "") {
@@ -110,17 +113,7 @@ class CombinedBloc extends Bloc<CombinedEvent, CombinedState> {
 
   }
 
-  Future<void> _handleTapFetcherResponse(
-      FetchCredentialOfferEvent event, Emitter<CombinedState> emit) async {
-    String? fetchResponse = event.response;
-    if (fetchResponse == null || fetchResponse.isEmpty) {
-      emit(const CombinedState.error("no credential offer fetched"));
-      return;
-    }
-    _handleIden3Message(fetchResponse, emit);
-  }
-
-  void _handleIden3Message(String response, Emitter<CombinedState> emit) async {
+  Future<void> _handleIden3Message(String response, Emitter<CombinedState> emit) async {
     try {
       final Iden3MessageEntity iden3message =
       await _qrcodeParserUtils.getIden3MessageFromQrCode(response);
@@ -138,6 +131,8 @@ class CombinedBloc extends Bloc<CombinedEvent, CombinedState> {
 
         case Iden3MessageType.authRequest:
           logger().i("[debugging-combined] -- Auth: Checkpoint 1--");
+
+          if (emit.isDone) return;
 
           emit(CombinedState.loaded(iden3message));
 
@@ -168,12 +163,13 @@ class CombinedBloc extends Bloc<CombinedEvent, CombinedState> {
 
   Future<void> _handleScanQrCodeResponse(
       ScanQrCodeResponse event, Emitter<CombinedState> emit) async {
+
     String? qrCodeResponse = event.response;
     if (qrCodeResponse == null || qrCodeResponse.isEmpty) {
       emit(const CombinedState.error("no qr code scanned"));
       return;
     }
-    _handleIden3Message(qrCodeResponse,emit);
+   await  _handleIden3Message(qrCodeResponse,emit);
   }
 
   ///
@@ -505,14 +501,14 @@ class CombinedBloc extends Bloc<CombinedEvent, CombinedState> {
   }
 
   ///
-  void _handleClickClaim(OnClickClaim event, Emitter<CombinedState> emit) {
+  Future<void> _handleClickClaim(OnClickClaim event, Emitter<CombinedState> emit) async {
     emit(const CombinedState.loading());
     emit(CombinedState.navigateToClaimDetail(event.claimModel));
   }
 
   ///
-  void _handleRemoveClaimResponse(
-      OnClaimDetailRemoveResponse event, Emitter<CombinedState> emit) {
+  Future<void> _handleRemoveClaimResponse(
+      OnClaimDetailRemoveResponse event, Emitter<CombinedState> emit) async {
     bool removed = event.removed ?? false;
 
     if (!removed) {

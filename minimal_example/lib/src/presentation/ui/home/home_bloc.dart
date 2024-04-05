@@ -49,6 +49,18 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     emit(const HomeState.loading());
 
     try {
+      String? privateKey =
+      await SecureStorage.read(key: SecureStorageKeys.privateKey);
+      if (privateKey != null) {
+        EnvEntity env = await _polygonIdSdk.getEnv();
+
+        String? identifier = await _polygonIdSdk.identity.getDidIdentifier(
+            privateKey: privateKey,
+            blockchain: env.blockchain,
+            network: env.network);
+        emit(HomeState.loaded(identifier: identifier));
+        return;
+      }
       PrivateIdentityEntity identity =
           await _polygonIdSdk.identity.addIdentity();
       logger().i("identity: ${identity.privateKey}");
