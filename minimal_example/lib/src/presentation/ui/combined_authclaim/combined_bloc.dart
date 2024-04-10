@@ -318,8 +318,14 @@ class CombinedBloc extends Bloc<CombinedEvent, CombinedState> {
         privateKey: privateKey,
       );
 
+      final prefs = await SharedPreferences.getInstance();
+
       List<ClaimModel> claimModelList =
           claimList.map((claimEntity) => _mapper.mapFrom(claimEntity)).toList();
+
+      if (claimModelList.isNotEmpty) {
+        prefs.setBool("tapFetched", true);
+      }
       emit(CombinedState.loadedClaims(claimModelList));
     } on GetClaimsException catch (_) {
       emit(const CombinedState.error("error while retrieving claims"));

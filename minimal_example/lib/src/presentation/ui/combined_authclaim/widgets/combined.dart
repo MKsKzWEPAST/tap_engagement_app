@@ -21,6 +21,7 @@ import 'package:minimal_example/src/presentation/ui/common/widgets/profile_radio
 import 'package:minimal_example/src/presentation/ui/combined_authclaim/combined_bloc.dart';
 import 'package:minimal_example/src/presentation/ui/combined_authclaim/combined_event.dart';
 import 'package:minimal_example/src/presentation/ui/combined_authclaim/combined_state.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class CombinedScreen extends StatefulWidget {
   final CombinedBloc _bloc;
@@ -34,17 +35,47 @@ class CombinedScreen extends StatefulWidget {
 }
 
 class _CombinedScreenState extends State<CombinedScreen> {
+  late StreamController<bool> _tapFetchedController;
+  late Timer _timer;
   @override
   void initState() {
     super.initState();
 
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      widget._bloc.add(const CombinedEvent.getClaims());
-      if (!SecureApplicationProvider.of(context)!.authenticated) {
-        SecureApplicationProvider.of(context)!.lock();
-      }
-    });
+    _tapFetchedController = StreamController<bool>();
+
+    SharedPreferences.getInstance().then((prefs) =>
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          widget._bloc.add(const CombinedEvent.getClaims());
+          final tapFetched = prefs.getBool("tapFetched") ?? false;
+          _tapFetchedController.sink.add(tapFetched);
+          if (!tapFetched) {
+            widget._bloc.add(const CombinedEvent.clickTapButton());
+          }
+          if (!SecureApplicationProvider.of(context)!.authenticated) {
+            SecureApplicationProvider.of(context)!.lock();
+          }
+
+          _timer = Timer.periodic(const Duration(seconds: 2), (timer) {
+             isTapFetched();
+          });
+
+        })
+    );
   }
+
+  Future<void> isTapFetched() async {
+    final prefs = await SharedPreferences.getInstance();
+    final fetched = prefs.getBool("tapFetched") ?? false;
+    _tapFetchedController.sink.add(fetched);
+    if (fetched) _timer.cancel();
+  }
+
+  @override
+  void dispose() {
+    _tapFetchedController.close(); // Close the stream when disposing.
+    super.dispose();
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -130,7 +161,6 @@ class _CombinedScreenState extends State<CombinedScreen> {
                 children: [
                   _buildBlocListener(),
                   _buildBottomBar(),
-                  _buildBottomBar2(),
                 ],
               ),
             ),
@@ -283,7 +313,7 @@ class _CombinedScreenState extends State<CombinedScreen> {
 
 
 
-  Widget _buildBottomBar2() {
+  Widget _buildTAPBar() {
     return Padding(
       padding: const EdgeInsets.only(bottom: 16),
       child: ElevatedButton(
@@ -301,19 +331,34 @@ class _CombinedScreenState extends State<CombinedScreen> {
   }
 
   Widget _buildBottomBar() {
+
     return Padding(
       padding: const EdgeInsets.only(bottom: 16),
-      child: ElevatedButton(
-        key: CustomWidgetsKeys.authScreenButtonConnect,
-        onPressed: () {
-          widget._bloc.add(const CombinedEvent.clickScanQrCode());
-        },
-        style: CustomButtonStyle.primaryButtonStyle,
-        child: const Text(
-          "Scan QR",
-          style: CustomTextStyles.primaryButtonTextStyle,
-        ),
-      ),
+      child: StreamBuilder<bool>(
+        stream: _tapFetchedController.stream,
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const CircularProgressIndicator(); // Display a loading indicator when waiting for data.
+          } else if (snapshot.hasError) {
+            return Text('Error: ${snapshot.error}'); // Display an error message if an error occurs.
+          } else if (!snapshot.hasData) {
+            return Text('No data available'); // Display a message when no data is available.
+          } else {
+            final fetched = snapshot.data ?? false;
+            return ElevatedButton(
+              key: CustomWidgetsKeys.authScreenButtonConnect,
+              onPressed: fetched ? () {
+                widget._bloc.add(const CombinedEvent.clickScanQrCode());
+              } : null,
+              style: CustomButtonStyle.primaryButtonStyle,
+              child: const Text(
+                "Scan QR code",
+                style: CustomTextStyles.primaryButtonTextStyle,
+              ),
+            );
+          }
+        }
+      )
     );
   }
 

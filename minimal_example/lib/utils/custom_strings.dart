@@ -10,9 +10,13 @@ class CustomStrings {
   static const String loading = "Loading...";
   static const String homeIdentifierSectionPrefix =
       "identity.getDidIdentifier()\nIdentifier:";
-  static const String homeHasWallet = "Please login below:";
+  static const String homeHasWallet = "Thank you for your purchase!";
+  static const String homeOwnsTAP = "Access your TAP below";
   static const String homeNoWallet = "Please come-back with a TAP offer from your event app or recover your account if you have one.";
   static const String homeButtonCTA = "Create identity\nidentity.addIdentity()";
+  static const String homeNewTAP = "Get your TAP credential";
+  static const String homeAccessTAP = "View TAP credential";
+
   static const String homeButtonRemoveIdentityCTA =
       "Remove identity\nidentity.removeIdentity() ";
   static const String homeFeatureCardDisabledReason =

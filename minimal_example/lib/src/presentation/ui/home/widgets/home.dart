@@ -37,14 +37,17 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   final LocalAuthentication auth = LocalAuthentication();
   late final HomeBloc _bloc;
-  TapInitData _tapInfo = TapInitData(
-      nonce: "", timestamp: "", signature: "", email: "");
+  TapInitData _tapInfo =
+      TapInitData(nonce: "", timestamp: "", signature: "", email: "");
   bool tapSetup = false;
+  late StreamController<bool> fetched_stream;
   late StreamSubscription _sub;
 
   @override
   void initState() {
     super.initState();
+    fetched_stream = StreamController<bool>();
+    SharedPreferences.getInstance().then((prefs) => _initStream(prefs));
     _bloc = getIt<HomeBloc>();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _initGetIdentifier();
@@ -53,54 +56,16 @@ class _HomeScreenState extends State<HomeScreen> {
     _handleInitialUri();
   }
 
+  void _initStream(SharedPreferences prefs) {
+    final tapFetched = prefs.getBool("tapFetched") ?? false;
+    fetched_stream.sink.add(tapFetched);
+  }
+
   @override
   void dispose() {
-    _sub?.cancel();
+    _sub.cancel();
     super.dispose();
   }
-
-  Future<void> fetchData(String email, String nonce, String timestamp,
-      String signature) async {
-    final url = Uri.parse('https://unbiased-newt-mint.ngrok-free.app/api/tap');
-    final response =
-    await http.get(
-        url, headers: {'Content-Type': 'application/json', "email": email});
-    if (response.statusCode == 200) {
-      final jsonData = json.decode(response.body);
-      final String t = jsonData['timestamp'] ?? "";
-      final String n = jsonData['nonce'] ?? "";
-      final s = jsonData['signature'] ?? "";
-
-      if (t == "" || n == "" || s == "") return;
-
-
-      // TODO ALSO PERFORM TIXNGO CHECK OF DATA!
-      print("Get is done");
-      final signUrl = Uri.parse(
-          'https://unbiased-newt-mint.ngrok-free.app/api/verify');
-
-      final body =
-      jsonEncode({'signature': s, 'nonce': n, 'timestamp': t.toString()});
-
-      // Send POST request
-      final postRes = await http
-          .post(
-          signUrl, body: body, headers: {'Content-Type': 'application/json'});
-
-      // Check if the request was successful
-      if (postRes.statusCode == 200) {
-        setState(() {
-          tapSetup = true;
-          nonce = n;
-          timestamp = t;
-          signature = s;
-        });
-      }
-    } else {
-      print('Failed to fetch data. Status code: ${response.statusCode}');
-    }
-  }
-
 
   Future<void> _handleIncomingLinks() async {
     _sub = uriLinkStream.listen((Uri? uri) async {
@@ -144,7 +109,6 @@ class _HomeScreenState extends State<HomeScreen> {
           String timestamp = uri.queryParameters['timestamp'] ?? "";
           String signature = uri.queryParameters['signature'] ?? "";
 
-
           prefs.setBool("tapSetup", true);
           prefs.setString("email", email);
 
@@ -169,37 +133,55 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: CustomColors.background,
-      body: SafeArea(
-        child: Container(
-          alignment: Alignment.center,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Expanded(
-                child: SingleChildScrollView(
+    return StreamBuilder<bool>(
+        stream: fetched_stream.stream,
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const CircularProgressIndicator(); // Display a loading indicator when waiting for data.
+          } else if (snapshot.hasError) {
+            return Text(
+                'Error: ${snapshot.error}'); // Display an error message if an error occurs.
+          } else if (!snapshot.hasData) {
+            return Text(
+                'No data available'); // Display a message when no data is available.
+          } else {
+            final fetched = snapshot.data ?? false;
+            return Scaffold(
+              backgroundColor: CustomColors.background,
+              body: SafeArea(
+                child: Container(
+                  alignment: Alignment.center,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      const SizedBox(height: 50),
-                      _buildLogo(),
-                      const SizedBox(height: 50),
-                      _buildDescription(),
-                      const SizedBox(height: 20),
-                      _buildProgress(),
-                      _buildWalletSection(),
-                      const SizedBox(height: 20),
-                      _buildErrorSection(),
+                      Expanded(
+                        child: SingleChildScrollView(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              const SizedBox(height: 50),
+                              _buildLogo(),
+                              const SizedBox(height: 50),
+                              _buildDescription(),
+                              const SizedBox(height: 20),
+                              _buildProgress(),
+                              if (fetched)
+                                _buildOwnerSection()
+                              else
+                                _buildWalletSection(),
+                              const SizedBox(height: 20),
+                              _buildErrorSection(),
+                            ],
+                          ),
+                        ),
+                      ),
                     ],
                   ),
                 ),
               ),
-            ],
-          ),
-        ),
-      ),
-    );
+            );
+          }
+        });
   }
 
   ///
@@ -304,8 +286,7 @@ class _HomeScreenState extends State<HomeScreen> {
           Text(
             CustomStrings.loading,
             textAlign: TextAlign.center,
-            style: CustomTextStyles.descriptionTextStyle
-                .copyWith(fontSize: 20),
+            style: CustomTextStyles.descriptionTextStyle.copyWith(fontSize: 20),
           ),
           const CircularProgressIndicator(
             backgroundColor: CustomColors.primaryButton,
@@ -315,12 +296,46 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  ///
+  Widget _buildOwnerSection() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 24),
+      child: BlocBuilder(
+        bloc: _bloc,
+        builder: (BuildContext context, HomeState state) {
+          return Align(
+            alignment: Alignment.center,
+            child: BlocBuilder(
+              bloc: _bloc,
+              builder: (BuildContext context, HomeState state) {
+                return Column(
+                        mainAxisSize: MainAxisSize.min,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [ Text(
+                                  CustomStrings.homeOwnsTAP,
+                                  style: CustomTextStyles.descriptionTextStyle
+                                      .copyWith(
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.w700),
+                                ),
+                          const SizedBox(height: 20),
+                          _buildEnterButton(CustomStrings.homeAccessTAP),
+                        ],
+                      );
+              },
+            ),
+          );
+        },
+        buildWhen: (_, currentState) =>
+            currentState is LoadedIdentifierHomeState,
+      ),
+    );
+  }
+
   Widget _buildWalletSection() {
     return FutureBuilder<SharedPreferences>(
         future: SharedPreferences.getInstance(),
-        builder: (BuildContext context,
-            AsyncSnapshot<SharedPreferences> snapshot) {
+        builder:
+            (BuildContext context, AsyncSnapshot<SharedPreferences> snapshot) {
           switch (snapshot.connectionState) {
             case ConnectionState.waiting:
               return const CircularProgressIndicator();
@@ -340,147 +355,157 @@ class _HomeScreenState extends State<HomeScreen> {
                         child: BlocBuilder(
                           bloc: _bloc,
                           builder: (BuildContext context, HomeState state) {
-
-                            return state.identifier != null && tapSetup ? Column(
-                              mainAxisSize: MainAxisSize.min,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                state.identifier!.isNotEmpty
-                                    ? Text(
-                                  CustomStrings.homeHasWallet,
-                                  style: CustomTextStyles.descriptionTextStyle
-                                      .copyWith(fontSize: 20, fontWeight: FontWeight.w700),
-                                ) : Text(
-                                  CustomStrings.homeNoWallet+_tapInfo.nonce,
-                                  style: CustomTextStyles.descriptionTextStyle
-                                      .copyWith(fontSize: 15),
-                                ),
-                                const SizedBox(height: 20),
-                                _buildEnterButton(),
-                              ],
-                            ): Column(
-                              mainAxisSize: MainAxisSize.min,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Text(
-                                  CustomStrings.homeNoWallet,
-                                  style: CustomTextStyles.descriptionTextStyle
-                                      .copyWith(fontSize: 15),
-                                ),
-                              ],
-                            );
+                            return state.identifier != null && tapSetup
+                                ? Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [
+                                      state.identifier!.isNotEmpty
+                                          ? Text(
+                                              CustomStrings.homeHasWallet,
+                                              style: CustomTextStyles
+                                                  .descriptionTextStyle
+                                                  .copyWith(
+                                                      fontSize: 20,
+                                                      fontWeight:
+                                                          FontWeight.w700),
+                                            )
+                                          : Text(
+                                              CustomStrings.homeNoWallet +
+                                                  _tapInfo.nonce,
+                                              style: CustomTextStyles
+                                                  .descriptionTextStyle
+                                                  .copyWith(fontSize: 15),
+                                            ),
+                                      const SizedBox(height: 20),
+                                      _buildEnterButton(CustomStrings.homeNewTAP),
+                                    ],
+                                  )
+                                : Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [
+                                      Text(
+                                        CustomStrings.homeNoWallet,
+                                        style: CustomTextStyles
+                                            .descriptionTextStyle
+                                            .copyWith(fontSize: 15),
+                                      ),
+                                    ],
+                                  );
                           },
                         ),
                       );
                     },
                     buildWhen: (_, currentState) =>
-                    currentState is LoadedIdentifierHomeState,
+                        currentState is LoadedIdentifierHomeState,
                   ),
                 );
               }
           }
-        }
+        });
+  }
+
+  ///
+  Widget _buildEnterButton(String text) {
+    return ElevatedButton(
+        onPressed: () => Navigator.pushNamed(context, Routes.combinedPath),
+        child: Text(text));
+  }
+
+  ///
+  Widget _buildErrorSection() {
+    return BlocBuilder(
+      bloc: _bloc,
+      builder: (BuildContext context, HomeState state) {
+        if (state is! ErrorHomeState) return const SizedBox.shrink();
+        return Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 24),
+          child: Text(
+            state.message,
+            style: CustomTextStyles.descriptionTextStyle
+                .copyWith(color: CustomColors.redError),
+          ),
+        );
+      },
     );
   }
 
+  ///
+  Widget _buildFeaturesSection() {
+    return ListView(
+      shrinkWrap: true,
+      physics: const ClampingScrollPhysics(),
+      children: [
+        _buildCombinedFeatureCard(),
+        _buildBackupIdentityFeatureCard(),
+        _buildRestoreIdentityFeatureCard(),
+      ],
+    );
+  }
 
-///
-Widget _buildEnterButton() {
-  return ElevatedButton(
-      onPressed: () => Navigator.pushNamed(context, Routes.combinedPath),
-      child: const Text("Login!"));
+  ///
+  Widget _buildCombinedFeatureCard() {
+    return BlocBuilder(
+      bloc: _bloc,
+      builder: (BuildContext context, HomeState state) {
+        bool enabled = (state is! LoadingDataHomeState) &&
+            (state.identifier != null && state.identifier!.isNotEmpty);
+        return FeatureCard(
+          methodName: "auth() / getCredential()",
+          title: "Combined Test",
+          description: "Combined QR for auth and Claims",
+          onTap: () {
+            Navigator.pushNamed(context, Routes.combinedPath);
+          },
+          enabled: enabled,
+          disabledReason: CustomStrings.homeFeatureCardDisabledReason,
+        );
+      },
+    );
+  }
+
+  ///
+  Widget _buildBackupIdentityFeatureCard() {
+    return BlocBuilder(
+      bloc: _bloc,
+      builder: (BuildContext context, HomeState state) {
+        bool enabled = (state is! LoadingDataHomeState) &&
+            (state.identifier != null && state.identifier!.isNotEmpty);
+        return FeatureCard(
+          methodName: CustomStrings.backupIdentityMethod,
+          title: CustomStrings.backupIdentityTitle,
+          description: CustomStrings.backupIdentityDescription,
+          onTap: () {
+            Navigator.pushNamed(context, Routes.backupIdentityPath);
+          },
+          enabled: enabled,
+          disabledReason: CustomStrings.homeFeatureCardDisabledReason,
+        );
+      },
+    );
+  }
+
+  ///
+  Widget _buildRestoreIdentityFeatureCard() {
+    return BlocBuilder(
+      bloc: _bloc,
+      builder: (BuildContext context, HomeState state) {
+        bool enabled = (state is! LoadingDataHomeState) &&
+            (state.identifier != null && state.identifier!.isNotEmpty);
+        return FeatureCard(
+          methodName: CustomStrings.restoreIdentityMethod,
+          title: CustomStrings.restoreIdentityTitle,
+          description: CustomStrings.restoreIdentityDescription,
+          onTap: () {
+            Navigator.pushNamed(context, Routes.restoreIdentityPath);
+          },
+          enabled: enabled,
+          disabledReason: CustomStrings.homeFeatureCardDisabledReason,
+        );
+      },
+    );
+  }
 }
-
-///
-Widget _buildErrorSection() {
-  return BlocBuilder(
-    bloc: _bloc,
-    builder: (BuildContext context, HomeState state) {
-      if (state is! ErrorHomeState) return const SizedBox.shrink();
-      return Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 24),
-        child: Text(
-          state.message,
-          style: CustomTextStyles.descriptionTextStyle
-              .copyWith(color: CustomColors.redError),
-        ),
-      );
-    },
-  );
-}
-
-///
-Widget _buildFeaturesSection() {
-  return ListView(
-    shrinkWrap: true,
-    physics: const ClampingScrollPhysics(),
-    children: [
-      _buildCombinedFeatureCard(),
-      _buildBackupIdentityFeatureCard(),
-      _buildRestoreIdentityFeatureCard(),
-    ],
-  );
-}
-
-///
-Widget _buildCombinedFeatureCard() {
-  return BlocBuilder(
-    bloc: _bloc,
-    builder: (BuildContext context, HomeState state) {
-      bool enabled = (state is! LoadingDataHomeState) &&
-          (state.identifier != null && state.identifier!.isNotEmpty);
-      return FeatureCard(
-        methodName: "auth() / getCredential()",
-        title: "Combined Test",
-        description: "Combined QR for auth and Claims",
-        onTap: () {
-          Navigator.pushNamed(context, Routes.combinedPath);
-        },
-        enabled: enabled,
-        disabledReason: CustomStrings.homeFeatureCardDisabledReason,
-      );
-    },
-  );
-}
-
-///
-Widget _buildBackupIdentityFeatureCard() {
-  return BlocBuilder(
-    bloc: _bloc,
-    builder: (BuildContext context, HomeState state) {
-      bool enabled = (state is! LoadingDataHomeState) &&
-          (state.identifier != null && state.identifier!.isNotEmpty);
-      return FeatureCard(
-        methodName: CustomStrings.backupIdentityMethod,
-        title: CustomStrings.backupIdentityTitle,
-        description: CustomStrings.backupIdentityDescription,
-        onTap: () {
-          Navigator.pushNamed(context, Routes.backupIdentityPath);
-        },
-        enabled: enabled,
-        disabledReason: CustomStrings.homeFeatureCardDisabledReason,
-      );
-    },
-  );
-}
-
-///
-Widget _buildRestoreIdentityFeatureCard() {
-  return BlocBuilder(
-    bloc: _bloc,
-    builder: (BuildContext context, HomeState state) {
-      bool enabled = (state is! LoadingDataHomeState) &&
-          (state.identifier != null && state.identifier!.isNotEmpty);
-      return FeatureCard(
-        methodName: CustomStrings.restoreIdentityMethod,
-        title: CustomStrings.restoreIdentityTitle,
-        description: CustomStrings.restoreIdentityDescription,
-        onTap: () {
-          Navigator.pushNamed(context, Routes.restoreIdentityPath);
-        },
-        enabled: enabled,
-        disabledReason: CustomStrings.homeFeatureCardDisabledReason,
-      );
-    },
-  );
-}}
