@@ -24,9 +24,6 @@ class Routes {
   static const String backupIdentityPath = "/backup_identity";
   static const String restoreIdentityPath = "/restore_identity";
 
-  static const double blurr = 18;
-  static const double opacity = 0.5;
-
   ///
   static Map<String, WidgetBuilder> getRoutes(context) {
     return {
@@ -59,42 +56,7 @@ class Routes {
 
 
   static WidgetBuilder _combinedRoute() {
-
-    return (BuildContext context) {
-      return SecureGate(
-        blurr: blurr,
-        opacity: opacity,
-        child: CombinedScreen(),
-        lockedBuilder: (context, secureNotifier) {
-          Future.sync(() async {
-            secureNotifier?.authSuccess(unlock: true);
-            await BiometricAuthService()
-                .localAuthentication
-                .stopAuthentication();
-            bool success = await BiometricAuthService().authenticate();
-            if (success) {
-              secureNotifier?.authSuccess(unlock: true);
-            } else {
-              secureNotifier?.authFailed(unlock: false);
-            }
-          });
-
-          return const Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  "Authenticating...", // TODO fix style
-                  style: CustomTextStyles.titleTextStyle,
-                ),
-                SizedBox(height: 20),
-                CircularProgressIndicator(),
-              ],
-            ),
-          );
-        },
-      );
-    };
+    return (BuildContext context) => CombinedScreen();
   }
 
   ///
