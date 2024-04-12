@@ -23,12 +23,12 @@ import 'package:minimal_example/src/presentation/ui/combined_authclaim/combined_
 import 'package:minimal_example/src/presentation/ui/combined_authclaim/combined_state.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../../../../utils/bioauth_utils.dart';
+
 class CombinedScreen extends StatefulWidget {
   final CombinedBloc _bloc;
 
-  CombinedScreen({Key? key})
-      : _bloc = getIt<CombinedBloc>(),
-        super(key: key);
+  CombinedScreen({super.key}) : _bloc = getIt<CombinedBloc>();
 
   @override
   State<CombinedScreen> createState() => _CombinedScreenState();
@@ -37,30 +37,29 @@ class CombinedScreen extends StatefulWidget {
 class _CombinedScreenState extends State<CombinedScreen> {
   late StreamController<bool> _tapFetchedController;
   late Timer _timer;
+
   @override
   void initState() {
     super.initState();
 
     _tapFetchedController = StreamController<bool>();
 
-    SharedPreferences.getInstance().then((prefs) =>
-        WidgetsBinding.instance.addPostFrameCallback((_) {
-          widget._bloc.add(const CombinedEvent.getClaims());
-          final tapFetched = prefs.getBool("tapFetched") ?? false;
-          _tapFetchedController.sink.add(tapFetched);
-          if (!tapFetched) {
-            widget._bloc.add(const CombinedEvent.clickTapButton());
-          }
-          if (!SecureApplicationProvider.of(context)!.authenticated) {
-            SecureApplicationProvider.of(context)!.lock();
-          }
+    SharedPreferences.getInstance()
+        .then((prefs) => WidgetsBinding.instance.addPostFrameCallback((_) {
+              widget._bloc.add(const CombinedEvent.getClaims());
+              final tapFetched = prefs.getBool("tapFetched") ?? false;
+              _tapFetchedController.sink.add(tapFetched);
+              if (!tapFetched) {
+                widget._bloc.add(const CombinedEvent.clickTapButton());
+              }
+              if (!SecureApplicationProvider.of(context)!.authenticated) {
+                SecureApplicationProvider.of(context)!.lock();
+              }
 
-          _timer = Timer.periodic(const Duration(seconds: 2), (timer) {
-             isTapFetched();
-          });
-
-        })
-    );
+              _timer = Timer.periodic(const Duration(seconds: 2), (timer) {
+                isTapFetched();
+              });
+            }));
   }
 
   Future<void> isTapFetched() async {
@@ -76,15 +75,14 @@ class _CombinedScreenState extends State<CombinedScreen> {
     super.dispose();
   }
 
-
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return securedWidget(Scaffold(
       backgroundColor: CustomColors.background,
       endDrawer: _buildDrawer(),
       appBar: _buildAppBar(),
       body: _buildBody(),
-    );
+    ));
   }
 
   ///
@@ -310,9 +308,6 @@ class _CombinedScreenState extends State<CombinedScreen> {
     );
   }
 
-
-
-
   Widget _buildTAPBar() {
     return Padding(
       padding: const EdgeInsets.only(bottom: 16),
@@ -331,35 +326,37 @@ class _CombinedScreenState extends State<CombinedScreen> {
   }
 
   Widget _buildBottomBar() {
-
     return Padding(
-      padding: const EdgeInsets.only(bottom: 16),
-      child: StreamBuilder<bool>(
-        stream: _tapFetchedController.stream,
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const CircularProgressIndicator(); // Display a loading indicator when waiting for data.
-          } else if (snapshot.hasError) {
-            return Text('Error: ${snapshot.error}'); // Display an error message if an error occurs.
-          } else if (!snapshot.hasData) {
-            return Text('No data available'); // Display a message when no data is available.
-          } else {
-            final fetched = snapshot.data ?? false;
-            return ElevatedButton(
-              key: CustomWidgetsKeys.authScreenButtonConnect,
-              onPressed: fetched ? () {
-                widget._bloc.add(const CombinedEvent.clickScanQrCode());
-              } : null,
-              style: CustomButtonStyle.primaryButtonStyle,
-              child: const Text(
-                "Scan QR code",
-                style: CustomTextStyles.primaryButtonTextStyle,
-              ),
-            );
-          }
-        }
-      )
-    );
+        padding: const EdgeInsets.only(bottom: 16),
+        child: StreamBuilder<bool>(
+            stream: _tapFetchedController.stream,
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const CircularProgressIndicator(); // Display a loading indicator when waiting for data.
+              } else if (snapshot.hasError) {
+                return Text(
+                    'Error: ${snapshot.error}'); // Display an error message if an error occurs.
+              } else if (!snapshot.hasData) {
+                return Text(
+                    'No data available'); // Display a message when no data is available.
+              } else {
+                final fetched = snapshot.data ?? false;
+                return ElevatedButton(
+                  key: CustomWidgetsKeys.authScreenButtonConnect,
+                  onPressed: fetched
+                      ? () {
+                          widget._bloc
+                              .add(const CombinedEvent.clickScanQrCode());
+                        }
+                      : null,
+                  style: CustomButtonStyle.primaryButtonStyle,
+                  child: const Text(
+                    "Scan QR code",
+                    style: CustomTextStyles.primaryButtonTextStyle,
+                  ),
+                );
+              }
+            }));
   }
 
   ///

@@ -18,6 +18,9 @@ class _QRCodeScannerPageState extends State<QRCodeScannerPage> {
   final BarcodeScanner _barcodeScanner =
       BarcodeScanner(formats: [BarcodeFormat.qrCode]);
 
+  // fixes potential scan of "previously scanned qr" (see usages)
+  bool _skippedFirst = false;
+
   bool _canProcess = true;
   bool _isBusy = false;
   bool _resultFound = false;
@@ -75,6 +78,10 @@ class _QRCodeScannerPageState extends State<QRCodeScannerPage> {
   Future<void> processImage(InputImage inputImage) async {
     if (!_canProcess) return;
     if (_isBusy) return;
+    if (!_skippedFirst) { // fixes potential scan of "previously scanned qr"
+      _skippedFirst = true;
+      return;
+    }
     _isBusy = true;
 
     final barcodes = await _barcodeScanner.processImage(inputImage);

@@ -29,28 +29,27 @@ class AppState extends State<App> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: SecureApplication(
-        nativeRemoveDelay: 700,
-        child: Builder(
-          builder: (context) {
-            SecureApplicationProvider.of(context)?.secure();
-            SecureApplicationProvider.of(context)?.lock();
-            return MaterialApp(
-              title: CustomStrings.appTitle,
-              home: const SplashScreen(),
-              routes: Routes.getRoutes(context),
-              navigatorKey: navigatorKey,
-              theme: ThemeData(
-                primarySwatch: CustomColors.primaryWhite,
-                buttonTheme: const ButtonThemeData(
-                  buttonColor: CustomColors.primaryOrange,
-                  textTheme: ButtonTextTheme.accent,
-                ),
+    return SecureApplication(
+      nativeRemoveDelay: 700,
+      child: Builder(
+        builder: (context) {
+          // FIXME/TODO: remove both lines to use with no-bio-secured phones
+          SecureApplicationProvider.of(context)?.secure();
+          SecureApplicationProvider.of(context)?.lock();
+          return MaterialApp(
+            title: CustomStrings.appTitle,
+            home: const SplashScreen(),
+            routes: Routes.getRoutes(context),
+            navigatorKey: navigatorKey,
+            theme: ThemeData(
+              primarySwatch: CustomColors.primaryWhite,
+              buttonTheme: const ButtonThemeData(
+                buttonColor: CustomColors.primaryOrange,
+                textTheme: ButtonTextTheme.accent,
               ),
-            );
-          },
-        ),
+            ),
+          );
+        },
       ),
     );
   }
