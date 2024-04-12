@@ -37,8 +37,8 @@ See [the SDK environment](../README.md#environment) for more information.
 
 In this example app we are using environment variable and Envied package to initialize the SDK. You can configure the application with the following [environment variables]:
 
-- **`ENV_POLYGON_MUMBAI`**: We use this to setup the sdk environment to Polygon Mumbai network.<br/>
-  Default: `{"blockchain": "polygon", "network": "mumbai", "web3Url": "https://polygon-mumbai.infura.io/v3/", "web3RdpUrl": "wss://polygon-mumbai.infura.io/v3/", "web3ApiKey": "YOUR_WEB3_API_KEY", "idStateContract": "0x134B1BE34911E39A8397ec6289782989729807a4", "ipfsUrl": "https://[YOUR-IPFS-API-KEY]:[YOUR-IPFS-API-KEY-SECRET]@ipfs.infura.io:5001", "pushUrl": "https://push-staging.polygonid.com/api/v1"}`
+- **`ENV_POLYGON_AMOY`**: We use this to setup the sdk environment to Polygon Amoy network.<br/>
+  Default: `{"blockchain": "polygon", "network": "amoy", "web3Url": "https://polygon-amoy.g.alchemy.com/v2", "web3RdpUrl": "wss://polygon-amoy.g.alchemy.com/v2/", "web3ApiKey": "tZIEm32QWH6cinpYSA8Yo7u0m2ZqtF1i", "idStateContract": "0x1a4cC30f2aA0377b0c3bc9848766D90cb4404124", "ipfsUrl": "https://ipfs.io", "pushUrl": "https://push-staging.polygonid.com/api/v1"}`
 
 - **`ENV_POLYGON_MAINNET`**: We use this to setup the sdk environment to Polygon Main network.<br/>
   Default: `{"blockchain": "polygon", "network": "main", "web3Url": "https://polygon-mainnet.infura.io/v3/", "web3RdpUrl": "wss://polygon-mainnet.infura.io/v3/", "web3ApiKey": "YOUR_WEB3_API_KEY", "idStateContract": "0x624ce98D2d27b20b8f8d521723Df8fC4db71D79D", "ipfsUrl": "https://[YOUR-IPFS-API-KEY]:[YOUR-IPFS-API-KEY-SECRET]@ipfs.infura.io:5001", "pushUrl": "https://push-staging.polygonid.com/api/v1"}`
