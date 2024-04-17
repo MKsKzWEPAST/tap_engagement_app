@@ -36,12 +36,16 @@ class ClaimDetailBloc extends Bloc<ClaimDetailEvent, ClaimDetailState> {
         return;
       }
 
-      EnvEntity envEntity = await _polygonIdSdk.getEnv();
+      EnvEntity env = await _polygonIdSdk.getEnv();
+      final chainConfig = env.chainConfigs["80002"]!;
+      final blockchain = chainConfig.blockchain;
+      final network = chainConfig.network;
 
       String? did = await _polygonIdSdk.identity.getDidIdentifier(
           privateKey: privateKey,
-          blockchain: envEntity.blockchain,
-          network: envEntity.network);
+          blockchain: blockchain,
+          network: network
+      );
 
       await _polygonIdSdk.credential.removeClaims(
         claimIds: [event.claimId],

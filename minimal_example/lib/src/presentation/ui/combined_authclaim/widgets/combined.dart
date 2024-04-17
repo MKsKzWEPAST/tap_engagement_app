@@ -77,12 +77,12 @@ class _CombinedScreenState extends State<CombinedScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return securedWidget(Scaffold(
+    return Scaffold(
       backgroundColor: CustomColors.background,
       endDrawer: _buildDrawer(),
       appBar: _buildAppBar(),
       body: _buildBody(),
-    ));
+    );
   }
 
   ///

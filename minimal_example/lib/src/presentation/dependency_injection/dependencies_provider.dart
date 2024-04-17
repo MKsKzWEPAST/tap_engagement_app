@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:get_it/get_it.dart';
+import 'package:polygonid_flutter_sdk/common/domain/entities/chain_config_entity.dart';
 import 'package:polygonid_flutter_sdk/common/domain/entities/env_entity.dart';
 import 'package:polygonid_flutter_sdk/iden3comm/data/mappers/iden3_message_type_mapper.dart';
 import 'package:polygonid_flutter_sdk/sdk/polygon_id_sdk.dart';
@@ -35,19 +36,31 @@ Future<void> init() async {
 }
 
 void registerEnv() {
-  Map<String, dynamic> polygonAmoy = jsonDecode(Env.polygonAmoy);
-  Map<String, dynamic> polygonMainnet = jsonDecode(Env.polygonMainnet);
+  Map<String, EnvEntity> env = {"amoy": EnvEntity(
+    pushUrl: 'https://push-staging.polygonid.com/api/v1',
+    ipfsUrl:
+    "https://[YOUR-IPFS-API-KEY]:[YOUR-IPFS-API-KEY-SECRET]@ipfs.infura.io:5001",
+    chainConfigs: {
+      "80002": ChainConfigEntity(
+        blockchain: 'polygon',
+        network: 'amoy',
+        rpcUrl: 'https://polygon-amoy.g.alchemy.com/v2/tZIEm32QWH6cinpYSA8Yo7u0m2ZqtF1i',
+        stateContractAddr: '0x1a4cC30f2aA0377b0c3bc9848766D90cb4404124',
+      )
+    },
+    didMethods: [],
+  )};
 
-  Map<String, EnvEntity> env = {
-    "amoy": EnvEntity(
-      blockchain: polygonAmoy['blockchain'],
-      network: polygonAmoy['network'],
-      web3Url: polygonAmoy['web3Url'],
-      web3RdpUrl: polygonAmoy['web3RdpUrl'],
-      web3ApiKey: polygonAmoy['web3ApiKey'],
-      idStateContract: polygonAmoy['idStateContract'],
-      pushUrl: polygonAmoy['pushUrl'],
-      ipfsUrl: polygonAmoy['ipfsUrl'],
+  /*{
+    "mumbai": EnvEntity(
+      blockchain: polygonMumbai['blockchain'],
+      network: polygonMumbai['network'],
+      web3Url: polygonMumbai['web3Url'],
+      web3RdpUrl: polygonMumbai['web3RdpUrl'],
+      web3ApiKey: polygonMumbai['web3ApiKey'],
+      idStateContract: polygonMumbai['idStateContract'],
+      pushUrl: polygonMumbai['pushUrl'],
+      ipfsUrl: polygonMumbai['ipfsUrl'],
     ),
     "mainnet": EnvEntity(
       blockchain: polygonMainnet['blockchain'],
@@ -59,7 +72,7 @@ void registerEnv() {
       pushUrl: polygonMainnet['pushUrl'],
       ipfsUrl: polygonMainnet['ipfsUrl'],
     )
-  };
+  };*/
   getIt.registerSingleton<Map<String, EnvEntity>>(env);
 }
 

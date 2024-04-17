@@ -81,20 +81,22 @@ class CombinedBloc extends Bloc<CombinedEvent, CombinedState> {
       return;
     }
 
-    EnvEntity envEntity = await _polygonIdSdk.getEnv();
+    EnvEntity env = await _polygonIdSdk.getEnv();
+    final chainConfig = env.chainConfigs["80002"]!;
+    final blockchain = chainConfig.blockchain;
+    final network = chainConfig.network;
 
     String did = await _polygonIdSdk.identity.getDidIdentifier(
         privateKey: privateKey,
-        blockchain: envEntity.blockchain,
-        network: envEntity.network);
+        blockchain: blockchain,
+        network: network);
 
     final prefs = await SharedPreferences.getInstance();
     final email = prefs.getString("email") ?? "";
     if (email == "") {
       emit(const CombinedState.error("error while trying to get the credential: your wallet isn't setup with a proper email address"));
     }
-
-    final url = Uri.parse('https://unbiased-newt-mint.ngrok-free.app/issueTAP?token=455333&did='+did);
+    final url = Uri.parse('https://griffon-loved-physically.ngrok-free.app/issueTAP?token=455333&did='+did);
     final response = await http.get(url,headers: {'Content-Type': 'application/json',"email": email});
     if (response.statusCode == 200) {
       final String credential = response.body;
@@ -127,7 +129,7 @@ class CombinedBloc extends Bloc<CombinedEvent, CombinedState> {
         case Iden3MessageType.credentialOffer:
           logger().i("[debugging-combined] -- Claims: Checkpoint 1--");
           emit(CombinedState.qrCodeScanned(iden3message));
-          break;
+          break; // TODO web3 approach: put any claims we want in our wallet ?
 
         case Iden3MessageType.authRequest:
           logger().i("[debugging-combined] -- Auth: Checkpoint 1--");
@@ -150,7 +152,6 @@ class CombinedBloc extends Bloc<CombinedEvent, CombinedState> {
             emit: emit,
           );
 
-          // TODO check if callback-url contains credential offer
           break;
 
         default:
@@ -182,12 +183,14 @@ class CombinedBloc extends Bloc<CombinedEvent, CombinedState> {
     logger().i("[debugging-combined] -- Auth: Checkpoint 2--");
 
 
-    EnvEntity envEntity = await _polygonIdSdk.getEnv();
-
+    EnvEntity env = await _polygonIdSdk.getEnv();
+    final chainConfig = env.chainConfigs["80002"]!;
+    final blockchain = chainConfig.blockchain;
+    final network = chainConfig.network;
     String? did = await _polygonIdSdk.identity.getDidIdentifier(
         privateKey: privateKey,
-        blockchain: envEntity.blockchain,
-        network: envEntity.network);
+        blockchain: blockchain,
+        network: network);
     logger().i("[debugging-combined] -- Auth: Checkpoint 3--");
 
     try {
@@ -234,11 +237,14 @@ class CombinedBloc extends Bloc<CombinedEvent, CombinedState> {
     logger().i("[debugging-combined] --Checkpoint 4--");
 
     EnvEntity env = await _polygonIdSdk.getEnv();
+    final chainConfig = env.chainConfigs["80002"]!;
+    final blockchain = chainConfig.blockchain;
+    final network = chainConfig.network;
 
     String didIdentifier = await _polygonIdSdk.identity.getDidIdentifier(
         privateKey: privateKey,
-        blockchain: env.blockchain,
-        network: env.network);
+        blockchain: blockchain,
+        network: network);
 
     logger().i("[debugging-combined] --Checkpoint 5--");
 
@@ -298,11 +304,14 @@ class CombinedBloc extends Bloc<CombinedEvent, CombinedState> {
     }
 
     EnvEntity env = await _polygonIdSdk.getEnv();
+    final chainConfig = env.chainConfigs["80002"]!;
+    final blockchain = chainConfig.blockchain;
+    final network = chainConfig.network;
 
     String did = await _polygonIdSdk.identity.getDidIdentifier(
       privateKey: privateKey,
-      blockchain: env.blockchain,
-      network: env.network,
+      blockchain: blockchain,
+      network: network,
     );
 
     if (did.isEmpty) {
@@ -350,11 +359,14 @@ class CombinedBloc extends Bloc<CombinedEvent, CombinedState> {
     }
 
     EnvEntity env = await _polygonIdSdk.getEnv();
+    final chainConfig = env.chainConfigs["80002"]!;
+    final blockchain = chainConfig.blockchain;
+    final network = chainConfig.network;
 
     String did = await _polygonIdSdk.identity.getDidIdentifier(
       privateKey: privateKey,
-      blockchain: env.blockchain,
-      network: env.network,
+      blockchain: blockchain,
+      network: network,
     );
 
     if (did.isEmpty) {
@@ -395,11 +407,14 @@ class CombinedBloc extends Bloc<CombinedEvent, CombinedState> {
     }
 
     EnvEntity env = await _polygonIdSdk.getEnv();
+    final chainConfig = env.chainConfigs["80002"]!;
+    final blockchain = chainConfig.blockchain;
+    final network = chainConfig.network;
 
     String did = await _polygonIdSdk.identity.getDidIdentifier(
       privateKey: privateKey,
-      blockchain: env.blockchain,
-      network: env.network,
+      blockchain: blockchain,
+      network: network,
     );
 
     if (did.isEmpty) {
@@ -436,11 +451,14 @@ class CombinedBloc extends Bloc<CombinedEvent, CombinedState> {
     }
 
     EnvEntity env = await _polygonIdSdk.getEnv();
+    final chainConfig = env.chainConfigs["80002"]!;
+    final blockchain = chainConfig.blockchain;
+    final network = chainConfig.network;
 
     String did = await _polygonIdSdk.identity.getDidIdentifier(
       privateKey: privateKey,
-      blockchain: env.blockchain,
-      network: env.network,
+      blockchain: blockchain,
+      network: network,
     );
 
     if (did.isEmpty) {
@@ -538,11 +556,14 @@ class CombinedBloc extends Bloc<CombinedEvent, CombinedState> {
     }
 
     EnvEntity env = await _polygonIdSdk.getEnv();
+    final chainConfig = env.chainConfigs["80002"]!;
+    final blockchain = chainConfig.blockchain;
+    final network = chainConfig.network;
 
     String did = await _polygonIdSdk.identity.getDidIdentifier(
       privateKey: privateKey,
-      blockchain: env.blockchain,
-      network: env.network,
+      blockchain: blockchain,
+      network: network,
     );
 
     if (did.isEmpty) {

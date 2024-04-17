@@ -35,11 +35,14 @@ class RestoreIdentityBloc
     }
 
     EnvEntity env = await _polygonIdSdk.getEnv();
+    final chainConfig = env.chainConfigs["80002"]!;
+    final blockchain = chainConfig.blockchain;
+    final network = chainConfig.network;
 
     String genesisDid = await _polygonIdSdk.identity.getDidIdentifier(
       privateKey: privateKey,
-      blockchain: env.blockchain,
-      network: env.network,
+      blockchain: blockchain,
+      network: network,
     );
 
     if (genesisDid.isEmpty) {

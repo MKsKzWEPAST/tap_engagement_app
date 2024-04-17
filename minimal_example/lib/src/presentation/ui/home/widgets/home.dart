@@ -142,8 +142,7 @@ class _HomeScreenState extends State<HomeScreen> {
             return Text(
                 'Error: ${snapshot.error}'); // Display an error message if an error occurs.
           } else if (!snapshot.hasData) {
-            return Text(
-                'No data available'); // Display a message when no data is available.
+            return Text('No data available'); // Display a message when no data is available.
           } else {
             final fetched = snapshot.data ?? false;
             return Scaffold(

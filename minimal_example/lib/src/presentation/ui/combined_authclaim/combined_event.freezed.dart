@@ -22,7 +22,7 @@ mixin _$CombinedEvent {
     required TResult Function() clickScanQrCode,
     required TResult Function(String? response) onScanQrCodeResponse,
     required TResult Function() clickTapButton,
-    required TResult Function(Iden3MessageEntity iden3message)
+    required TResult Function(Iden3MessageEntity<dynamic> iden3message)
         fetchAndSaveClaims,
     required TResult Function(List<FilterEntity>? filters) getClaims,
     required TResult Function(List<String> ids) getClaimsByIds,
@@ -48,7 +48,8 @@ mixin _$CombinedEvent {
     TResult? Function()? clickScanQrCode,
     TResult? Function(String? response)? onScanQrCodeResponse,
     TResult? Function()? clickTapButton,
-    TResult? Function(Iden3MessageEntity iden3message)? fetchAndSaveClaims,
+    TResult? Function(Iden3MessageEntity<dynamic> iden3message)?
+        fetchAndSaveClaims,
     TResult? Function(List<FilterEntity>? filters)? getClaims,
     TResult? Function(List<String> ids)? getClaimsByIds,
     TResult? Function(String id)? removeClaim,
@@ -67,7 +68,8 @@ mixin _$CombinedEvent {
     TResult Function()? clickScanQrCode,
     TResult Function(String? response)? onScanQrCodeResponse,
     TResult Function()? clickTapButton,
-    TResult Function(Iden3MessageEntity iden3message)? fetchAndSaveClaims,
+    TResult Function(Iden3MessageEntity<dynamic> iden3message)?
+        fetchAndSaveClaims,
     TResult Function(List<FilterEntity>? filters)? getClaims,
     TResult Function(List<String> ids)? getClaimsByIds,
     TResult Function(String id)? removeClaim,
@@ -226,7 +228,7 @@ class _$ProfileSelectedEventImpl implements ProfileSelectedEvent {
     required TResult Function() clickScanQrCode,
     required TResult Function(String? response) onScanQrCodeResponse,
     required TResult Function() clickTapButton,
-    required TResult Function(Iden3MessageEntity iden3message)
+    required TResult Function(Iden3MessageEntity<dynamic> iden3message)
         fetchAndSaveClaims,
     required TResult Function(List<FilterEntity>? filters) getClaims,
     required TResult Function(List<String> ids) getClaimsByIds,
@@ -255,7 +257,8 @@ class _$ProfileSelectedEventImpl implements ProfileSelectedEvent {
     TResult? Function()? clickScanQrCode,
     TResult? Function(String? response)? onScanQrCodeResponse,
     TResult? Function()? clickTapButton,
-    TResult? Function(Iden3MessageEntity iden3message)? fetchAndSaveClaims,
+    TResult? Function(Iden3MessageEntity<dynamic> iden3message)?
+        fetchAndSaveClaims,
     TResult? Function(List<FilterEntity>? filters)? getClaims,
     TResult? Function(List<String> ids)? getClaimsByIds,
     TResult? Function(String id)? removeClaim,
@@ -277,7 +280,8 @@ class _$ProfileSelectedEventImpl implements ProfileSelectedEvent {
     TResult Function()? clickScanQrCode,
     TResult Function(String? response)? onScanQrCodeResponse,
     TResult Function()? clickTapButton,
-    TResult Function(Iden3MessageEntity iden3message)? fetchAndSaveClaims,
+    TResult Function(Iden3MessageEntity<dynamic> iden3message)?
+        fetchAndSaveClaims,
     TResult Function(List<FilterEntity>? filters)? getClaims,
     TResult Function(List<String> ids)? getClaimsByIds,
     TResult Function(String id)? removeClaim,
@@ -417,7 +421,7 @@ class _$ClickScanQrCodeEventImpl implements ClickScanQrCodeEvent {
     required TResult Function() clickScanQrCode,
     required TResult Function(String? response) onScanQrCodeResponse,
     required TResult Function() clickTapButton,
-    required TResult Function(Iden3MessageEntity iden3message)
+    required TResult Function(Iden3MessageEntity<dynamic> iden3message)
         fetchAndSaveClaims,
     required TResult Function(List<FilterEntity>? filters) getClaims,
     required TResult Function(List<String> ids) getClaimsByIds,
@@ -446,7 +450,8 @@ class _$ClickScanQrCodeEventImpl implements ClickScanQrCodeEvent {
     TResult? Function()? clickScanQrCode,
     TResult? Function(String? response)? onScanQrCodeResponse,
     TResult? Function()? clickTapButton,
-    TResult? Function(Iden3MessageEntity iden3message)? fetchAndSaveClaims,
+    TResult? Function(Iden3MessageEntity<dynamic> iden3message)?
+        fetchAndSaveClaims,
     TResult? Function(List<FilterEntity>? filters)? getClaims,
     TResult? Function(List<String> ids)? getClaimsByIds,
     TResult? Function(String id)? removeClaim,
@@ -468,7 +473,8 @@ class _$ClickScanQrCodeEventImpl implements ClickScanQrCodeEvent {
     TResult Function()? clickScanQrCode,
     TResult Function(String? response)? onScanQrCodeResponse,
     TResult Function()? clickTapButton,
-    TResult Function(Iden3MessageEntity iden3message)? fetchAndSaveClaims,
+    TResult Function(Iden3MessageEntity<dynamic> iden3message)?
+        fetchAndSaveClaims,
     TResult Function(List<FilterEntity>? filters)? getClaims,
     TResult Function(List<String> ids)? getClaimsByIds,
     TResult Function(String id)? removeClaim,
@@ -629,7 +635,7 @@ class _$ScanQrCodeResponseImpl implements ScanQrCodeResponse {
     required TResult Function() clickScanQrCode,
     required TResult Function(String? response) onScanQrCodeResponse,
     required TResult Function() clickTapButton,
-    required TResult Function(Iden3MessageEntity iden3message)
+    required TResult Function(Iden3MessageEntity<dynamic> iden3message)
         fetchAndSaveClaims,
     required TResult Function(List<FilterEntity>? filters) getClaims,
     required TResult Function(List<String> ids) getClaimsByIds,
@@ -658,7 +664,8 @@ class _$ScanQrCodeResponseImpl implements ScanQrCodeResponse {
     TResult? Function()? clickScanQrCode,
     TResult? Function(String? response)? onScanQrCodeResponse,
     TResult? Function()? clickTapButton,
-    TResult? Function(Iden3MessageEntity iden3message)? fetchAndSaveClaims,
+    TResult? Function(Iden3MessageEntity<dynamic> iden3message)?
+        fetchAndSaveClaims,
     TResult? Function(List<FilterEntity>? filters)? getClaims,
     TResult? Function(List<String> ids)? getClaimsByIds,
     TResult? Function(String id)? removeClaim,
@@ -680,7 +687,8 @@ class _$ScanQrCodeResponseImpl implements ScanQrCodeResponse {
     TResult Function()? clickScanQrCode,
     TResult Function(String? response)? onScanQrCodeResponse,
     TResult Function()? clickTapButton,
-    TResult Function(Iden3MessageEntity iden3message)? fetchAndSaveClaims,
+    TResult Function(Iden3MessageEntity<dynamic> iden3message)?
+        fetchAndSaveClaims,
     TResult Function(List<FilterEntity>? filters)? getClaims,
     TResult Function(List<String> ids)? getClaimsByIds,
     TResult Function(String id)? removeClaim,
@@ -820,7 +828,7 @@ class _$ClickTapButtonEventImpl implements ClickTapButtonEvent {
     required TResult Function() clickScanQrCode,
     required TResult Function(String? response) onScanQrCodeResponse,
     required TResult Function() clickTapButton,
-    required TResult Function(Iden3MessageEntity iden3message)
+    required TResult Function(Iden3MessageEntity<dynamic> iden3message)
         fetchAndSaveClaims,
     required TResult Function(List<FilterEntity>? filters) getClaims,
     required TResult Function(List<String> ids) getClaimsByIds,
@@ -849,7 +857,8 @@ class _$ClickTapButtonEventImpl implements ClickTapButtonEvent {
     TResult? Function()? clickScanQrCode,
     TResult? Function(String? response)? onScanQrCodeResponse,
     TResult? Function()? clickTapButton,
-    TResult? Function(Iden3MessageEntity iden3message)? fetchAndSaveClaims,
+    TResult? Function(Iden3MessageEntity<dynamic> iden3message)?
+        fetchAndSaveClaims,
     TResult? Function(List<FilterEntity>? filters)? getClaims,
     TResult? Function(List<String> ids)? getClaimsByIds,
     TResult? Function(String id)? removeClaim,
@@ -871,7 +880,8 @@ class _$ClickTapButtonEventImpl implements ClickTapButtonEvent {
     TResult Function()? clickScanQrCode,
     TResult Function(String? response)? onScanQrCodeResponse,
     TResult Function()? clickTapButton,
-    TResult Function(Iden3MessageEntity iden3message)? fetchAndSaveClaims,
+    TResult Function(Iden3MessageEntity<dynamic> iden3message)?
+        fetchAndSaveClaims,
     TResult Function(List<FilterEntity>? filters)? getClaims,
     TResult Function(List<String> ids)? getClaimsByIds,
     TResult Function(String id)? removeClaim,
@@ -969,7 +979,7 @@ abstract class _$$FetchAndSaveClaimsEventImplCopyWith<$Res> {
           $Res Function(_$FetchAndSaveClaimsEventImpl) then) =
       __$$FetchAndSaveClaimsEventImplCopyWithImpl<$Res>;
   @useResult
-  $Res call({Iden3MessageEntity iden3message});
+  $Res call({Iden3MessageEntity<dynamic> iden3message});
 }
 
 /// @nodoc
@@ -990,7 +1000,7 @@ class __$$FetchAndSaveClaimsEventImplCopyWithImpl<$Res>
       iden3message: null == iden3message
           ? _value.iden3message
           : iden3message // ignore: cast_nullable_to_non_nullable
-              as Iden3MessageEntity,
+              as Iden3MessageEntity<dynamic>,
     ));
   }
 }
@@ -1001,7 +1011,7 @@ class _$FetchAndSaveClaimsEventImpl implements FetchAndSaveClaimsEvent {
   const _$FetchAndSaveClaimsEventImpl({required this.iden3message});
 
   @override
-  final Iden3MessageEntity iden3message;
+  final Iden3MessageEntity<dynamic> iden3message;
 
   @override
   String toString() {
@@ -1034,7 +1044,7 @@ class _$FetchAndSaveClaimsEventImpl implements FetchAndSaveClaimsEvent {
     required TResult Function() clickScanQrCode,
     required TResult Function(String? response) onScanQrCodeResponse,
     required TResult Function() clickTapButton,
-    required TResult Function(Iden3MessageEntity iden3message)
+    required TResult Function(Iden3MessageEntity<dynamic> iden3message)
         fetchAndSaveClaims,
     required TResult Function(List<FilterEntity>? filters) getClaims,
     required TResult Function(List<String> ids) getClaimsByIds,
@@ -1063,7 +1073,8 @@ class _$FetchAndSaveClaimsEventImpl implements FetchAndSaveClaimsEvent {
     TResult? Function()? clickScanQrCode,
     TResult? Function(String? response)? onScanQrCodeResponse,
     TResult? Function()? clickTapButton,
-    TResult? Function(Iden3MessageEntity iden3message)? fetchAndSaveClaims,
+    TResult? Function(Iden3MessageEntity<dynamic> iden3message)?
+        fetchAndSaveClaims,
     TResult? Function(List<FilterEntity>? filters)? getClaims,
     TResult? Function(List<String> ids)? getClaimsByIds,
     TResult? Function(String id)? removeClaim,
@@ -1085,7 +1096,8 @@ class _$FetchAndSaveClaimsEventImpl implements FetchAndSaveClaimsEvent {
     TResult Function()? clickScanQrCode,
     TResult Function(String? response)? onScanQrCodeResponse,
     TResult Function()? clickTapButton,
-    TResult Function(Iden3MessageEntity iden3message)? fetchAndSaveClaims,
+    TResult Function(Iden3MessageEntity<dynamic> iden3message)?
+        fetchAndSaveClaims,
     TResult Function(List<FilterEntity>? filters)? getClaims,
     TResult Function(List<String> ids)? getClaimsByIds,
     TResult Function(String id)? removeClaim,
@@ -1174,10 +1186,10 @@ class _$FetchAndSaveClaimsEventImpl implements FetchAndSaveClaimsEvent {
 
 abstract class FetchAndSaveClaimsEvent implements CombinedEvent {
   const factory FetchAndSaveClaimsEvent(
-          {required final Iden3MessageEntity iden3message}) =
+          {required final Iden3MessageEntity<dynamic> iden3message}) =
       _$FetchAndSaveClaimsEventImpl;
 
-  Iden3MessageEntity get iden3message;
+  Iden3MessageEntity<dynamic> get iden3message;
   @JsonKey(ignore: true)
   _$$FetchAndSaveClaimsEventImplCopyWith<_$FetchAndSaveClaimsEventImpl>
       get copyWith => throw _privateConstructorUsedError;
@@ -1261,7 +1273,7 @@ class _$GetClaimsEventImpl implements GetClaimsEvent {
     required TResult Function() clickScanQrCode,
     required TResult Function(String? response) onScanQrCodeResponse,
     required TResult Function() clickTapButton,
-    required TResult Function(Iden3MessageEntity iden3message)
+    required TResult Function(Iden3MessageEntity<dynamic> iden3message)
         fetchAndSaveClaims,
     required TResult Function(List<FilterEntity>? filters) getClaims,
     required TResult Function(List<String> ids) getClaimsByIds,
@@ -1290,7 +1302,8 @@ class _$GetClaimsEventImpl implements GetClaimsEvent {
     TResult? Function()? clickScanQrCode,
     TResult? Function(String? response)? onScanQrCodeResponse,
     TResult? Function()? clickTapButton,
-    TResult? Function(Iden3MessageEntity iden3message)? fetchAndSaveClaims,
+    TResult? Function(Iden3MessageEntity<dynamic> iden3message)?
+        fetchAndSaveClaims,
     TResult? Function(List<FilterEntity>? filters)? getClaims,
     TResult? Function(List<String> ids)? getClaimsByIds,
     TResult? Function(String id)? removeClaim,
@@ -1312,7 +1325,8 @@ class _$GetClaimsEventImpl implements GetClaimsEvent {
     TResult Function()? clickScanQrCode,
     TResult Function(String? response)? onScanQrCodeResponse,
     TResult Function()? clickTapButton,
-    TResult Function(Iden3MessageEntity iden3message)? fetchAndSaveClaims,
+    TResult Function(Iden3MessageEntity<dynamic> iden3message)?
+        fetchAndSaveClaims,
     TResult Function(List<FilterEntity>? filters)? getClaims,
     TResult Function(List<String> ids)? getClaimsByIds,
     TResult Function(String id)? removeClaim,
@@ -1485,7 +1499,7 @@ class _$GetClaimsByIdsEventImpl implements GetClaimsByIdsEvent {
     required TResult Function() clickScanQrCode,
     required TResult Function(String? response) onScanQrCodeResponse,
     required TResult Function() clickTapButton,
-    required TResult Function(Iden3MessageEntity iden3message)
+    required TResult Function(Iden3MessageEntity<dynamic> iden3message)
         fetchAndSaveClaims,
     required TResult Function(List<FilterEntity>? filters) getClaims,
     required TResult Function(List<String> ids) getClaimsByIds,
@@ -1514,7 +1528,8 @@ class _$GetClaimsByIdsEventImpl implements GetClaimsByIdsEvent {
     TResult? Function()? clickScanQrCode,
     TResult? Function(String? response)? onScanQrCodeResponse,
     TResult? Function()? clickTapButton,
-    TResult? Function(Iden3MessageEntity iden3message)? fetchAndSaveClaims,
+    TResult? Function(Iden3MessageEntity<dynamic> iden3message)?
+        fetchAndSaveClaims,
     TResult? Function(List<FilterEntity>? filters)? getClaims,
     TResult? Function(List<String> ids)? getClaimsByIds,
     TResult? Function(String id)? removeClaim,
@@ -1536,7 +1551,8 @@ class _$GetClaimsByIdsEventImpl implements GetClaimsByIdsEvent {
     TResult Function()? clickScanQrCode,
     TResult Function(String? response)? onScanQrCodeResponse,
     TResult Function()? clickTapButton,
-    TResult Function(Iden3MessageEntity iden3message)? fetchAndSaveClaims,
+    TResult Function(Iden3MessageEntity<dynamic> iden3message)?
+        fetchAndSaveClaims,
     TResult Function(List<FilterEntity>? filters)? getClaims,
     TResult Function(List<String> ids)? getClaimsByIds,
     TResult Function(String id)? removeClaim,
@@ -1702,7 +1718,7 @@ class _$RemoveClaimEventImpl implements RemoveClaimEvent {
     required TResult Function() clickScanQrCode,
     required TResult Function(String? response) onScanQrCodeResponse,
     required TResult Function() clickTapButton,
-    required TResult Function(Iden3MessageEntity iden3message)
+    required TResult Function(Iden3MessageEntity<dynamic> iden3message)
         fetchAndSaveClaims,
     required TResult Function(List<FilterEntity>? filters) getClaims,
     required TResult Function(List<String> ids) getClaimsByIds,
@@ -1731,7 +1747,8 @@ class _$RemoveClaimEventImpl implements RemoveClaimEvent {
     TResult? Function()? clickScanQrCode,
     TResult? Function(String? response)? onScanQrCodeResponse,
     TResult? Function()? clickTapButton,
-    TResult? Function(Iden3MessageEntity iden3message)? fetchAndSaveClaims,
+    TResult? Function(Iden3MessageEntity<dynamic> iden3message)?
+        fetchAndSaveClaims,
     TResult? Function(List<FilterEntity>? filters)? getClaims,
     TResult? Function(List<String> ids)? getClaimsByIds,
     TResult? Function(String id)? removeClaim,
@@ -1753,7 +1770,8 @@ class _$RemoveClaimEventImpl implements RemoveClaimEvent {
     TResult Function()? clickScanQrCode,
     TResult Function(String? response)? onScanQrCodeResponse,
     TResult Function()? clickTapButton,
-    TResult Function(Iden3MessageEntity iden3message)? fetchAndSaveClaims,
+    TResult Function(Iden3MessageEntity<dynamic> iden3message)?
+        fetchAndSaveClaims,
     TResult Function(List<FilterEntity>? filters)? getClaims,
     TResult Function(List<String> ids)? getClaimsByIds,
     TResult Function(String id)? removeClaim,
@@ -1925,7 +1943,7 @@ class _$RemoveClaimsEventImpl implements RemoveClaimsEvent {
     required TResult Function() clickScanQrCode,
     required TResult Function(String? response) onScanQrCodeResponse,
     required TResult Function() clickTapButton,
-    required TResult Function(Iden3MessageEntity iden3message)
+    required TResult Function(Iden3MessageEntity<dynamic> iden3message)
         fetchAndSaveClaims,
     required TResult Function(List<FilterEntity>? filters) getClaims,
     required TResult Function(List<String> ids) getClaimsByIds,
@@ -1954,7 +1972,8 @@ class _$RemoveClaimsEventImpl implements RemoveClaimsEvent {
     TResult? Function()? clickScanQrCode,
     TResult? Function(String? response)? onScanQrCodeResponse,
     TResult? Function()? clickTapButton,
-    TResult? Function(Iden3MessageEntity iden3message)? fetchAndSaveClaims,
+    TResult? Function(Iden3MessageEntity<dynamic> iden3message)?
+        fetchAndSaveClaims,
     TResult? Function(List<FilterEntity>? filters)? getClaims,
     TResult? Function(List<String> ids)? getClaimsByIds,
     TResult? Function(String id)? removeClaim,
@@ -1976,7 +1995,8 @@ class _$RemoveClaimsEventImpl implements RemoveClaimsEvent {
     TResult Function()? clickScanQrCode,
     TResult Function(String? response)? onScanQrCodeResponse,
     TResult Function()? clickTapButton,
-    TResult Function(Iden3MessageEntity iden3message)? fetchAndSaveClaims,
+    TResult Function(Iden3MessageEntity<dynamic> iden3message)?
+        fetchAndSaveClaims,
     TResult Function(List<FilterEntity>? filters)? getClaims,
     TResult Function(List<String> ids)? getClaimsByIds,
     TResult Function(String id)? removeClaim,
@@ -2116,7 +2136,7 @@ class _$RemoveAllClaimsEventImpl implements RemoveAllClaimsEvent {
     required TResult Function() clickScanQrCode,
     required TResult Function(String? response) onScanQrCodeResponse,
     required TResult Function() clickTapButton,
-    required TResult Function(Iden3MessageEntity iden3message)
+    required TResult Function(Iden3MessageEntity<dynamic> iden3message)
         fetchAndSaveClaims,
     required TResult Function(List<FilterEntity>? filters) getClaims,
     required TResult Function(List<String> ids) getClaimsByIds,
@@ -2145,7 +2165,8 @@ class _$RemoveAllClaimsEventImpl implements RemoveAllClaimsEvent {
     TResult? Function()? clickScanQrCode,
     TResult? Function(String? response)? onScanQrCodeResponse,
     TResult? Function()? clickTapButton,
-    TResult? Function(Iden3MessageEntity iden3message)? fetchAndSaveClaims,
+    TResult? Function(Iden3MessageEntity<dynamic> iden3message)?
+        fetchAndSaveClaims,
     TResult? Function(List<FilterEntity>? filters)? getClaims,
     TResult? Function(List<String> ids)? getClaimsByIds,
     TResult? Function(String id)? removeClaim,
@@ -2167,7 +2188,8 @@ class _$RemoveAllClaimsEventImpl implements RemoveAllClaimsEvent {
     TResult Function()? clickScanQrCode,
     TResult Function(String? response)? onScanQrCodeResponse,
     TResult Function()? clickTapButton,
-    TResult Function(Iden3MessageEntity iden3message)? fetchAndSaveClaims,
+    TResult Function(Iden3MessageEntity<dynamic> iden3message)?
+        fetchAndSaveClaims,
     TResult Function(List<FilterEntity>? filters)? getClaims,
     TResult Function(List<String> ids)? getClaimsByIds,
     TResult Function(String id)? removeClaim,
@@ -2399,7 +2421,7 @@ class _$UpdateClaimEventImpl implements UpdateClaimEvent {
     required TResult Function() clickScanQrCode,
     required TResult Function(String? response) onScanQrCodeResponse,
     required TResult Function() clickTapButton,
-    required TResult Function(Iden3MessageEntity iden3message)
+    required TResult Function(Iden3MessageEntity<dynamic> iden3message)
         fetchAndSaveClaims,
     required TResult Function(List<FilterEntity>? filters) getClaims,
     required TResult Function(List<String> ids) getClaimsByIds,
@@ -2428,7 +2450,8 @@ class _$UpdateClaimEventImpl implements UpdateClaimEvent {
     TResult? Function()? clickScanQrCode,
     TResult? Function(String? response)? onScanQrCodeResponse,
     TResult? Function()? clickTapButton,
-    TResult? Function(Iden3MessageEntity iden3message)? fetchAndSaveClaims,
+    TResult? Function(Iden3MessageEntity<dynamic> iden3message)?
+        fetchAndSaveClaims,
     TResult? Function(List<FilterEntity>? filters)? getClaims,
     TResult? Function(List<String> ids)? getClaimsByIds,
     TResult? Function(String id)? removeClaim,
@@ -2450,7 +2473,8 @@ class _$UpdateClaimEventImpl implements UpdateClaimEvent {
     TResult Function()? clickScanQrCode,
     TResult Function(String? response)? onScanQrCodeResponse,
     TResult Function()? clickTapButton,
-    TResult Function(Iden3MessageEntity iden3message)? fetchAndSaveClaims,
+    TResult Function(Iden3MessageEntity<dynamic> iden3message)?
+        fetchAndSaveClaims,
     TResult Function(List<FilterEntity>? filters)? getClaims,
     TResult Function(List<String> ids)? getClaimsByIds,
     TResult Function(String id)? removeClaim,
@@ -2628,7 +2652,7 @@ class _$OnClickClaimImpl implements OnClickClaim {
     required TResult Function() clickScanQrCode,
     required TResult Function(String? response) onScanQrCodeResponse,
     required TResult Function() clickTapButton,
-    required TResult Function(Iden3MessageEntity iden3message)
+    required TResult Function(Iden3MessageEntity<dynamic> iden3message)
         fetchAndSaveClaims,
     required TResult Function(List<FilterEntity>? filters) getClaims,
     required TResult Function(List<String> ids) getClaimsByIds,
@@ -2657,7 +2681,8 @@ class _$OnClickClaimImpl implements OnClickClaim {
     TResult? Function()? clickScanQrCode,
     TResult? Function(String? response)? onScanQrCodeResponse,
     TResult? Function()? clickTapButton,
-    TResult? Function(Iden3MessageEntity iden3message)? fetchAndSaveClaims,
+    TResult? Function(Iden3MessageEntity<dynamic> iden3message)?
+        fetchAndSaveClaims,
     TResult? Function(List<FilterEntity>? filters)? getClaims,
     TResult? Function(List<String> ids)? getClaimsByIds,
     TResult? Function(String id)? removeClaim,
@@ -2679,7 +2704,8 @@ class _$OnClickClaimImpl implements OnClickClaim {
     TResult Function()? clickScanQrCode,
     TResult Function(String? response)? onScanQrCodeResponse,
     TResult Function()? clickTapButton,
-    TResult Function(Iden3MessageEntity iden3message)? fetchAndSaveClaims,
+    TResult Function(Iden3MessageEntity<dynamic> iden3message)?
+        fetchAndSaveClaims,
     TResult Function(List<FilterEntity>? filters)? getClaims,
     TResult Function(List<String> ids)? getClaimsByIds,
     TResult Function(String id)? removeClaim,
@@ -2846,7 +2872,7 @@ class _$OnClaimDetailRemoveResponseImpl implements OnClaimDetailRemoveResponse {
     required TResult Function() clickScanQrCode,
     required TResult Function(String? response) onScanQrCodeResponse,
     required TResult Function() clickTapButton,
-    required TResult Function(Iden3MessageEntity iden3message)
+    required TResult Function(Iden3MessageEntity<dynamic> iden3message)
         fetchAndSaveClaims,
     required TResult Function(List<FilterEntity>? filters) getClaims,
     required TResult Function(List<String> ids) getClaimsByIds,
@@ -2875,7 +2901,8 @@ class _$OnClaimDetailRemoveResponseImpl implements OnClaimDetailRemoveResponse {
     TResult? Function()? clickScanQrCode,
     TResult? Function(String? response)? onScanQrCodeResponse,
     TResult? Function()? clickTapButton,
-    TResult? Function(Iden3MessageEntity iden3message)? fetchAndSaveClaims,
+    TResult? Function(Iden3MessageEntity<dynamic> iden3message)?
+        fetchAndSaveClaims,
     TResult? Function(List<FilterEntity>? filters)? getClaims,
     TResult? Function(List<String> ids)? getClaimsByIds,
     TResult? Function(String id)? removeClaim,
@@ -2897,7 +2924,8 @@ class _$OnClaimDetailRemoveResponseImpl implements OnClaimDetailRemoveResponse {
     TResult Function()? clickScanQrCode,
     TResult Function(String? response)? onScanQrCodeResponse,
     TResult Function()? clickTapButton,
-    TResult Function(Iden3MessageEntity iden3message)? fetchAndSaveClaims,
+    TResult Function(Iden3MessageEntity<dynamic> iden3message)?
+        fetchAndSaveClaims,
     TResult Function(List<FilterEntity>? filters)? getClaims,
     TResult Function(List<String> ids)? getClaimsByIds,
     TResult Function(String id)? removeClaim,

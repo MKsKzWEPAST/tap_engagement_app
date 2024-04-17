@@ -22,14 +22,13 @@ dependencies:
     sdk: flutter
 
   polygonid_flutter_sdk:
+   path: ../../polygonid-flutter-sdk/
     # When depending on this package from a real application you should use:
     #   polygonid_flutter_sdk: ^x.y.z
     # See https://dart.dev/tools/pub/dependencies#version-constraints
     # The example app is bundled with the plugin so we use a path dependency on
     # the parent directory to use the current plugin's version.
-    git:
-      url: https://github.com/0xPolygonID/polygonid-flutter-sdk.git
-      ref: main
+
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
@@ -52,7 +51,7 @@ dependencies:
   scan: ^1.6.0
   local_auth: ^2.2.0
   provider: ^6.1.2
-  secure_application: ^3.8.0
+  secure_application: ^4.0.1
   uni_links: ^0.5.1
   shared_preferences: ^2.2.2
 
