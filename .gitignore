@@ -1,3 +1,6 @@
 
 example/.env
 example/.metadata
+minimal_example/.env
+minimal_example/pubspec.lock
+/minimal_example/.idea

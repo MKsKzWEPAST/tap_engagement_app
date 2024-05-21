@@ -126,6 +126,9 @@ class CombinedBloc extends Bloc<CombinedEvent, CombinedState> {
           "From: ${iden3message.from}, To: ${iden3message.to ?? ''} [end]");
 
       switch (iden3message.messageType) {
+        case Iden3MessageType.proofContractInvokeRequest:
+          // TODO handle logic for smart contracts?
+          break;
         case Iden3MessageType.credentialOffer:
           logger().i("[debugging-combined] -- Claims: Checkpoint 1--");
           emit(CombinedState.qrCodeScanned(iden3message));
@@ -155,7 +158,7 @@ class CombinedBloc extends Bloc<CombinedEvent, CombinedState> {
           break;
 
         default:
-          emit(const CombinedState.error("Iden3MessageType not (not auth.req nor cred.offer"));
+          emit(const CombinedState.error("Iden3MessageType not auth.req nor cred.offer"));
       }
     } catch (error) {
       emit(const CombinedState.error("Scanned code is not valid"));
@@ -211,7 +214,6 @@ class CombinedBloc extends Bloc<CombinedEvent, CombinedState> {
       logger().i("[debugging-combined] -- Auth: Checkpoint 5--");
 
       emit(const CombinedState.authenticated());
-
       //http request => credential
     } catch (error) {
       logger().e("[debugging-combined] Auth: Error - ${error.toString()}");
