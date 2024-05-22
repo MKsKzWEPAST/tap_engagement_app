@@ -28,7 +28,7 @@ class _KycFlowState extends State<KycFlowScreen> {
   RegistrationStep _currentStep = RegistrationStep.startFlow;
   RegistrationStep _previousStep = RegistrationStep.startFlow;
 
-  Object? _personal_data = null; // TODO use to retrieve info from KYC
+  Object? _personal_data; // TODO use to retrieve info from KYC
 
   Future<void> setCurrentStep(RegistrationStep step) async {
     // ignore restartProcess step
@@ -95,16 +95,24 @@ class _KycFlowState extends State<KycFlowScreen> {
 
   ///
   Widget StartFlow() {
-    return ElevatedButton(
-        onPressed: () => setCurrentStep(RegistrationStep.payScreen),
-        child: const Text("Proceed"));
+
+    // TODO - fetch KYC state and navigate accordingly (use state given from the navigation, as we use the state earlier to know if we even need to come here)
+    bool paid = false;
+    String text = paid?"You've already paid. Please proceed with KYC.":"Pay and pass our KYC to receive your TAP";
+
+    return Column(children: [
+      Text(text),
+      ElevatedButton(
+          onPressed: () => setCurrentStep(paid?RegistrationStep.kycScreen:RegistrationStep.payScreen),
+          child: const Text("Start")),
+    ]);
   }
 
   ///
   Widget CompletedPage() {
     return ElevatedButton(
         onPressed: () => setCurrentStep(RegistrationStep.loading),
-        child: const Text("Claim my e-ID"));
+        child: const Text("Access my wallet")); // TODO - differentiate (first access or access for TAP)
   }
 
   ///
