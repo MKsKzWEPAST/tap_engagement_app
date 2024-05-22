@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:minimal_example/src/presentation/ui/pay_n_kyc/widgets/pay.dart';
+import 'package:minimal_example/utils/state_machine_utils.dart';
+import 'package:polygonid_flutter_sdk/common/domain/domain_logger.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'kyc.dart';
@@ -27,8 +29,6 @@ const prefPreviousStep = 'previousStep';
 class _KycFlowState extends State<KycFlowScreen> {
   RegistrationStep _currentStep = RegistrationStep.startFlow;
   RegistrationStep _previousStep = RegistrationStep.startFlow;
-
-  Object? _personal_data; // TODO use to retrieve info from KYC
 
   Future<void> setCurrentStep(RegistrationStep step) async {
     // ignore restartProcess step
@@ -72,18 +72,29 @@ class _KycFlowState extends State<KycFlowScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final state =
+        ModalRoute.of(context)!.settings.arguments as Map<String, String>; // TODO test
+    logger().i('ModalRoute state: <$state>');
+
     Widget body = Container();
     switch (_currentStep) {
       case RegistrationStep.startFlow:
         body = StartFlow();
       case RegistrationStep.payScreen:
         body = PayScreen(
-            onComplete: () => setCurrentStep(
-                RegistrationStep.kycScreen)); // TODO + setStatusPaid
+          onComplete: () async {
+            stateMachineCall(state["mail"]!, "notify/pay");
+            setCurrentStep(RegistrationStep.kycScreen);
+          },
+        );
       case RegistrationStep.kycScreen:
         body = KYCScreen(
-            onComplete: () => setCurrentStep(
-                RegistrationStep.completedPage)); // TODO + setStatusKYC
+          onComplete: () async {
+            stateMachineCall(
+                state["mail"]!, "notify/kyc");
+            setCurrentStep(RegistrationStep.completedPage);
+          },
+        ); // TODO + setStatusKYC
       case RegistrationStep.completedPage:
         body = CompletedPage();
       case RegistrationStep.loading:
@@ -97,8 +108,10 @@ class _KycFlowState extends State<KycFlowScreen> {
 
   ///
   Widget StartFlow() {
-    // TODO - fetch KYC state and navigate accordingly (use state given from the navigation, as we use the state earlier to know if we even need to come here)
-    bool paid = false;
+    final state =
+        ModalRoute.of(context)!.settings.arguments as String?; // TODO test
+    logger().i('ModalRoute state: <$state>');
+    bool paid = state != null && state == "paid";
     String text = paid
         ? "You've already paid. Please proceed with KYC."
         : "Pay and pass our KYC to receive your TAP";
@@ -124,7 +137,6 @@ class _KycFlowState extends State<KycFlowScreen> {
         ElevatedButton(
             onPressed: () => setCurrentStep(RegistrationStep.loading),
             child: const Text("Access my wallet"))
-        // TODO - differentiate (first access or access for TAP)?
       ],
     );
   }

@@ -21,6 +21,8 @@ import 'package:minimal_example/utils/custom_strings.dart';
 import 'package:minimal_example/utils/custom_text_styles.dart';
 import 'package:minimal_example/utils/custom_widgets_keys.dart';
 import 'package:minimal_example/utils/image_resources.dart';
+import 'package:minimal_example/utils/state_machine_utils.dart';
+import 'package:polygonid_flutter_sdk/common/domain/domain_logger.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uni_links/uni_links.dart';
 import 'package:http/http.dart' as http;
@@ -343,10 +345,17 @@ class _HomeScreenState extends State<HomeScreen> {
   ///
   Widget _buildEnterButton(String text) {
     return ElevatedButton(
-      // TODO (see same todo in combined)check KYC/Pay status then: Object? personal_data = await Navigator.pushNamed(context, Routes.kycFlow); accordingly (start state may be diff if payed and no kyc...)
     onPressed: () async {
-      bool valid = await Navigator.pushNamed(context, Routes.kycFlow) as bool;
-      if (valid && mounted) { // TODO handle redirection differently (with state etc...)
+      String res = await stateMachineCall(_tapInfo.email, "get-kyc"); // TODO Test
+      logger().e('Result of KYCGET call: <$res>');
+
+      String kyc_state = "paid";
+      Map<String, String> state = {"mail":_tapInfo.email, "kyc":kyc_state};
+      bool valid = false;
+      if (state["kyc"] != "kyc") {
+        valid = await Navigator.pushNamed(context, Routes.kycFlow, arguments: state) as bool;
+      }
+      if (valid && mounted) {
         Navigator.pushNamed(context, Routes.combinedPath);
       }
     },
