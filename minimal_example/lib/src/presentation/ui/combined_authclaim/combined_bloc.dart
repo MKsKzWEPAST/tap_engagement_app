@@ -112,7 +112,7 @@ class CombinedBloc extends Bloc<CombinedEvent, CombinedState> {
       return;
     }
     emit(const CombinedState.error("error while trying to get the credential"));
-
+    logger().e("Couldn't create TAP credential.");
   }
 
   Future<void> _handleIden3Message(String response, Emitter<CombinedState> emit) async {
