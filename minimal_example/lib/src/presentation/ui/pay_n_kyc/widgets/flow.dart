@@ -78,10 +78,12 @@ class _KycFlowState extends State<KycFlowScreen> {
         body = StartFlow();
       case RegistrationStep.payScreen:
         body = PayScreen(
-            onComplete: () => setCurrentStep(RegistrationStep.kycScreen));
+            onComplete: () => setCurrentStep(
+                RegistrationStep.kycScreen)); // TODO + setStatusPaid
       case RegistrationStep.kycScreen:
         body = KYCScreen(
-            onComplete: () => setCurrentStep(RegistrationStep.completedPage));
+            onComplete: () => setCurrentStep(
+                RegistrationStep.completedPage)); // TODO + setStatusKYC
       case RegistrationStep.completedPage:
         body = CompletedPage();
       case RegistrationStep.loading:
@@ -95,29 +97,41 @@ class _KycFlowState extends State<KycFlowScreen> {
 
   ///
   Widget StartFlow() {
-
     // TODO - fetch KYC state and navigate accordingly (use state given from the navigation, as we use the state earlier to know if we even need to come here)
     bool paid = false;
-    String text = paid?"You've already paid. Please proceed with KYC.":"Pay and pass our KYC to receive your TAP";
+    String text = paid
+        ? "You've already paid. Please proceed with KYC."
+        : "Pay and pass our KYC to receive your TAP";
 
-    return Column(children: [
-      Text(text),
-      ElevatedButton(
-          onPressed: () => setCurrentStep(paid?RegistrationStep.kycScreen:RegistrationStep.payScreen),
-          child: const Text("Start")),
-    ]);
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Text(text),
+        ElevatedButton(
+            onPressed: () => setCurrentStep(
+                paid ? RegistrationStep.kycScreen : RegistrationStep.payScreen),
+            child: const Text("Start")),
+      ],
+    );
   }
 
   ///
   Widget CompletedPage() {
-    return ElevatedButton(
-        onPressed: () => setCurrentStep(RegistrationStep.loading),
-        child: const Text("Access my wallet")); // TODO - differentiate (first access or access for TAP)
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        const Text("Congratulation, you just completed your KYC process!"),
+        ElevatedButton(
+            onPressed: () => setCurrentStep(RegistrationStep.loading),
+            child: const Text("Access my wallet"))
+        // TODO - differentiate (first access or access for TAP)?
+      ],
+    );
   }
 
   ///
   Widget Loading() {
-    Navigator.pop(context, _personal_data);
+    Navigator.pop(context, true);
 
     return const Column(children: [
       Text("Loading your wallet..."),

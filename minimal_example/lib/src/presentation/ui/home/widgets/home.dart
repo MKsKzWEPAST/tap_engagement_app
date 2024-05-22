@@ -344,7 +344,12 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget _buildEnterButton(String text) {
     return ElevatedButton(
       // TODO (see same todo in combined)check KYC/Pay status then: Object? personal_data = await Navigator.pushNamed(context, Routes.kycFlow); accordingly (start state may be diff if payed and no kyc...)
-    onPressed: () => Navigator.pushNamed(context, Routes.kycFlow),
+    onPressed: () async {
+      bool valid = await Navigator.pushNamed(context, Routes.kycFlow) as bool;
+      if (valid && mounted) { // TODO handle redirection differently (with state etc...)
+        Navigator.pushNamed(context, Routes.combinedPath);
+      }
+    },
         child: Text(text));
   }
 

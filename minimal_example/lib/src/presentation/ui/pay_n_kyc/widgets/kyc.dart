@@ -21,18 +21,25 @@ class KYCState extends State<KYCScreen> {
   late StreamSubscription<InquiryError> _streamError;
   late StreamSubscription<InquiryComplete> _streamComplete;
 
+
+
   @override
   void initState() {
     super.initState();
 
     _configuration = TemplateIdConfiguration(
-      templateId: "itmpl_ECiRifqfiEQzoFH6KhSjDo869AgE",
+      templateId: "itmpl_6P6URyCDmgtvq8yGYzWun3uwx9nh",
       environment: InquiryEnvironment.sandbox,
     );
 
     _streamCanceled = PersonaInquiry.onCanceled.listen(_onCanceled);
     _streamError = PersonaInquiry.onError.listen(_onError);
     _streamComplete = PersonaInquiry.onComplete.listen(_onComplete);
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      PersonaInquiry.init(configuration: _configuration);
+      PersonaInquiry.start();
+    });
   }
 
   @override
@@ -92,14 +99,8 @@ class KYCState extends State<KYCScreen> {
     return Scaffold(
         body: Container(
           color: Colors.grey[200],
-          child: Center(
-            child: ElevatedButton(
-              onPressed: () {
-                PersonaInquiry.init(configuration: _configuration);
-                PersonaInquiry.start();
-              },
-              child: const Text("Start KYC process!"),
-            ),
+          child: const Center(
+            child: CircularProgressIndicator(),
           ),
         ),
     );
