@@ -79,30 +79,8 @@ class _CombinedScreenState extends State<CombinedScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: CustomColors.background,
-      endDrawer: _buildDrawer(),
       appBar: _buildAppBar(),
       body: _buildBody(),
-    );
-  }
-
-  ///
-  Widget _buildDrawer() {
-    return Drawer(
-      child: ListView(
-        padding: EdgeInsets.zero,
-        children: [
-          DrawerHeader(
-            decoration:
-                const BoxDecoration(color: Color.fromARGB(255, 129, 70, 227)),
-            child: Text('Settings',
-                style: CustomTextStyles.titleTextStyle
-                    .copyWith(color: Colors.white)),
-          ),
-          _buildRadioButtons(),
-          const SizedBox(height: 20),
-          _buildRemoveAllClaimsButton(),
-        ],
-      ),
     );
   }
 
