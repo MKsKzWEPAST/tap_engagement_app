@@ -119,7 +119,18 @@ class _KycFlowState extends State<KycFlowScreen> {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Text(text),
+        Text(text, style: const TextStyle( // TODO: test
+          color: Colors.black, // High contrast color
+          fontSize: 20,         // Adjust the font size as needed
+          fontWeight: FontWeight.bold, // Bold for better visibility
+          shadows: [
+            Shadow(
+              offset: Offset(1.0, 1.0), // Slight shadow for depth
+              blurRadius: 2.0,
+              color: Colors.grey,
+            ),
+          ],
+        )),
         ElevatedButton(
             onPressed: () => setCurrentStep(
                 paid ? RegistrationStep.kycScreen : RegistrationStep.payScreen),
@@ -133,7 +144,18 @@ class _KycFlowState extends State<KycFlowScreen> {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        const Text("Congratulation, you just completed your KYC process!"),
+        const Text("Congratulation, you just completed your KYC process!", style: TextStyle( // TODO: test ui
+          color: Colors.black, // High contrast color
+          fontSize: 20,         // Adjust the font size as needed
+          fontWeight: FontWeight.bold, // Bold for better visibility
+          shadows: [
+            Shadow(
+              offset: Offset(1.0, 1.0), // Slight shadow for depth
+              blurRadius: 2.0,
+              color: Colors.grey,
+            ),
+          ],
+        )),
         ElevatedButton(
             onPressed: () => setCurrentStep(RegistrationStep.loading),
             child: const Text("Access my wallet"))
