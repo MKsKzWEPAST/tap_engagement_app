@@ -314,6 +314,7 @@ class _CombinedScreenState extends State<CombinedScreen> {
       child: ElevatedButton(
         key: CustomWidgetsKeys.authScreenButtonConnect2,
         onPressed: () {
+          // TODO (see same todo in home) check KYC/Pay status then: Object? personal_data = await Navigator.pushNamed(context, Routes.kycFlow); accordingly (start state may be diff if payed and no kyc...)
           widget._bloc.add(const CombinedEvent.clickTapButton());
         },
         style: CustomButtonStyle.primaryButtonStyle,

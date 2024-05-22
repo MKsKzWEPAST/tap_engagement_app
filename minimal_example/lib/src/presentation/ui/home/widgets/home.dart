@@ -189,73 +189,6 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   ///
-  Widget _buildIdentityActionButton() {
-    return Align(
-      alignment: Alignment.center,
-      child: BlocBuilder(
-        bloc: _bloc,
-        builder: (BuildContext context, HomeState state) {
-          bool enabled = state is! LoadingDataHomeState;
-          bool showCreateIdentityButton =
-              state.identifier == null || state.identifier!.isEmpty;
-
-          return showCreateIdentityButton
-              ? _buildCreateIdentityButton(enabled)
-              : _buildRemoveIdentityButton(enabled);
-        },
-      ),
-    );
-  }
-
-  ///
-  Widget _buildCreateIdentityButton(bool enabled) {
-    return AbsorbPointer(
-      absorbing: !enabled,
-      child: ElevatedButton(
-        key: CustomWidgetsKeys.homeScreenButtonCreateIdentity,
-        onPressed: () {
-          _bloc.add(const HomeEvent.createIdentity());
-        },
-        style: enabled
-            ? CustomButtonStyle.primaryButtonStyle
-            : CustomButtonStyle.disabledPrimaryButtonStyle,
-        child: const FittedBox(
-          child: Text(
-            CustomStrings.homeButtonCTA,
-            textAlign: TextAlign.center,
-            style: CustomTextStyles.primaryButtonTextStyle,
-          ),
-        ),
-      ),
-    );
-  }
-
-  ///
-  Widget _buildRemoveIdentityButton(bool enabled) {
-    return AbsorbPointer(
-      absorbing: !enabled,
-      child: ElevatedButton(
-        key: CustomWidgetsKeys.homeScreenButtonRemoveIdentity,
-        onPressed: () {
-          _bloc.add(const HomeEvent.removeIdentity());
-        },
-        style: enabled
-            ? CustomButtonStyle.outlinedPrimaryButtonStyle
-            : CustomButtonStyle.disabledPrimaryButtonStyle,
-        child: FittedBox(
-          child: Text(
-            CustomStrings.homeButtonRemoveIdentityCTA,
-            textAlign: TextAlign.center,
-            style: CustomTextStyles.primaryButtonTextStyle.copyWith(
-              color: CustomColors.primaryButton,
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-
-  ///
   Widget _buildLogo() {
     return SvgPicture.asset(
       ImageResources.logo,
@@ -410,7 +343,8 @@ class _HomeScreenState extends State<HomeScreen> {
   ///
   Widget _buildEnterButton(String text) {
     return ElevatedButton(
-        onPressed: () => Navigator.pushNamed(context, Routes.combinedPath),
+      // TODO check KYC/Pay status then: Object? personal_data = await Navigator.pushNamed(context, Routes.kycFlow); accordingly (start state may be diff if payed and no kyc...)
+    onPressed: () => Navigator.pushNamed(context, Routes.combinedPath),
         child: Text(text));
   }
 
@@ -427,82 +361,6 @@ class _HomeScreenState extends State<HomeScreen> {
             style: CustomTextStyles.descriptionTextStyle
                 .copyWith(color: CustomColors.redError),
           ),
-        );
-      },
-    );
-  }
-
-  ///
-  Widget _buildFeaturesSection() {
-    return ListView(
-      shrinkWrap: true,
-      physics: const ClampingScrollPhysics(),
-      children: [
-        _buildCombinedFeatureCard(),
-        _buildBackupIdentityFeatureCard(),
-        _buildRestoreIdentityFeatureCard(),
-      ],
-    );
-  }
-
-  ///
-  Widget _buildCombinedFeatureCard() {
-    return BlocBuilder(
-      bloc: _bloc,
-      builder: (BuildContext context, HomeState state) {
-        bool enabled = (state is! LoadingDataHomeState) &&
-            (state.identifier != null && state.identifier!.isNotEmpty);
-        return FeatureCard(
-          methodName: "auth() / getCredential()",
-          title: "Combined Test",
-          description: "Combined QR for auth and Claims",
-          onTap: () {
-            Navigator.pushNamed(context, Routes.combinedPath);
-          },
-          enabled: enabled,
-          disabledReason: CustomStrings.homeFeatureCardDisabledReason,
-        );
-      },
-    );
-  }
-
-  ///
-  Widget _buildBackupIdentityFeatureCard() {
-    return BlocBuilder(
-      bloc: _bloc,
-      builder: (BuildContext context, HomeState state) {
-        bool enabled = (state is! LoadingDataHomeState) &&
-            (state.identifier != null && state.identifier!.isNotEmpty);
-        return FeatureCard(
-          methodName: CustomStrings.backupIdentityMethod,
-          title: CustomStrings.backupIdentityTitle,
-          description: CustomStrings.backupIdentityDescription,
-          onTap: () {
-            Navigator.pushNamed(context, Routes.backupIdentityPath);
-          },
-          enabled: enabled,
-          disabledReason: CustomStrings.homeFeatureCardDisabledReason,
-        );
-      },
-    );
-  }
-
-  ///
-  Widget _buildRestoreIdentityFeatureCard() {
-    return BlocBuilder(
-      bloc: _bloc,
-      builder: (BuildContext context, HomeState state) {
-        bool enabled = (state is! LoadingDataHomeState) &&
-            (state.identifier != null && state.identifier!.isNotEmpty);
-        return FeatureCard(
-          methodName: CustomStrings.restoreIdentityMethod,
-          title: CustomStrings.restoreIdentityTitle,
-          description: CustomStrings.restoreIdentityDescription,
-          onTap: () {
-            Navigator.pushNamed(context, Routes.restoreIdentityPath);
-          },
-          enabled: enabled,
-          disabledReason: CustomStrings.homeFeatureCardDisabledReason,
         );
       },
     );
