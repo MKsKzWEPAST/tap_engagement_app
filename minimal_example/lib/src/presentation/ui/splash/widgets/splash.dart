@@ -12,7 +12,6 @@ import 'package:minimal_example/utils/custom_button_style.dart';
 import 'package:minimal_example/utils/custom_colors.dart';
 import 'package:minimal_example/utils/custom_text_styles.dart';
 import 'package:minimal_example/utils/image_resources.dart';
-import 'package:secure_application/secure_application_provider.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key}) : super(key: key);
@@ -73,14 +72,15 @@ class _SplashScreenState extends State<SplashScreen> {
       bloc: _bloc,
       builder: (BuildContext context, SplashState state) {
         if (state is DownloadProgressSplashState) {
+          final percentage = (state.downloaded / state.contentLength * 100);
           // return percentage
           return Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              const Text("Downloading circuits..."),
+              const Text("We are setting up the app..."),
               const SizedBox(height: 2),
               Text(
-                  "${(state.downloaded / state.contentLength * 100).toStringAsFixed(2)} %"),
+                  "${percentage.toStringAsFixed(2)} %"),
               const SizedBox(height: 16),
               ElevatedButton(
                 onPressed: () {

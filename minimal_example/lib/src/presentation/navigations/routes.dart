@@ -13,6 +13,8 @@ import 'package:secure_application/secure_gate.dart';
 import 'package:minimal_example/utils/bioauth_utils.dart';
 import 'package:minimal_example/utils/custom_text_styles.dart';
 
+import '../ui/pay_n_kyc/widgets/flow.dart';
+
 class Routes {
   static const String initialPath = "/";
   static const String splashPath = "/splash";
@@ -23,6 +25,7 @@ class Routes {
   static const String claimDetailPath = "/claim_detail";
   static const String backupIdentityPath = "/backup_identity";
   static const String restoreIdentityPath = "/restore_identity";
+  static const String kycFlow = "/kyc_flow";
 
   ///
   static Map<String, WidgetBuilder> getRoutes(context) {
@@ -35,6 +38,8 @@ class Routes {
       claimDetailPath: _claimDetailPath(),
       backupIdentityPath: _backupIdentityRoute(),
       restoreIdentityPath: _restoreIdentityRoute(),
+      kycFlow: _kycFlowRoute()
+
     };
   }
 
@@ -75,5 +80,10 @@ class Routes {
   ///
   static WidgetBuilder _restoreIdentityRoute() {
     return (BuildContext context) => const RestoreIdentityScreen();
+  }
+
+  ///
+  static WidgetBuilder _kycFlowRoute() {
+    return (BuildContext context) => KycFlowScreen();
   }
 }

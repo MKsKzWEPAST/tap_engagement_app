@@ -66,7 +66,7 @@ class _ClaimDetailScreenState extends State<ClaimDetailScreen> {
               ),
               const SizedBox(height: 24),
               _buildRefreshCredentialButton(),
-              _buildRemoveClaimButton(),
+              //_buildRemoveClaimButton(),
               _buildBlocListener(),
             ],
           ),
@@ -113,6 +113,7 @@ class _ClaimDetailScreenState extends State<ClaimDetailScreen> {
     );
   }
 
+  /*
   ///
   Widget _buildRemoveClaimButton() {
     return Padding(
@@ -133,6 +134,7 @@ class _ClaimDetailScreenState extends State<ClaimDetailScreen> {
       ),
     );
   }
+  */
 
   ///
   Widget _buildBlocListener() {

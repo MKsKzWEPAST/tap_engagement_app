@@ -79,30 +79,8 @@ class _CombinedScreenState extends State<CombinedScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: CustomColors.background,
-      endDrawer: _buildDrawer(),
       appBar: _buildAppBar(),
       body: _buildBody(),
-    );
-  }
-
-  ///
-  Widget _buildDrawer() {
-    return Drawer(
-      child: ListView(
-        padding: EdgeInsets.zero,
-        children: [
-          DrawerHeader(
-            decoration:
-                const BoxDecoration(color: Color.fromARGB(255, 129, 70, 227)),
-            child: Text('Settings',
-                style: CustomTextStyles.titleTextStyle
-                    .copyWith(color: Colors.white)),
-          ),
-          _buildRadioButtons(),
-          const SizedBox(height: 20),
-          _buildRemoveAllClaimsButton(),
-        ],
-      ),
     );
   }
 
@@ -314,6 +292,7 @@ class _CombinedScreenState extends State<CombinedScreen> {
       child: ElevatedButton(
         key: CustomWidgetsKeys.authScreenButtonConnect2,
         onPressed: () {
+          // TODO (see same todo in home) check KYC/Pay status then: Object? personal_data = await Navigator.pushNamed(context, Routes.kycFlow); accordingly (start state may be diff if payed and no kyc...)
           widget._bloc.add(const CombinedEvent.clickTapButton());
         },
         style: CustomButtonStyle.primaryButtonStyle,
