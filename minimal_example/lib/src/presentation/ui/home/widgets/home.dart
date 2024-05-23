@@ -144,8 +144,7 @@ class _HomeScreenState extends State<HomeScreen> {
             return Text(
                 'Error: ${snapshot.error}'); // Display an error message if an error occurs.
           } else if (!snapshot.hasData) {
-            return Text(
-                'No data available'); // Display a message when no data is available.
+            return Text('No data available'); // Display a message when no data is available.
           } else {
             final fetched = snapshot.data ?? false;
             return Scaffold(
@@ -173,6 +172,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                 _buildWalletSection(),
                               const SizedBox(height: 20),
                               _buildErrorSection(),
+                              const SizedBox(height: 20),
+                              _buildBackOfficeSection()
                             ],
                           ),
                         ),
@@ -306,8 +307,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                           FontWeight.w700),
                                             )
                                           : Text(
-                                              CustomStrings.homeNoWallet +
-                                                  _tapInfo.nonce,
+                                              CustomStrings.homeNoWallet,
                                               style: CustomTextStyles
                                                   .descriptionTextStyle
                                                   .copyWith(fontSize: 15),
@@ -394,5 +394,14 @@ class _HomeScreenState extends State<HomeScreen> {
         );
       },
     );
+  }
+
+  Widget _buildBackOfficeSection() {
+    return ElevatedButton(
+        onPressed: () async {
+          final SharedPreferences prefs = await SharedPreferences.getInstance();
+          await prefs.clear();
+        },
+        child: const Text("Clear local storage"));
   }
 }
