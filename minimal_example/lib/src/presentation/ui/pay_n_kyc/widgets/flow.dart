@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:minimal_example/src/presentation/ui/pay_n_kyc/widgets/pay.dart';
@@ -72,14 +74,18 @@ class _KycFlowState extends State<KycFlowScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final state =
-        ModalRoute.of(context)!.settings.arguments as Map<String, String>; // TODO test
+    final state = ModalRoute.of(context)!.settings.arguments
+        as Map<String, String>;
     logger().i('ModalRoute state: <$state>');
 
     Widget body = Container();
     switch (_currentStep) {
       case RegistrationStep.startFlow:
+        bool paid = state["state"] != null && state["state"] == "paid";
+        setCurrentStep(
+            paid ? RegistrationStep.kycScreen : RegistrationStep.payScreen);
         body = StartFlow();
+        break;
       case RegistrationStep.payScreen:
         body = PayScreen(
           onComplete: () async {
@@ -87,18 +93,21 @@ class _KycFlowState extends State<KycFlowScreen> {
             setCurrentStep(RegistrationStep.kycScreen);
           },
         );
+        break;
       case RegistrationStep.kycScreen:
         body = KYCScreen(
           onComplete: () async {
-            stateMachineCall(
-                state["mail"]!, "notify/kyc");
+            stateMachineCall(state["mail"]!, "notify/kyc");
             setCurrentStep(RegistrationStep.completedPage);
           },
         ); // TODO + setStatusKYC
+        break;
       case RegistrationStep.completedPage:
         body = CompletedPage();
+        break;
       case RegistrationStep.loading:
         body = Loading();
+        break;
       default:
         body = RestartProcess();
     }
@@ -108,35 +117,9 @@ class _KycFlowState extends State<KycFlowScreen> {
 
   ///
   Widget StartFlow() {
-    final state =
-        ModalRoute.of(context)!.settings.arguments as String?; // TODO test
-    logger().i('ModalRoute state: <$state>');
-    bool paid = state != null && state == "paid";
-    String text = paid
-        ? "You've already paid. Please proceed with KYC."
-        : "Pay and pass our KYC to receive your TAP";
-
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Text(text, style: const TextStyle( // TODO: test
-          color: Colors.black, // High contrast color
-          fontSize: 20,         // Adjust the font size as needed
-          fontWeight: FontWeight.bold, // Bold for better visibility
-          shadows: [
-            Shadow(
-              offset: Offset(1.0, 1.0), // Slight shadow for depth
-              blurRadius: 2.0,
-              color: Colors.grey,
-            ),
-          ],
-        )),
-        ElevatedButton(
-            onPressed: () => setCurrentStep(
-                paid ? RegistrationStep.kycScreen : RegistrationStep.payScreen),
-            child: const Text("Start")),
-      ],
-    );
+    return const Column(mainAxisAlignment:MainAxisAlignment.center, children: [
+      CircularProgressIndicator(),
+    ]);
   }
 
   ///
@@ -144,18 +127,21 @@ class _KycFlowState extends State<KycFlowScreen> {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        const Text("Congratulation, you just completed your KYC process!", style: TextStyle( // TODO: test ui
-          color: Colors.black, // High contrast color
-          fontSize: 20,         // Adjust the font size as needed
-          fontWeight: FontWeight.bold, // Bold for better visibility
-          shadows: [
-            Shadow(
-              offset: Offset(1.0, 1.0), // Slight shadow for depth
-              blurRadius: 2.0,
-              color: Colors.grey,
-            ),
-          ],
-        )),
+        // TODO: add an image ~
+        const Text(
+          "Congratulations!",
+          style: TextStyle(
+            fontSize: 24,
+          ),
+        ),
+        const Text(
+          "You completed your KYC process!",
+          style: TextStyle(
+            fontSize: 16,
+          ),
+          textAlign: TextAlign.center,
+        ),
+        const SizedBox(height: 12),
         ElevatedButton(
             onPressed: () => setCurrentStep(RegistrationStep.loading),
             child: const Text("Access my wallet"))

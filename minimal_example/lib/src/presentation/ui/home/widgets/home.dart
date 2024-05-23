@@ -144,7 +144,8 @@ class _HomeScreenState extends State<HomeScreen> {
             return Text(
                 'Error: ${snapshot.error}'); // Display an error message if an error occurs.
           } else if (!snapshot.hasData) {
-            return Text('No data available'); // Display a message when no data is available.
+            return Text(
+                'No data available'); // Display a message when no data is available.
           } else {
             final fetched = snapshot.data ?? false;
             return Scaffold(
@@ -242,19 +243,18 @@ class _HomeScreenState extends State<HomeScreen> {
               bloc: _bloc,
               builder: (BuildContext context, HomeState state) {
                 return Column(
-                        mainAxisSize: MainAxisSize.min,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [ Text(
-                                  CustomStrings.homeOwnsTAP,
-                                  style: CustomTextStyles.descriptionTextStyle
-                                      .copyWith(
-                                          fontSize: 20,
-                                          fontWeight: FontWeight.w700),
-                                ),
-                          const SizedBox(height: 20),
-                          _buildEnterButton(CustomStrings.homeAccessTAP),
-                        ],
-                      );
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Text(
+                      CustomStrings.homeOwnsTAP,
+                      style: CustomTextStyles.descriptionTextStyle
+                          .copyWith(fontSize: 20, fontWeight: FontWeight.w700),
+                    ),
+                    const SizedBox(height: 20),
+                    _buildEnterButton(CustomStrings.homeAccessTAP),
+                  ],
+                );
               },
             ),
           );
@@ -313,7 +313,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                                   .copyWith(fontSize: 15),
                                             ),
                                       const SizedBox(height: 20),
-                                      _buildEnterButton(CustomStrings.homeNewTAP),
+                                      _buildEnterButton(
+                                          CustomStrings.homeNewTAP),
                                     ],
                                   )
                                 : Column(
@@ -343,22 +344,37 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   ///
-  Widget _buildEnterButton(String text) {
-    return ElevatedButton(
-    onPressed: () async {
-      String res = await stateMachineCall(_tapInfo.email, "get-kyc"); // TODO Test
-      logger().e('Result of KYCGET call: <$res>');
+  Widget _buildEnterButton(String text) { // TODO will need to inform the user of the need to do KYC for their TAP
+    // TODO move elsewhere + use constants
+    const KYC_NONE = "KYC_NONE";
+    const POST_PAY = "POST_PAY";
+    const POST_KYC = "POST_KYC";
 
-      String kyc_state = "paid";
-      Map<String, String> state = {"mail":_tapInfo.email, "kyc":kyc_state};
-      bool valid = false;
-      if (state["kyc"] != "kyc") {
-        valid = await Navigator.pushNamed(context, Routes.kycFlow, arguments: state) as bool;
-      }
-      if (valid && mounted) {
-        Navigator.pushNamed(context, Routes.combinedPath);
-      }
-    },
+    return ElevatedButton(
+        onPressed: () async {
+          String res =
+              await stateMachineCall(_tapInfo.email, "get-kyc");
+          String kyc_state = "KYC_NONE";
+          if (res != "") {
+            Map<String, dynamic> jsonMap = jsonDecode(res);
+            kyc_state = jsonMap["status"]!;
+          }
+
+          Map<String, String> state = {
+            "mail": _tapInfo.email,
+            "kyc": kyc_state
+          };
+          bool valid = false;
+          if (state["kyc"] != "POST_KYC") {
+            valid = await Navigator.pushNamed(context, Routes.kycFlow,
+                arguments: state) as bool;
+          } else {
+            valid = true;
+          }
+          if (valid && mounted) {
+            Navigator.pushNamed(context, Routes.combinedPath);
+          }
+        },
         child: Text(text));
   }
 
