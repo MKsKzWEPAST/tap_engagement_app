@@ -31,6 +31,8 @@ class CombinedState with _$CombinedState {
   const factory CombinedState.qrCodeScanned(Iden3MessageEntity iden3message) =
   QrCodeScannedCombinedState;
 
+  const factory CombinedState.fetchingTAP() = FetchingTAPState;
+
   const factory CombinedState.loaded(Iden3MessageEntity iden3message) =
   LoadedCombinedState;
 

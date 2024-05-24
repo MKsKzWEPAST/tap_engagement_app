@@ -9,6 +9,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:minimal_example/src/presentation/dependency_injection/dependencies_provider.dart';
 import 'package:minimal_example/src/presentation/navigations/routes.dart';
+import 'package:minimal_example/src/presentation/ui/combined_authclaim/combined_bloc.dart';
 import 'package:minimal_example/src/presentation/ui/common/widgets/button_next_action.dart';
 import 'package:minimal_example/src/presentation/ui/common/widgets/feature_card.dart';
 import 'package:minimal_example/src/presentation/ui/home/home_bloc.dart';
@@ -61,6 +62,9 @@ class _HomeScreenState extends State<HomeScreen> {
   void _initStream(SharedPreferences prefs) {
     final tapFetched = prefs.getBool("tapFetched") ?? false;
     fetched_stream.sink.add(tapFetched);
+    setState(() {
+      tapSetup = prefs.getBool("tapSetup") ?? false;
+    });
   }
 
   @override
@@ -144,7 +148,8 @@ class _HomeScreenState extends State<HomeScreen> {
             return Text(
                 'Error: ${snapshot.error}'); // Display an error message if an error occurs.
           } else if (!snapshot.hasData) {
-            return Text('No data available'); // Display a message when no data is available.
+            return Text(
+                'No data available'); // Display a message when no data is available.
           } else {
             final fetched = snapshot.data ?? false;
             return Scaffold(
@@ -172,8 +177,6 @@ class _HomeScreenState extends State<HomeScreen> {
                                 _buildWalletSection(),
                               const SizedBox(height: 20),
                               _buildErrorSection(),
-                              const SizedBox(height: 20),
-                              _buildBackOfficeSection()
                             ],
                           ),
                         ),
@@ -344,7 +347,8 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   ///
-  Widget _buildEnterButton(String text) { // TODO will need to inform the user of the need to do KYC for their TAP
+  Widget _buildEnterButton(String text) {
+    // TODO will need to inform the user of the need to do KYC for their TAP
     // TODO move elsewhere + use constants
     const KYC_NONE = "KYC_NONE";
     const POST_PAY = "POST_PAY";
@@ -352,8 +356,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
     return ElevatedButton(
         onPressed: () async {
-          String res =
-              await stateMachineCall(_tapInfo.email, "get-kyc");
+          String res = await stateMachineCall(_tapInfo.email, "get-kyc");
           String kyc_state = "KYC_NONE";
           if (res != "") {
             Map<String, dynamic> jsonMap = jsonDecode(res);
@@ -368,10 +371,8 @@ class _HomeScreenState extends State<HomeScreen> {
           if (state["kyc"] != "POST_KYC") {
             valid = await Navigator.pushNamed(context, Routes.kycFlow,
                 arguments: state) as bool;
-          } else {
-            valid = true;
-          }
-          if (valid && mounted) {
+            logger().d('Here\'s VALID: <$valid>');
+          } else if (mounted) {
             Navigator.pushNamed(context, Routes.combinedPath);
           }
         },
@@ -394,14 +395,5 @@ class _HomeScreenState extends State<HomeScreen> {
         );
       },
     );
-  }
-
-  Widget _buildBackOfficeSection() {
-    return ElevatedButton(
-        onPressed: () async {
-          final SharedPreferences prefs = await SharedPreferences.getInstance();
-          await prefs.clear();
-        },
-        child: const Text("Clear local storage"));
   }
 }

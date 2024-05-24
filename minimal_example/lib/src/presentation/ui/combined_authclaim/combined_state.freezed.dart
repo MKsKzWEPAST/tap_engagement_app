@@ -24,6 +24,7 @@ mixin _$CombinedState {
     required TResult Function() navigateToQrCodeScanner,
     required TResult Function(Iden3MessageEntity<dynamic> iden3message)
         qrCodeScanned,
+    required TResult Function() fetchingTAP,
     required TResult Function(Iden3MessageEntity<dynamic> iden3message) loaded,
     required TResult Function(String message) error,
     required TResult Function() authenticated,
@@ -38,6 +39,7 @@ mixin _$CombinedState {
     TResult? Function(SelectedProfile profile)? profileSelected,
     TResult? Function()? navigateToQrCodeScanner,
     TResult? Function(Iden3MessageEntity<dynamic> iden3message)? qrCodeScanned,
+    TResult? Function()? fetchingTAP,
     TResult? Function(Iden3MessageEntity<dynamic> iden3message)? loaded,
     TResult? Function(String message)? error,
     TResult? Function()? authenticated,
@@ -52,6 +54,7 @@ mixin _$CombinedState {
     TResult Function(SelectedProfile profile)? profileSelected,
     TResult Function()? navigateToQrCodeScanner,
     TResult Function(Iden3MessageEntity<dynamic> iden3message)? qrCodeScanned,
+    TResult Function()? fetchingTAP,
     TResult Function(Iden3MessageEntity<dynamic> iden3message)? loaded,
     TResult Function(String message)? error,
     TResult Function()? authenticated,
@@ -69,6 +72,7 @@ mixin _$CombinedState {
     required TResult Function(NavigateToQrCodeScannerCombinedState value)
         navigateToQrCodeScanner,
     required TResult Function(QrCodeScannedCombinedState value) qrCodeScanned,
+    required TResult Function(FetchingTAPState value) fetchingTAP,
     required TResult Function(LoadedCombinedState value) loaded,
     required TResult Function(ErrorCombinedState value) error,
     required TResult Function(AuthenticatedCombinedState value) authenticated,
@@ -85,6 +89,7 @@ mixin _$CombinedState {
     TResult? Function(NavigateToQrCodeScannerCombinedState value)?
         navigateToQrCodeScanner,
     TResult? Function(QrCodeScannedCombinedState value)? qrCodeScanned,
+    TResult? Function(FetchingTAPState value)? fetchingTAP,
     TResult? Function(LoadedCombinedState value)? loaded,
     TResult? Function(ErrorCombinedState value)? error,
     TResult? Function(AuthenticatedCombinedState value)? authenticated,
@@ -101,6 +106,7 @@ mixin _$CombinedState {
     TResult Function(NavigateToQrCodeScannerCombinedState value)?
         navigateToQrCodeScanner,
     TResult Function(QrCodeScannedCombinedState value)? qrCodeScanned,
+    TResult Function(FetchingTAPState value)? fetchingTAP,
     TResult Function(LoadedCombinedState value)? loaded,
     TResult Function(ErrorCombinedState value)? error,
     TResult Function(AuthenticatedCombinedState value)? authenticated,
@@ -174,6 +180,7 @@ class _$InitCombinedStateImpl implements InitCombinedState {
     required TResult Function() navigateToQrCodeScanner,
     required TResult Function(Iden3MessageEntity<dynamic> iden3message)
         qrCodeScanned,
+    required TResult Function() fetchingTAP,
     required TResult Function(Iden3MessageEntity<dynamic> iden3message) loaded,
     required TResult Function(String message) error,
     required TResult Function() authenticated,
@@ -191,6 +198,7 @@ class _$InitCombinedStateImpl implements InitCombinedState {
     TResult? Function(SelectedProfile profile)? profileSelected,
     TResult? Function()? navigateToQrCodeScanner,
     TResult? Function(Iden3MessageEntity<dynamic> iden3message)? qrCodeScanned,
+    TResult? Function()? fetchingTAP,
     TResult? Function(Iden3MessageEntity<dynamic> iden3message)? loaded,
     TResult? Function(String message)? error,
     TResult? Function()? authenticated,
@@ -208,6 +216,7 @@ class _$InitCombinedStateImpl implements InitCombinedState {
     TResult Function(SelectedProfile profile)? profileSelected,
     TResult Function()? navigateToQrCodeScanner,
     TResult Function(Iden3MessageEntity<dynamic> iden3message)? qrCodeScanned,
+    TResult Function()? fetchingTAP,
     TResult Function(Iden3MessageEntity<dynamic> iden3message)? loaded,
     TResult Function(String message)? error,
     TResult Function()? authenticated,
@@ -231,6 +240,7 @@ class _$InitCombinedStateImpl implements InitCombinedState {
     required TResult Function(NavigateToQrCodeScannerCombinedState value)
         navigateToQrCodeScanner,
     required TResult Function(QrCodeScannedCombinedState value) qrCodeScanned,
+    required TResult Function(FetchingTAPState value) fetchingTAP,
     required TResult Function(LoadedCombinedState value) loaded,
     required TResult Function(ErrorCombinedState value) error,
     required TResult Function(AuthenticatedCombinedState value) authenticated,
@@ -250,6 +260,7 @@ class _$InitCombinedStateImpl implements InitCombinedState {
     TResult? Function(NavigateToQrCodeScannerCombinedState value)?
         navigateToQrCodeScanner,
     TResult? Function(QrCodeScannedCombinedState value)? qrCodeScanned,
+    TResult? Function(FetchingTAPState value)? fetchingTAP,
     TResult? Function(LoadedCombinedState value)? loaded,
     TResult? Function(ErrorCombinedState value)? error,
     TResult? Function(AuthenticatedCombinedState value)? authenticated,
@@ -269,6 +280,7 @@ class _$InitCombinedStateImpl implements InitCombinedState {
     TResult Function(NavigateToQrCodeScannerCombinedState value)?
         navigateToQrCodeScanner,
     TResult Function(QrCodeScannedCombinedState value)? qrCodeScanned,
+    TResult Function(FetchingTAPState value)? fetchingTAP,
     TResult Function(LoadedCombinedState value)? loaded,
     TResult Function(ErrorCombinedState value)? error,
     TResult Function(AuthenticatedCombinedState value)? authenticated,
@@ -333,6 +345,7 @@ class _$LoadingCombinedStateImpl implements LoadingCombinedState {
     required TResult Function() navigateToQrCodeScanner,
     required TResult Function(Iden3MessageEntity<dynamic> iden3message)
         qrCodeScanned,
+    required TResult Function() fetchingTAP,
     required TResult Function(Iden3MessageEntity<dynamic> iden3message) loaded,
     required TResult Function(String message) error,
     required TResult Function() authenticated,
@@ -350,6 +363,7 @@ class _$LoadingCombinedStateImpl implements LoadingCombinedState {
     TResult? Function(SelectedProfile profile)? profileSelected,
     TResult? Function()? navigateToQrCodeScanner,
     TResult? Function(Iden3MessageEntity<dynamic> iden3message)? qrCodeScanned,
+    TResult? Function()? fetchingTAP,
     TResult? Function(Iden3MessageEntity<dynamic> iden3message)? loaded,
     TResult? Function(String message)? error,
     TResult? Function()? authenticated,
@@ -367,6 +381,7 @@ class _$LoadingCombinedStateImpl implements LoadingCombinedState {
     TResult Function(SelectedProfile profile)? profileSelected,
     TResult Function()? navigateToQrCodeScanner,
     TResult Function(Iden3MessageEntity<dynamic> iden3message)? qrCodeScanned,
+    TResult Function()? fetchingTAP,
     TResult Function(Iden3MessageEntity<dynamic> iden3message)? loaded,
     TResult Function(String message)? error,
     TResult Function()? authenticated,
@@ -390,6 +405,7 @@ class _$LoadingCombinedStateImpl implements LoadingCombinedState {
     required TResult Function(NavigateToQrCodeScannerCombinedState value)
         navigateToQrCodeScanner,
     required TResult Function(QrCodeScannedCombinedState value) qrCodeScanned,
+    required TResult Function(FetchingTAPState value) fetchingTAP,
     required TResult Function(LoadedCombinedState value) loaded,
     required TResult Function(ErrorCombinedState value) error,
     required TResult Function(AuthenticatedCombinedState value) authenticated,
@@ -409,6 +425,7 @@ class _$LoadingCombinedStateImpl implements LoadingCombinedState {
     TResult? Function(NavigateToQrCodeScannerCombinedState value)?
         navigateToQrCodeScanner,
     TResult? Function(QrCodeScannedCombinedState value)? qrCodeScanned,
+    TResult? Function(FetchingTAPState value)? fetchingTAP,
     TResult? Function(LoadedCombinedState value)? loaded,
     TResult? Function(ErrorCombinedState value)? error,
     TResult? Function(AuthenticatedCombinedState value)? authenticated,
@@ -428,6 +445,7 @@ class _$LoadingCombinedStateImpl implements LoadingCombinedState {
     TResult Function(NavigateToQrCodeScannerCombinedState value)?
         navigateToQrCodeScanner,
     TResult Function(QrCodeScannedCombinedState value)? qrCodeScanned,
+    TResult Function(FetchingTAPState value)? fetchingTAP,
     TResult Function(LoadedCombinedState value)? loaded,
     TResult Function(ErrorCombinedState value)? error,
     TResult Function(AuthenticatedCombinedState value)? authenticated,
@@ -523,6 +541,7 @@ class _$ProfileSelectedCombinedStateImpl
     required TResult Function() navigateToQrCodeScanner,
     required TResult Function(Iden3MessageEntity<dynamic> iden3message)
         qrCodeScanned,
+    required TResult Function() fetchingTAP,
     required TResult Function(Iden3MessageEntity<dynamic> iden3message) loaded,
     required TResult Function(String message) error,
     required TResult Function() authenticated,
@@ -540,6 +559,7 @@ class _$ProfileSelectedCombinedStateImpl
     TResult? Function(SelectedProfile profile)? profileSelected,
     TResult? Function()? navigateToQrCodeScanner,
     TResult? Function(Iden3MessageEntity<dynamic> iden3message)? qrCodeScanned,
+    TResult? Function()? fetchingTAP,
     TResult? Function(Iden3MessageEntity<dynamic> iden3message)? loaded,
     TResult? Function(String message)? error,
     TResult? Function()? authenticated,
@@ -557,6 +577,7 @@ class _$ProfileSelectedCombinedStateImpl
     TResult Function(SelectedProfile profile)? profileSelected,
     TResult Function()? navigateToQrCodeScanner,
     TResult Function(Iden3MessageEntity<dynamic> iden3message)? qrCodeScanned,
+    TResult Function()? fetchingTAP,
     TResult Function(Iden3MessageEntity<dynamic> iden3message)? loaded,
     TResult Function(String message)? error,
     TResult Function()? authenticated,
@@ -580,6 +601,7 @@ class _$ProfileSelectedCombinedStateImpl
     required TResult Function(NavigateToQrCodeScannerCombinedState value)
         navigateToQrCodeScanner,
     required TResult Function(QrCodeScannedCombinedState value) qrCodeScanned,
+    required TResult Function(FetchingTAPState value) fetchingTAP,
     required TResult Function(LoadedCombinedState value) loaded,
     required TResult Function(ErrorCombinedState value) error,
     required TResult Function(AuthenticatedCombinedState value) authenticated,
@@ -599,6 +621,7 @@ class _$ProfileSelectedCombinedStateImpl
     TResult? Function(NavigateToQrCodeScannerCombinedState value)?
         navigateToQrCodeScanner,
     TResult? Function(QrCodeScannedCombinedState value)? qrCodeScanned,
+    TResult? Function(FetchingTAPState value)? fetchingTAP,
     TResult? Function(LoadedCombinedState value)? loaded,
     TResult? Function(ErrorCombinedState value)? error,
     TResult? Function(AuthenticatedCombinedState value)? authenticated,
@@ -618,6 +641,7 @@ class _$ProfileSelectedCombinedStateImpl
     TResult Function(NavigateToQrCodeScannerCombinedState value)?
         navigateToQrCodeScanner,
     TResult Function(QrCodeScannedCombinedState value)? qrCodeScanned,
+    TResult Function(FetchingTAPState value)? fetchingTAP,
     TResult Function(LoadedCombinedState value)? loaded,
     TResult Function(ErrorCombinedState value)? error,
     TResult Function(AuthenticatedCombinedState value)? authenticated,
@@ -693,6 +717,7 @@ class _$NavigateToQrCodeScannerCombinedStateImpl
     required TResult Function() navigateToQrCodeScanner,
     required TResult Function(Iden3MessageEntity<dynamic> iden3message)
         qrCodeScanned,
+    required TResult Function() fetchingTAP,
     required TResult Function(Iden3MessageEntity<dynamic> iden3message) loaded,
     required TResult Function(String message) error,
     required TResult Function() authenticated,
@@ -710,6 +735,7 @@ class _$NavigateToQrCodeScannerCombinedStateImpl
     TResult? Function(SelectedProfile profile)? profileSelected,
     TResult? Function()? navigateToQrCodeScanner,
     TResult? Function(Iden3MessageEntity<dynamic> iden3message)? qrCodeScanned,
+    TResult? Function()? fetchingTAP,
     TResult? Function(Iden3MessageEntity<dynamic> iden3message)? loaded,
     TResult? Function(String message)? error,
     TResult? Function()? authenticated,
@@ -727,6 +753,7 @@ class _$NavigateToQrCodeScannerCombinedStateImpl
     TResult Function(SelectedProfile profile)? profileSelected,
     TResult Function()? navigateToQrCodeScanner,
     TResult Function(Iden3MessageEntity<dynamic> iden3message)? qrCodeScanned,
+    TResult Function()? fetchingTAP,
     TResult Function(Iden3MessageEntity<dynamic> iden3message)? loaded,
     TResult Function(String message)? error,
     TResult Function()? authenticated,
@@ -750,6 +777,7 @@ class _$NavigateToQrCodeScannerCombinedStateImpl
     required TResult Function(NavigateToQrCodeScannerCombinedState value)
         navigateToQrCodeScanner,
     required TResult Function(QrCodeScannedCombinedState value) qrCodeScanned,
+    required TResult Function(FetchingTAPState value) fetchingTAP,
     required TResult Function(LoadedCombinedState value) loaded,
     required TResult Function(ErrorCombinedState value) error,
     required TResult Function(AuthenticatedCombinedState value) authenticated,
@@ -769,6 +797,7 @@ class _$NavigateToQrCodeScannerCombinedStateImpl
     TResult? Function(NavigateToQrCodeScannerCombinedState value)?
         navigateToQrCodeScanner,
     TResult? Function(QrCodeScannedCombinedState value)? qrCodeScanned,
+    TResult? Function(FetchingTAPState value)? fetchingTAP,
     TResult? Function(LoadedCombinedState value)? loaded,
     TResult? Function(ErrorCombinedState value)? error,
     TResult? Function(AuthenticatedCombinedState value)? authenticated,
@@ -788,6 +817,7 @@ class _$NavigateToQrCodeScannerCombinedStateImpl
     TResult Function(NavigateToQrCodeScannerCombinedState value)?
         navigateToQrCodeScanner,
     TResult Function(QrCodeScannedCombinedState value)? qrCodeScanned,
+    TResult Function(FetchingTAPState value)? fetchingTAP,
     TResult Function(LoadedCombinedState value)? loaded,
     TResult Function(ErrorCombinedState value)? error,
     TResult Function(AuthenticatedCombinedState value)? authenticated,
@@ -882,6 +912,7 @@ class _$QrCodeScannedCombinedStateImpl implements QrCodeScannedCombinedState {
     required TResult Function() navigateToQrCodeScanner,
     required TResult Function(Iden3MessageEntity<dynamic> iden3message)
         qrCodeScanned,
+    required TResult Function() fetchingTAP,
     required TResult Function(Iden3MessageEntity<dynamic> iden3message) loaded,
     required TResult Function(String message) error,
     required TResult Function() authenticated,
@@ -899,6 +930,7 @@ class _$QrCodeScannedCombinedStateImpl implements QrCodeScannedCombinedState {
     TResult? Function(SelectedProfile profile)? profileSelected,
     TResult? Function()? navigateToQrCodeScanner,
     TResult? Function(Iden3MessageEntity<dynamic> iden3message)? qrCodeScanned,
+    TResult? Function()? fetchingTAP,
     TResult? Function(Iden3MessageEntity<dynamic> iden3message)? loaded,
     TResult? Function(String message)? error,
     TResult? Function()? authenticated,
@@ -916,6 +948,7 @@ class _$QrCodeScannedCombinedStateImpl implements QrCodeScannedCombinedState {
     TResult Function(SelectedProfile profile)? profileSelected,
     TResult Function()? navigateToQrCodeScanner,
     TResult Function(Iden3MessageEntity<dynamic> iden3message)? qrCodeScanned,
+    TResult Function()? fetchingTAP,
     TResult Function(Iden3MessageEntity<dynamic> iden3message)? loaded,
     TResult Function(String message)? error,
     TResult Function()? authenticated,
@@ -939,6 +972,7 @@ class _$QrCodeScannedCombinedStateImpl implements QrCodeScannedCombinedState {
     required TResult Function(NavigateToQrCodeScannerCombinedState value)
         navigateToQrCodeScanner,
     required TResult Function(QrCodeScannedCombinedState value) qrCodeScanned,
+    required TResult Function(FetchingTAPState value) fetchingTAP,
     required TResult Function(LoadedCombinedState value) loaded,
     required TResult Function(ErrorCombinedState value) error,
     required TResult Function(AuthenticatedCombinedState value) authenticated,
@@ -958,6 +992,7 @@ class _$QrCodeScannedCombinedStateImpl implements QrCodeScannedCombinedState {
     TResult? Function(NavigateToQrCodeScannerCombinedState value)?
         navigateToQrCodeScanner,
     TResult? Function(QrCodeScannedCombinedState value)? qrCodeScanned,
+    TResult? Function(FetchingTAPState value)? fetchingTAP,
     TResult? Function(LoadedCombinedState value)? loaded,
     TResult? Function(ErrorCombinedState value)? error,
     TResult? Function(AuthenticatedCombinedState value)? authenticated,
@@ -977,6 +1012,7 @@ class _$QrCodeScannedCombinedStateImpl implements QrCodeScannedCombinedState {
     TResult Function(NavigateToQrCodeScannerCombinedState value)?
         navigateToQrCodeScanner,
     TResult Function(QrCodeScannedCombinedState value)? qrCodeScanned,
+    TResult Function(FetchingTAPState value)? fetchingTAP,
     TResult Function(LoadedCombinedState value)? loaded,
     TResult Function(ErrorCombinedState value)? error,
     TResult Function(AuthenticatedCombinedState value)? authenticated,
@@ -1001,6 +1037,170 @@ abstract class QrCodeScannedCombinedState implements CombinedState {
   @JsonKey(ignore: true)
   _$$QrCodeScannedCombinedStateImplCopyWith<_$QrCodeScannedCombinedStateImpl>
       get copyWith => throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$FetchingTAPStateImplCopyWith<$Res> {
+  factory _$$FetchingTAPStateImplCopyWith(_$FetchingTAPStateImpl value,
+          $Res Function(_$FetchingTAPStateImpl) then) =
+      __$$FetchingTAPStateImplCopyWithImpl<$Res>;
+}
+
+/// @nodoc
+class __$$FetchingTAPStateImplCopyWithImpl<$Res>
+    extends _$CombinedStateCopyWithImpl<$Res, _$FetchingTAPStateImpl>
+    implements _$$FetchingTAPStateImplCopyWith<$Res> {
+  __$$FetchingTAPStateImplCopyWithImpl(_$FetchingTAPStateImpl _value,
+      $Res Function(_$FetchingTAPStateImpl) _then)
+      : super(_value, _then);
+}
+
+/// @nodoc
+
+class _$FetchingTAPStateImpl implements FetchingTAPState {
+  const _$FetchingTAPStateImpl();
+
+  @override
+  String toString() {
+    return 'CombinedState.fetchingTAP()';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType && other is _$FetchingTAPStateImpl);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() initial,
+    required TResult Function() loading,
+    required TResult Function(SelectedProfile profile) profileSelected,
+    required TResult Function() navigateToQrCodeScanner,
+    required TResult Function(Iden3MessageEntity<dynamic> iden3message)
+        qrCodeScanned,
+    required TResult Function() fetchingTAP,
+    required TResult Function(Iden3MessageEntity<dynamic> iden3message) loaded,
+    required TResult Function(String message) error,
+    required TResult Function() authenticated,
+    required TResult Function(List<ClaimModel> claimList) loadedClaims,
+    required TResult Function(ClaimModel claimModel) navigateToClaimDetail,
+  }) {
+    return fetchingTAP();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? initial,
+    TResult? Function()? loading,
+    TResult? Function(SelectedProfile profile)? profileSelected,
+    TResult? Function()? navigateToQrCodeScanner,
+    TResult? Function(Iden3MessageEntity<dynamic> iden3message)? qrCodeScanned,
+    TResult? Function()? fetchingTAP,
+    TResult? Function(Iden3MessageEntity<dynamic> iden3message)? loaded,
+    TResult? Function(String message)? error,
+    TResult? Function()? authenticated,
+    TResult? Function(List<ClaimModel> claimList)? loadedClaims,
+    TResult? Function(ClaimModel claimModel)? navigateToClaimDetail,
+  }) {
+    return fetchingTAP?.call();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? initial,
+    TResult Function()? loading,
+    TResult Function(SelectedProfile profile)? profileSelected,
+    TResult Function()? navigateToQrCodeScanner,
+    TResult Function(Iden3MessageEntity<dynamic> iden3message)? qrCodeScanned,
+    TResult Function()? fetchingTAP,
+    TResult Function(Iden3MessageEntity<dynamic> iden3message)? loaded,
+    TResult Function(String message)? error,
+    TResult Function()? authenticated,
+    TResult Function(List<ClaimModel> claimList)? loadedClaims,
+    TResult Function(ClaimModel claimModel)? navigateToClaimDetail,
+    required TResult orElse(),
+  }) {
+    if (fetchingTAP != null) {
+      return fetchingTAP();
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(InitCombinedState value) initial,
+    required TResult Function(LoadingCombinedState value) loading,
+    required TResult Function(ProfileSelectedCombinedState value)
+        profileSelected,
+    required TResult Function(NavigateToQrCodeScannerCombinedState value)
+        navigateToQrCodeScanner,
+    required TResult Function(QrCodeScannedCombinedState value) qrCodeScanned,
+    required TResult Function(FetchingTAPState value) fetchingTAP,
+    required TResult Function(LoadedCombinedState value) loaded,
+    required TResult Function(ErrorCombinedState value) error,
+    required TResult Function(AuthenticatedCombinedState value) authenticated,
+    required TResult Function(LoadedDataCombinedState value) loadedClaims,
+    required TResult Function(NavigateToClaimDetailCombinedState value)
+        navigateToClaimDetail,
+  }) {
+    return fetchingTAP(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(InitCombinedState value)? initial,
+    TResult? Function(LoadingCombinedState value)? loading,
+    TResult? Function(ProfileSelectedCombinedState value)? profileSelected,
+    TResult? Function(NavigateToQrCodeScannerCombinedState value)?
+        navigateToQrCodeScanner,
+    TResult? Function(QrCodeScannedCombinedState value)? qrCodeScanned,
+    TResult? Function(FetchingTAPState value)? fetchingTAP,
+    TResult? Function(LoadedCombinedState value)? loaded,
+    TResult? Function(ErrorCombinedState value)? error,
+    TResult? Function(AuthenticatedCombinedState value)? authenticated,
+    TResult? Function(LoadedDataCombinedState value)? loadedClaims,
+    TResult? Function(NavigateToClaimDetailCombinedState value)?
+        navigateToClaimDetail,
+  }) {
+    return fetchingTAP?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(InitCombinedState value)? initial,
+    TResult Function(LoadingCombinedState value)? loading,
+    TResult Function(ProfileSelectedCombinedState value)? profileSelected,
+    TResult Function(NavigateToQrCodeScannerCombinedState value)?
+        navigateToQrCodeScanner,
+    TResult Function(QrCodeScannedCombinedState value)? qrCodeScanned,
+    TResult Function(FetchingTAPState value)? fetchingTAP,
+    TResult Function(LoadedCombinedState value)? loaded,
+    TResult Function(ErrorCombinedState value)? error,
+    TResult Function(AuthenticatedCombinedState value)? authenticated,
+    TResult Function(LoadedDataCombinedState value)? loadedClaims,
+    TResult Function(NavigateToClaimDetailCombinedState value)?
+        navigateToClaimDetail,
+    required TResult orElse(),
+  }) {
+    if (fetchingTAP != null) {
+      return fetchingTAP(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class FetchingTAPState implements CombinedState {
+  const factory FetchingTAPState() = _$FetchingTAPStateImpl;
 }
 
 /// @nodoc
@@ -1075,6 +1275,7 @@ class _$LoadedCombinedStateImpl implements LoadedCombinedState {
     required TResult Function() navigateToQrCodeScanner,
     required TResult Function(Iden3MessageEntity<dynamic> iden3message)
         qrCodeScanned,
+    required TResult Function() fetchingTAP,
     required TResult Function(Iden3MessageEntity<dynamic> iden3message) loaded,
     required TResult Function(String message) error,
     required TResult Function() authenticated,
@@ -1092,6 +1293,7 @@ class _$LoadedCombinedStateImpl implements LoadedCombinedState {
     TResult? Function(SelectedProfile profile)? profileSelected,
     TResult? Function()? navigateToQrCodeScanner,
     TResult? Function(Iden3MessageEntity<dynamic> iden3message)? qrCodeScanned,
+    TResult? Function()? fetchingTAP,
     TResult? Function(Iden3MessageEntity<dynamic> iden3message)? loaded,
     TResult? Function(String message)? error,
     TResult? Function()? authenticated,
@@ -1109,6 +1311,7 @@ class _$LoadedCombinedStateImpl implements LoadedCombinedState {
     TResult Function(SelectedProfile profile)? profileSelected,
     TResult Function()? navigateToQrCodeScanner,
     TResult Function(Iden3MessageEntity<dynamic> iden3message)? qrCodeScanned,
+    TResult Function()? fetchingTAP,
     TResult Function(Iden3MessageEntity<dynamic> iden3message)? loaded,
     TResult Function(String message)? error,
     TResult Function()? authenticated,
@@ -1132,6 +1335,7 @@ class _$LoadedCombinedStateImpl implements LoadedCombinedState {
     required TResult Function(NavigateToQrCodeScannerCombinedState value)
         navigateToQrCodeScanner,
     required TResult Function(QrCodeScannedCombinedState value) qrCodeScanned,
+    required TResult Function(FetchingTAPState value) fetchingTAP,
     required TResult Function(LoadedCombinedState value) loaded,
     required TResult Function(ErrorCombinedState value) error,
     required TResult Function(AuthenticatedCombinedState value) authenticated,
@@ -1151,6 +1355,7 @@ class _$LoadedCombinedStateImpl implements LoadedCombinedState {
     TResult? Function(NavigateToQrCodeScannerCombinedState value)?
         navigateToQrCodeScanner,
     TResult? Function(QrCodeScannedCombinedState value)? qrCodeScanned,
+    TResult? Function(FetchingTAPState value)? fetchingTAP,
     TResult? Function(LoadedCombinedState value)? loaded,
     TResult? Function(ErrorCombinedState value)? error,
     TResult? Function(AuthenticatedCombinedState value)? authenticated,
@@ -1170,6 +1375,7 @@ class _$LoadedCombinedStateImpl implements LoadedCombinedState {
     TResult Function(NavigateToQrCodeScannerCombinedState value)?
         navigateToQrCodeScanner,
     TResult Function(QrCodeScannedCombinedState value)? qrCodeScanned,
+    TResult Function(FetchingTAPState value)? fetchingTAP,
     TResult Function(LoadedCombinedState value)? loaded,
     TResult Function(ErrorCombinedState value)? error,
     TResult Function(AuthenticatedCombinedState value)? authenticated,
@@ -1267,6 +1473,7 @@ class _$ErrorCombinedStateImpl implements ErrorCombinedState {
     required TResult Function() navigateToQrCodeScanner,
     required TResult Function(Iden3MessageEntity<dynamic> iden3message)
         qrCodeScanned,
+    required TResult Function() fetchingTAP,
     required TResult Function(Iden3MessageEntity<dynamic> iden3message) loaded,
     required TResult Function(String message) error,
     required TResult Function() authenticated,
@@ -1284,6 +1491,7 @@ class _$ErrorCombinedStateImpl implements ErrorCombinedState {
     TResult? Function(SelectedProfile profile)? profileSelected,
     TResult? Function()? navigateToQrCodeScanner,
     TResult? Function(Iden3MessageEntity<dynamic> iden3message)? qrCodeScanned,
+    TResult? Function()? fetchingTAP,
     TResult? Function(Iden3MessageEntity<dynamic> iden3message)? loaded,
     TResult? Function(String message)? error,
     TResult? Function()? authenticated,
@@ -1301,6 +1509,7 @@ class _$ErrorCombinedStateImpl implements ErrorCombinedState {
     TResult Function(SelectedProfile profile)? profileSelected,
     TResult Function()? navigateToQrCodeScanner,
     TResult Function(Iden3MessageEntity<dynamic> iden3message)? qrCodeScanned,
+    TResult Function()? fetchingTAP,
     TResult Function(Iden3MessageEntity<dynamic> iden3message)? loaded,
     TResult Function(String message)? error,
     TResult Function()? authenticated,
@@ -1324,6 +1533,7 @@ class _$ErrorCombinedStateImpl implements ErrorCombinedState {
     required TResult Function(NavigateToQrCodeScannerCombinedState value)
         navigateToQrCodeScanner,
     required TResult Function(QrCodeScannedCombinedState value) qrCodeScanned,
+    required TResult Function(FetchingTAPState value) fetchingTAP,
     required TResult Function(LoadedCombinedState value) loaded,
     required TResult Function(ErrorCombinedState value) error,
     required TResult Function(AuthenticatedCombinedState value) authenticated,
@@ -1343,6 +1553,7 @@ class _$ErrorCombinedStateImpl implements ErrorCombinedState {
     TResult? Function(NavigateToQrCodeScannerCombinedState value)?
         navigateToQrCodeScanner,
     TResult? Function(QrCodeScannedCombinedState value)? qrCodeScanned,
+    TResult? Function(FetchingTAPState value)? fetchingTAP,
     TResult? Function(LoadedCombinedState value)? loaded,
     TResult? Function(ErrorCombinedState value)? error,
     TResult? Function(AuthenticatedCombinedState value)? authenticated,
@@ -1362,6 +1573,7 @@ class _$ErrorCombinedStateImpl implements ErrorCombinedState {
     TResult Function(NavigateToQrCodeScannerCombinedState value)?
         navigateToQrCodeScanner,
     TResult Function(QrCodeScannedCombinedState value)? qrCodeScanned,
+    TResult Function(FetchingTAPState value)? fetchingTAP,
     TResult Function(LoadedCombinedState value)? loaded,
     TResult Function(ErrorCombinedState value)? error,
     TResult Function(AuthenticatedCombinedState value)? authenticated,
@@ -1434,6 +1646,7 @@ class _$AuthenticatedCombinedStateImpl implements AuthenticatedCombinedState {
     required TResult Function() navigateToQrCodeScanner,
     required TResult Function(Iden3MessageEntity<dynamic> iden3message)
         qrCodeScanned,
+    required TResult Function() fetchingTAP,
     required TResult Function(Iden3MessageEntity<dynamic> iden3message) loaded,
     required TResult Function(String message) error,
     required TResult Function() authenticated,
@@ -1451,6 +1664,7 @@ class _$AuthenticatedCombinedStateImpl implements AuthenticatedCombinedState {
     TResult? Function(SelectedProfile profile)? profileSelected,
     TResult? Function()? navigateToQrCodeScanner,
     TResult? Function(Iden3MessageEntity<dynamic> iden3message)? qrCodeScanned,
+    TResult? Function()? fetchingTAP,
     TResult? Function(Iden3MessageEntity<dynamic> iden3message)? loaded,
     TResult? Function(String message)? error,
     TResult? Function()? authenticated,
@@ -1468,6 +1682,7 @@ class _$AuthenticatedCombinedStateImpl implements AuthenticatedCombinedState {
     TResult Function(SelectedProfile profile)? profileSelected,
     TResult Function()? navigateToQrCodeScanner,
     TResult Function(Iden3MessageEntity<dynamic> iden3message)? qrCodeScanned,
+    TResult Function()? fetchingTAP,
     TResult Function(Iden3MessageEntity<dynamic> iden3message)? loaded,
     TResult Function(String message)? error,
     TResult Function()? authenticated,
@@ -1491,6 +1706,7 @@ class _$AuthenticatedCombinedStateImpl implements AuthenticatedCombinedState {
     required TResult Function(NavigateToQrCodeScannerCombinedState value)
         navigateToQrCodeScanner,
     required TResult Function(QrCodeScannedCombinedState value) qrCodeScanned,
+    required TResult Function(FetchingTAPState value) fetchingTAP,
     required TResult Function(LoadedCombinedState value) loaded,
     required TResult Function(ErrorCombinedState value) error,
     required TResult Function(AuthenticatedCombinedState value) authenticated,
@@ -1510,6 +1726,7 @@ class _$AuthenticatedCombinedStateImpl implements AuthenticatedCombinedState {
     TResult? Function(NavigateToQrCodeScannerCombinedState value)?
         navigateToQrCodeScanner,
     TResult? Function(QrCodeScannedCombinedState value)? qrCodeScanned,
+    TResult? Function(FetchingTAPState value)? fetchingTAP,
     TResult? Function(LoadedCombinedState value)? loaded,
     TResult? Function(ErrorCombinedState value)? error,
     TResult? Function(AuthenticatedCombinedState value)? authenticated,
@@ -1529,6 +1746,7 @@ class _$AuthenticatedCombinedStateImpl implements AuthenticatedCombinedState {
     TResult Function(NavigateToQrCodeScannerCombinedState value)?
         navigateToQrCodeScanner,
     TResult Function(QrCodeScannedCombinedState value)? qrCodeScanned,
+    TResult Function(FetchingTAPState value)? fetchingTAP,
     TResult Function(LoadedCombinedState value)? loaded,
     TResult Function(ErrorCombinedState value)? error,
     TResult Function(AuthenticatedCombinedState value)? authenticated,
@@ -1629,6 +1847,7 @@ class _$LoadedDataCombinedStateImpl implements LoadedDataCombinedState {
     required TResult Function() navigateToQrCodeScanner,
     required TResult Function(Iden3MessageEntity<dynamic> iden3message)
         qrCodeScanned,
+    required TResult Function() fetchingTAP,
     required TResult Function(Iden3MessageEntity<dynamic> iden3message) loaded,
     required TResult Function(String message) error,
     required TResult Function() authenticated,
@@ -1646,6 +1865,7 @@ class _$LoadedDataCombinedStateImpl implements LoadedDataCombinedState {
     TResult? Function(SelectedProfile profile)? profileSelected,
     TResult? Function()? navigateToQrCodeScanner,
     TResult? Function(Iden3MessageEntity<dynamic> iden3message)? qrCodeScanned,
+    TResult? Function()? fetchingTAP,
     TResult? Function(Iden3MessageEntity<dynamic> iden3message)? loaded,
     TResult? Function(String message)? error,
     TResult? Function()? authenticated,
@@ -1663,6 +1883,7 @@ class _$LoadedDataCombinedStateImpl implements LoadedDataCombinedState {
     TResult Function(SelectedProfile profile)? profileSelected,
     TResult Function()? navigateToQrCodeScanner,
     TResult Function(Iden3MessageEntity<dynamic> iden3message)? qrCodeScanned,
+    TResult Function()? fetchingTAP,
     TResult Function(Iden3MessageEntity<dynamic> iden3message)? loaded,
     TResult Function(String message)? error,
     TResult Function()? authenticated,
@@ -1686,6 +1907,7 @@ class _$LoadedDataCombinedStateImpl implements LoadedDataCombinedState {
     required TResult Function(NavigateToQrCodeScannerCombinedState value)
         navigateToQrCodeScanner,
     required TResult Function(QrCodeScannedCombinedState value) qrCodeScanned,
+    required TResult Function(FetchingTAPState value) fetchingTAP,
     required TResult Function(LoadedCombinedState value) loaded,
     required TResult Function(ErrorCombinedState value) error,
     required TResult Function(AuthenticatedCombinedState value) authenticated,
@@ -1705,6 +1927,7 @@ class _$LoadedDataCombinedStateImpl implements LoadedDataCombinedState {
     TResult? Function(NavigateToQrCodeScannerCombinedState value)?
         navigateToQrCodeScanner,
     TResult? Function(QrCodeScannedCombinedState value)? qrCodeScanned,
+    TResult? Function(FetchingTAPState value)? fetchingTAP,
     TResult? Function(LoadedCombinedState value)? loaded,
     TResult? Function(ErrorCombinedState value)? error,
     TResult? Function(AuthenticatedCombinedState value)? authenticated,
@@ -1724,6 +1947,7 @@ class _$LoadedDataCombinedStateImpl implements LoadedDataCombinedState {
     TResult Function(NavigateToQrCodeScannerCombinedState value)?
         navigateToQrCodeScanner,
     TResult Function(QrCodeScannedCombinedState value)? qrCodeScanned,
+    TResult Function(FetchingTAPState value)? fetchingTAP,
     TResult Function(LoadedCombinedState value)? loaded,
     TResult Function(ErrorCombinedState value)? error,
     TResult Function(AuthenticatedCombinedState value)? authenticated,
@@ -1826,6 +2050,7 @@ class _$NavigateToClaimDetailCombinedStateImpl
     required TResult Function() navigateToQrCodeScanner,
     required TResult Function(Iden3MessageEntity<dynamic> iden3message)
         qrCodeScanned,
+    required TResult Function() fetchingTAP,
     required TResult Function(Iden3MessageEntity<dynamic> iden3message) loaded,
     required TResult Function(String message) error,
     required TResult Function() authenticated,
@@ -1843,6 +2068,7 @@ class _$NavigateToClaimDetailCombinedStateImpl
     TResult? Function(SelectedProfile profile)? profileSelected,
     TResult? Function()? navigateToQrCodeScanner,
     TResult? Function(Iden3MessageEntity<dynamic> iden3message)? qrCodeScanned,
+    TResult? Function()? fetchingTAP,
     TResult? Function(Iden3MessageEntity<dynamic> iden3message)? loaded,
     TResult? Function(String message)? error,
     TResult? Function()? authenticated,
@@ -1860,6 +2086,7 @@ class _$NavigateToClaimDetailCombinedStateImpl
     TResult Function(SelectedProfile profile)? profileSelected,
     TResult Function()? navigateToQrCodeScanner,
     TResult Function(Iden3MessageEntity<dynamic> iden3message)? qrCodeScanned,
+    TResult Function()? fetchingTAP,
     TResult Function(Iden3MessageEntity<dynamic> iden3message)? loaded,
     TResult Function(String message)? error,
     TResult Function()? authenticated,
@@ -1883,6 +2110,7 @@ class _$NavigateToClaimDetailCombinedStateImpl
     required TResult Function(NavigateToQrCodeScannerCombinedState value)
         navigateToQrCodeScanner,
     required TResult Function(QrCodeScannedCombinedState value) qrCodeScanned,
+    required TResult Function(FetchingTAPState value) fetchingTAP,
     required TResult Function(LoadedCombinedState value) loaded,
     required TResult Function(ErrorCombinedState value) error,
     required TResult Function(AuthenticatedCombinedState value) authenticated,
@@ -1902,6 +2130,7 @@ class _$NavigateToClaimDetailCombinedStateImpl
     TResult? Function(NavigateToQrCodeScannerCombinedState value)?
         navigateToQrCodeScanner,
     TResult? Function(QrCodeScannedCombinedState value)? qrCodeScanned,
+    TResult? Function(FetchingTAPState value)? fetchingTAP,
     TResult? Function(LoadedCombinedState value)? loaded,
     TResult? Function(ErrorCombinedState value)? error,
     TResult? Function(AuthenticatedCombinedState value)? authenticated,
@@ -1921,6 +2150,7 @@ class _$NavigateToClaimDetailCombinedStateImpl
     TResult Function(NavigateToQrCodeScannerCombinedState value)?
         navigateToQrCodeScanner,
     TResult Function(QrCodeScannedCombinedState value)? qrCodeScanned,
+    TResult Function(FetchingTAPState value)? fetchingTAP,
     TResult Function(LoadedCombinedState value)? loaded,
     TResult Function(ErrorCombinedState value)? error,
     TResult Function(AuthenticatedCombinedState value)? authenticated,

@@ -490,7 +490,7 @@ class BuySheetState extends State<BuySheet> {
                 ),
                 Container(
                   margin: const EdgeInsets.only(top: 32),
-                  child: CookieButton(text: "Buy", onPressed: _showOrderSheet),
+                  child: CookieButton(text: "Pay", onPressed: _showOrderSheet),
                 ),
               ],
             )),

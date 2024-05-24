@@ -38,7 +38,7 @@ class ClaimCard extends StatelessWidget {
         ),
         width: double.infinity,
         height: double.infinity,
-        child: SvgPicture.asset(
+        child: Image.asset(
           ImageResources.claimBackground,
           width: double.infinity,
           fit: BoxFit.fill,

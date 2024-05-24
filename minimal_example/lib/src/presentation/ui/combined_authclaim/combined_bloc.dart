@@ -40,7 +40,7 @@ class CombinedBloc extends Bloc<CombinedEvent, CombinedState> {
     this._qrcodeParserUtils,
   ) : super(const CombinedState.initial()) {
     on<ClickScanQrCodeEvent>(_handleClickScanQrCode);
-    on<ClickTapButtonEvent>(_handleClickTapButton);
+    on<ClickTapButtonEvent>(_handleClickTapButton); // TODO: Step2 fetching TAP [calls _handleClickTapButton]
     on<ScanQrCodeResponse>(_handleScanQrCodeResponse);
     on<ProfileSelectedEvent>(_handleProfileSelected);
     on<FetchAndSaveClaimsEvent>(_fetchAndSaveClaims);
@@ -70,9 +70,11 @@ class CombinedBloc extends Bloc<CombinedEvent, CombinedState> {
     emit(const CombinedState.navigateToQrCodeScanner());
   }
 
-  ///
+  /// // TODO: Step3 fetching TAP [calls _handleClickTapButton]
   Future<void> _handleClickTapButton(
       ClickTapButtonEvent event, Emitter<CombinedState> emit) async {
+
+    emit(const CombinedState.fetchingTAP());
 
     String? privateKey =
     await SecureStorage.read(key: SecureStorageKeys.privateKey);

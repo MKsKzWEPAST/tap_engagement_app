@@ -37,6 +37,7 @@ class CombinedScreen extends StatefulWidget {
 class _CombinedScreenState extends State<CombinedScreen> {
   late StreamController<bool> _tapFetchedController;
   late Timer _timer;
+  bool fetchingTAP = false;
 
   @override
   void initState() {
@@ -51,6 +52,7 @@ class _CombinedScreenState extends State<CombinedScreen> {
               _tapFetchedController.sink.add(tapFetched);
               if (!tapFetched) {
                 widget._bloc.add(const CombinedEvent.clickTapButton());
+                fetchingTAP = true;
               }
               if (!SecureApplicationProvider.of(context)!.authenticated) {
                 SecureApplicationProvider.of(context)!.lock();
@@ -66,7 +68,10 @@ class _CombinedScreenState extends State<CombinedScreen> {
     final prefs = await SharedPreferences.getInstance();
     final fetched = prefs.getBool("tapFetched") ?? false;
     _tapFetchedController.sink.add(fetched);
-    if (fetched) _timer.cancel();
+    if (fetched) {
+      setState(() {fetchingTAP = false;});
+      _timer.cancel();
+    }
   }
 
   @override
@@ -80,7 +85,27 @@ class _CombinedScreenState extends State<CombinedScreen> {
     return Scaffold(
       backgroundColor: CustomColors.background,
       appBar: _buildAppBar(),
+      endDrawer: _buildDrawer(),
       body: _buildBody(),
+    );
+  }
+
+  ///
+  Widget _buildDrawer() {
+    return Drawer(
+      child: ListView(
+        padding: EdgeInsets.zero,
+        children: [
+          DrawerHeader(
+            decoration:
+                const BoxDecoration(color: Color.fromARGB(255, 129, 70, 227)),
+            child: Text('Settings',
+                style: CustomTextStyles.titleTextStyle
+                    .copyWith(color: Colors.white)),
+          ),
+          _buildClearStorageButton(),
+        ],
+      ),
     );
   }
 
@@ -178,6 +203,24 @@ class _CombinedScreenState extends State<CombinedScreen> {
     return BlocBuilder(
       bloc: widget._bloc,
       builder: (BuildContext context, CombinedState state) {
+        if (fetchingTAP || state is FetchingTAPState) {
+          return const Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+                  Text(
+                    "Fetching your TAP",
+                    style: CustomTextStyles.descriptionTextStyle,
+              ),
+              SizedBox(
+                height: 36,
+                width: 36,
+                child: CircularProgressIndicator(
+                  backgroundColor: CustomColors.primaryButton,
+                ),
+              ),
+            ],
+          );
+        }
         if (state is! LoadingCombinedState) {
           return const SizedBox(
             height: 48,
@@ -338,38 +381,27 @@ class _CombinedScreenState extends State<CombinedScreen> {
   }
 
   ///
-  Widget _buildRemoveAllClaimsButton() {
+  Widget _buildClearStorageButton() {
     return Align(
       alignment: Alignment.center,
       child: BlocBuilder(
-          bloc: widget._bloc,
-          builder: (BuildContext context, CombinedState state) {
-            bool loading = state is LoadingCombinedState;
-            return ElevatedButton(
-              onPressed: () {
-                if (!loading) {
-                  widget._bloc.add(const CombinedEvent.removeAllClaims());
-                }
-              },
-              style: CustomButtonStyle.outlinedPrimaryButtonStyle,
-              child: Container(
-                constraints: const BoxConstraints(
-                  minWidth: 120,
-                  maxWidth: 120,
-                  maxHeight: 20,
-                ),
-                child: Center(
-                  child: FittedBox(
-                    child: Text(
-                      CustomStrings.deleteAllClaimsButtonCTA,
-                      style: CustomTextStyles.primaryButtonTextStyle
-                          .copyWith(color: CustomColors.primaryButton),
-                    ),
-                  ),
-                ),
-              ),
-            );
-          }),
+        bloc: widget._bloc,
+        builder: (BuildContext context, CombinedState state) {
+          bool loading = state is LoadingCombinedState;
+          return ElevatedButton(
+            onPressed: () async {
+              final SharedPreferences prefs =
+                  await SharedPreferences.getInstance();
+              await prefs.clear();
+              if (!loading) {
+                widget._bloc.add(const CombinedEvent.removeAllClaims());
+              }
+                Navigator.pop(context);
+            },
+            child: const Text("Clear local storage"),
+          );
+        },
+      ),
     );
   }
 

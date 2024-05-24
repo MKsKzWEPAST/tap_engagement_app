@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:minimal_example/src/presentation/navigations/routes.dart';
 import 'package:minimal_example/src/presentation/ui/pay_n_kyc/widgets/pay.dart';
 import 'package:minimal_example/utils/state_machine_utils.dart';
 import 'package:polygonid_flutter_sdk/common/domain/domain_logger.dart';
@@ -81,11 +82,7 @@ class _KycFlowState extends State<KycFlowScreen> {
     Widget body = Container();
     switch (_currentStep) {
       case RegistrationStep.startFlow:
-        bool paid = state["state"] != null && state["state"] == "paid";
-        setCurrentStep(
-            paid ? RegistrationStep.kycScreen : RegistrationStep.payScreen);
         body = StartFlow();
-        break;
       case RegistrationStep.payScreen:
         body = PayScreen(
           onComplete: () async {
@@ -93,7 +90,6 @@ class _KycFlowState extends State<KycFlowScreen> {
             setCurrentStep(RegistrationStep.kycScreen);
           },
         );
-        break;
       case RegistrationStep.kycScreen:
         body = KYCScreen(
           onComplete: () async {
@@ -101,13 +97,10 @@ class _KycFlowState extends State<KycFlowScreen> {
             setCurrentStep(RegistrationStep.completedPage);
           },
         ); // TODO + setStatusKYC
-        break;
       case RegistrationStep.completedPage:
         body = CompletedPage();
-        break;
       case RegistrationStep.loading:
-        body = Loading();
-        break;
+        body = const Center(child: CircularProgressIndicator());
       default:
         body = RestartProcess();
     }
@@ -117,9 +110,35 @@ class _KycFlowState extends State<KycFlowScreen> {
 
   ///
   Widget StartFlow() {
-    return const Column(mainAxisAlignment:MainAxisAlignment.center, children: [
-      CircularProgressIndicator(),
-    ]);
+    final state = ModalRoute.of(context)!.settings.arguments
+        as Map<String, String>; // TODO test
+    logger().i('ModalRoute state: <$state>');
+
+    bool paid = state["state"] != null && state["state"] == "paid";
+    String text = paid
+        ? "You've already paid.\nPlease proceed with KYC."
+        : "Pay and pass your KYC!";
+
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        const Text("It looks like you are not a verified fan yet.\nBefore receiving your TAP, please get verified.", style: TextStyle(
+      fontSize: 16,
+    )),
+        const SizedBox(height: 18),
+        Text(
+          text,
+          style: const TextStyle(
+            fontSize: 24,
+          ),
+        ),
+        const SizedBox(height: 12),
+        ElevatedButton(
+            onPressed: () => setCurrentStep(
+                paid ? RegistrationStep.kycScreen : RegistrationStep.payScreen),
+            child: const Text("Start")),
+      ],
+    );
   }
 
   ///
@@ -129,7 +148,7 @@ class _KycFlowState extends State<KycFlowScreen> {
       children: [
         // TODO: add an image ~
         const Text(
-          "Congratulations!",
+          "Congratulations 🎉",
           style: TextStyle(
             fontSize: 24,
           ),
@@ -143,20 +162,10 @@ class _KycFlowState extends State<KycFlowScreen> {
         ),
         const SizedBox(height: 12),
         ElevatedButton(
-            onPressed: () => setCurrentStep(RegistrationStep.loading),
-            child: const Text("Access my wallet"))
+            onPressed: () => Navigator.popAndPushNamed(context, Routes.combinedPath),
+            child: const Text("Get my tap"))
       ],
     );
-  }
-
-  ///
-  Widget Loading() {
-    Navigator.pop(context, true);
-
-    return const Column(children: [
-      Text("Loading your wallet..."),
-      CircularProgressIndicator(),
-    ]);
   }
 
   ///
