@@ -6,6 +6,7 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:minimal_example/src/presentation/dependency_injection/dependencies_provider.dart';
 import 'package:minimal_example/src/presentation/navigations/routes.dart';
@@ -145,11 +146,9 @@ class _HomeScreenState extends State<HomeScreen> {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const CircularProgressIndicator(); // Display a loading indicator when waiting for data.
           } else if (snapshot.hasError) {
-            return Text(
-                'Error: ${snapshot.error}'); // Display an error message if an error occurs.
+            return Text('Error: ${snapshot.error}'); // Display an error message if an error occurs.
           } else if (!snapshot.hasData) {
-            return Text(
-                'No data available'); // Display a message when no data is available.
+            return const Text('No data available'); // Display a message when no data is available.
           } else {
             final fetched = snapshot.data ?? false;
             return Scaffold(
@@ -300,15 +299,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                         CrossAxisAlignment.center,
                                     children: [
                                       state.identifier!.isNotEmpty
-                                          ? Text(
-                                              CustomStrings.homeHasWallet,
-                                              style: CustomTextStyles
-                                                  .descriptionTextStyle
-                                                  .copyWith(
-                                                      fontSize: 20,
-                                                      fontWeight:
-                                                          FontWeight.w700),
-                                            )
+                                          ? Container()
                                           : Text(
                                               CustomStrings.homeNoWallet,
                                               style: CustomTextStyles
@@ -361,6 +352,15 @@ class _HomeScreenState extends State<HomeScreen> {
           if (res != "") {
             Map<String, dynamic> jsonMap = jsonDecode(res);
             kyc_state = jsonMap["status"]!;
+          } else {
+            Fluttertoast.showToast(
+                msg: "App under maintenance, please try later.",
+                toastLength: Toast.LENGTH_SHORT,
+                gravity: ToastGravity.BOTTOM,
+                backgroundColor: Colors.red,
+                textColor: Colors.white,
+                fontSize: 16.0);
+            return;
           }
 
           Map<String, String> state = {
