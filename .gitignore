@@ -5,3 +5,4 @@ minimal_example/.env
 minimal_example/pubspec.lock
 /minimal_example/.idea
 minimal_example/.idea/libraries/Flutter_Plugins.xml
+/minimal_example/.idea
